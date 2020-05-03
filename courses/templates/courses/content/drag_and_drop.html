@@ -1,0 +1,50 @@
+{{ item.question|safe }}
+<style>
+.place {
+  float: left;
+  width: 100px;
+  height: 35px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid black;
+}
+</style>
+<script>
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+var current_data = 0;
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+  if(ev.target.id === 'result') {
+      current_data = data;
+  }
+}
+</script>
+<div id="box" style="border: 1px; width: 200px; height: 100px" ondrop="drop(event)" ondragover="allowDrop(event)" >
+    <button draggable="true" ondragstart="drag(event)" id="{{ item.answer_1 }}" width="88" height="31">{{ item.answer_1 }}</button>
+<button draggable="true" ondragstart="drag(event)" id="{{ item.answer_2 }}" width="88" height="31">{{ item.answer_2 }}</button>
+</div>
+
+
+<div id="result" class="place" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<button class="btn btn-success" onclick="check()">Проверить</button>
+ <script>
+ function check() {
+
+    if (current_data.toString() === '{{ item.answer_correct }}' ){
+        alert("You are great!");
+    }
+    else {
+        alert("You are Idiot!");
+    }
+ }
+</script>

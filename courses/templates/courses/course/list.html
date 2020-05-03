@@ -1,0 +1,51 @@
+{% extends "base/base_courses.html" %}
+{% block title %}
+    {% if subject %}
+{{ subject.title }} courses {% else %}
+Все предметы
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+    <div class="row">
+    <h1>
+{% if subject %}
+{{ subject.title }}
+    {% else %}
+        Все предметы
+    {% endif %}
+</h1>
+    </div>
+    <div class="row">
+            <div class="col-md-3">
+					<h3 {% if not subject %} {% endif %}><a href="{% url "course_list" %}">Все предметы</h3>
+                    <div class="list-group">
+                    {% for s in subjects %}
+                        <a {% if subject == s %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} href="{% url "course_list_subject" s.slug %}" >
+                            <h4 class="list-group-item-heading">{{ s.title }}</h4>
+                            <p class="list-group-item-text">{{ s.total_courses }} курс (ов)</p>
+                        </a>
+                    {% endfor %}
+                    </div>
+
+                </div>
+<div class="col-md-9">
+{% for course in courses %}
+{% with subject=course.subject %}
+<h3><a href="{% url "course_detail" course.slug %}"> {{ course.title }}</a></h3>
+<p>
+<a href="{% url "course_list_subject" subject.slug %}"> {{ subject }}</a>.
+{{ course.total_modules }} модуля.
+Методист: {{ course.owner.get_full_name }}
+</p>
+        {% endwith %}
+    {% endfor %}
+</div>
+    </div>
+    </div>
+{% endblock %}
+
+
+
+
+

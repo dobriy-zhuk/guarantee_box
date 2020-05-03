@@ -1,0 +1,20 @@
+{% extends "base/base_courses.html" %}
+{% block title %}Личный кабинет Гарантия Знаний{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+        <h1>Личный кабинет</h1>
+        {% if form.errors %}
+        <p>Данные некорректны. Попробуйте еще раз.</p>
+        {% else %}
+        <p>Введите данные для входа:</p>
+        {% endif %}
+        <form action="{% url 'login' %}" method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <p><input type="submit" class="btn btn-success" value="Войти"></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

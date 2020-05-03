@@ -1,0 +1,48 @@
+{% extends "base/base_courses.html" %}
+{% block title %}
+{{ object.title }}
+{% endblock %}
+{% load guardian_tags %}
+{% load index %}
+{% block content %}
+    <div class="container">
+    <h1>{{ module.title }}</h1>
+        <div class="row">
+            <div class="col-md-3">
+                <h3>Модули</h3>
+                    <div class="list-group">
+                    {% for m in object.modules.all %}
+
+                        <a data-id="{{ m.id }}"
+                                {% if m == module and user_permission|index:forloop.counter0 == True %} class="list-group-item active"
+                                href="{% url "student_course_detail_module" object.id m.id %}"
+                                {% elif m != module and user_permission|index:forloop.counter0 == True %} class="list-group-item"
+                                href="{% url "student_course_detail_module" object.id m.id %}"
+                                {% elif user_permission|index:forloop.counter0 == False %} class="list-group-item disabled"
+                                {% endif %}
+                                >
+                            <h4 class="list-group-item-heading">Модуль <span class="order">
+                                    {{ m.order|add:1 }}
+                            </span></h4>
+                            <p class="list-group-item-text">{{ m.title }}</p>
+                        </a>
+                        {% empty %}
+                        <li>No modules yet.</li>
+                    {% endfor %}
+                    </div>
+                </div>
+            <div class="col-md-9">
+
+            {% for content in module.contents.all %}
+                <div class="row">
+                    {% with item=content.item %}
+                    <h2>{{ item.title }}</h2>
+                    {{ item.render }}
+                    {% endwith %}
+                </div>
+                <br>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

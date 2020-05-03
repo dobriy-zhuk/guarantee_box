@@ -1,0 +1,31 @@
+{% extends "base/base_courses.html" %}
+{% block title %}Все курсы Гарантия Знаний{% endblock %}
+{% block content %}
+  <div class="container">
+  <h1>Мои курсы</h1>
+{% for course in object_list %}
+    <div class="row">
+        <div class="col-md-12">
+            <h3>{{ course.title }}</h3>
+            <p>
+                <a href="{% url "course_edit" course.id %}">Изменить</a> |
+                <a href="{% url "course_delete" course.id %}">Удалить</a> |
+                <a href="{% url "course_module_update" course.id %}">Редактировать уроки</a>
+            {% if course.modules.count > 0 %}
+                <br><a href="{% url "module_content_list" course.modules.first.id %}"> Управление контентом</a>
+            {% endif %}
+         </p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="row">
+        <div class="col-md-12">
+    <p>Вы еще не создали ни одного курса.</p>
+        </div>
+    </div>
+{% endfor %}
+    <p>
+        <a href="{% url "course_create" %}" class="button">Создать новый курс</a>
+    </p>
+    </div>
+{% endblock %}

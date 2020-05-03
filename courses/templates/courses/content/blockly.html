@@ -1,0 +1,11 @@
+{{ item.content|safe }}
+<div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+<br>
+<button class="btn btn-success" onclick="myUpdateFunction()">Показать код</button>
+<script>
+ var workspace = Blockly.inject('blocklyDiv',{toolbox: document.getElementById('toolbox')});
+ function myUpdateFunction(event) {
+            var code = Blockly.JavaScript.workspaceToCode(workspace);
+            alert(code);
+ }
+</script>

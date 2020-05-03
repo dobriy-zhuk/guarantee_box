@@ -1,0 +1,18 @@
+[
+{
+  "model": "courses.subject",
+  "pk": 1,
+  "fields": {
+    "title": "Coding_level_1",
+    "slug": "coding_level_1"
+  }
+},
+{
+  "model": "courses.subject",
+  "pk": 2,
+  "fields": {
+    "title": "Coding_level_2",
+    "slug": "coding_level_2"
+  }
+}
+]

@@ -1,0 +1,51 @@
+{% extends "base/base_courses.html" %}
+{% block title %}
+  {% if object %}
+Редактировать контент "{{ object.title }}" {% else %}
+    Добавление нового контента
+  {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+      <h1>
+    {% if object %}
+    Редактировать контент"{{ object.title }}"
+        {% else %}
+          Добавить новый контент
+        {% endif %}
+      </h1>
+    <h2>Информация о контенте</h2>
+    <style>
+        form textarea {
+            width: 100%;
+        }
+        form input[type="text"] {
+            width: 100%;
+        }
+    </style>
+    <div class="row">
+            <form id="my_form" action="" method="post" enctype="multipart/form-data">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <p><input type="submit" value="Сохранить"></p>
+                {% if model == 'text' %}
+                    <div class="outer">
+                        <link id="themecss" rel="stylesheet" type="text/css" href="//www.shieldui.com/shared/components/latest/css/light/all.min.css" />
+                        <script type="text/javascript" src="//www.shieldui.com/shared/components/latest/js/jquery-1.11.1.min.js"></script>
+                        <script type="text/javascript" src="//www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+                    </div>
+                    <script type="text/javascript">
+                        jQuery(function ($) {
+                            $("#id_content").shieldEditor({
+                                height: 260
+                            });
+                        });
+                    </script>
+                {% elif  model == 'blockly'%}
+                    <p>Use only <a href="https://developers.google.com/blockly/guides/overview" target="_blank">XML blocks</a>! You must have:  id="toolbox"</p>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

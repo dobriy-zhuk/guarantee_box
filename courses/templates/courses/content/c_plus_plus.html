@@ -1,0 +1,24 @@
+{{ item.content|safe }}
+<textarea class="form-control" cols="30" rows="7" placeholder="Your code is here" name="my_code" id="my_code"></textarea>
+<div id="result_id"></div>
+<br>
+<input value="Компиляция" class="btn btn-danger" type="button" onclick="Compile('result_id');">
+<script>
+    function Compile(result_id) {
+                myVar = JSON.stringify({compiler: "gcc-head", "code":$('textarea#my_code').val(),"options": "warning,gnu++1y", "compiler-option-raw": "-Dx=hogefuga\n-O3" });
+                jQuery.ajax({
+                    url:     "https://wandbox.org/api/compile.json", //Адрес подгружаемой страницы
+                    type:     "POST", //Тип запроса
+                    dataType: "json", //Тип данных
+                    data: myVar,
+                    compiler:"gcc-head",
+                    success: function(response) { //Если все нормально
+                        alert(response.program_message);
+                    },
+                    error: function(response) { //Если ошибка
+                        alert("Error");
+                    }
+                });
+
+            }
+</script>
