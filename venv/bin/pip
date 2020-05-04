@@ -1,5 +1,4 @@
-#!/Users/dz/PycharmProjects/my/venv/bin/python
-
+#!/home/ian/Projects/guarantee_box/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

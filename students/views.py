@@ -9,11 +9,12 @@ from courses.models import Course
 from django.views.generic.detail import DetailView
 from .models import Student
 from guardian.shortcuts import assign_perm
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 
 class StudentRegistrationView(CreateView):
+    # TODO: сделать регистрацию пользователя
     template_name = 'students/student/registration.html'
     form_class = UserCreationForm
     success_url = reverse_lazy('student_course_list')
@@ -21,17 +22,24 @@ class StudentRegistrationView(CreateView):
     def form_valid(self, form):
         result = super(StudentRegistrationView,
                        self).form_valid(form)
-        cd = form.cleaned_data
-        user = authenticate(username=cd['username'],
-                            password=cd['password1'])
+        cleaned_data_from_form = form.cleaned_data
+        user = authenticate(
+            username=cleaned_data_from_form.get('username'),
+            password=cleaned_data_from_form.get('password1'),
+            )
         login(self.request, user)
         return result
 
 
 @login_required(login_url='/accounts/login/')
 def get_profile(request):
-    student = Student.objects.get(user=request.user)
-    return render(request, 'students/student/profile.html', {"student": student})
+    # student = Student.objects.get(user=request.user)
+    student = get_object_or_404(Student, user=request.user)
+    return render(
+        request=request,
+        template_name='students/student/profile.html',
+        context={'student': student},
+        )
 
 
 class StudentEnrollCourseView(LoginRequiredMixin, FormView):
@@ -39,14 +47,18 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
     form_class = CourseEnrollForm
 
     def form_valid(self, form):
-        self.course = form.cleaned_data['course']
+        self.course = form.cleaned_data.get('course')
         self.course.students.add(self.request.user)
-        return super(StudentEnrollCourseView,
-                     self).form_valid(form)
+        return super(
+            StudentEnrollCourseView,
+            self,
+            ).form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('student_course_detail',
-                            args=[self.course.id])
+        return reverse_lazy(
+            'student_course_detail',
+            args=[self.course.id]
+            )
 
 
 class StudentCourseListView(LoginRequiredMixin, DetailView):
@@ -54,9 +66,11 @@ class StudentCourseListView(LoginRequiredMixin, DetailView):
     template_name = 'students/course/list.html'
 
     def get_queryset(self):
-        qs = super(StudentCourseListView,
-                   self).get_queryset()
-        return qs.filter(students__in=[self.request.user])
+        query_set = super(
+            StudentCourseListView,
+            self
+            ).get_queryset()
+        return query_set.filter(students__in=[self.request.user])
 
 
 class StudentCourseDetailView(DetailView):
@@ -64,8 +78,8 @@ class StudentCourseDetailView(DetailView):
     template_name = 'students/course/detail.html'
 
     def get_queryset(self):
-        qs = super(StudentCourseDetailView, self).get_queryset()
-        return qs.filter(students__in=[self.request.user])
+        query_set = super(StudentCourseDetailView, self).get_queryset()
+        return query_set.filter(students__in=[self.request.user])
 
     def get_context_data(self, **kwargs):
         context = super(StudentCourseDetailView, self).get_context_data(**kwargs)

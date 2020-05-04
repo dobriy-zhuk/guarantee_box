@@ -1,3 +1,4 @@
+"""File with classes which describe tables in database."""
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
@@ -19,19 +20,27 @@ class Subject(models.Model):
 
 
 class Course(models.Model):
-    owner = models.ForeignKey(User,
-                              related_name='courses_created',
-                              on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject,
-                                related_name='courses',
-                                on_delete=models.CASCADE)
+    # TODO: атрибус пройден/непройден
+    # TODO: Отправка информации о прохождении курсов, выполнении дз и полной статистики на емайл
+    owner = models.ForeignKey(
+        User,
+        related_name='courses_created',
+        on_delete=models.CASCADE,
+        )
+    subject = models.ForeignKey(
+        Subject,
+        related_name='courses',
+        on_delete=models.CASCADE,
+        )
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    students = models.ManyToManyField(User,
-                                      related_name='courses_joined',
-                                      blank=True)
+    students = models.ManyToManyField(
+        User,
+        related_name='courses_joined',
+        blank=True,
+        )
 
     class Meta:
         ordering = ['-created']
@@ -47,43 +56,54 @@ class Module(models.Model):
                 ('view_current_module', 'Can view current module'),
             )
 
-    course = models.ForeignKey(Course,
-                               related_name='modules',
-                               on_delete=models.CASCADE)
+    course = models.ForeignKey(
+        Course,
+        related_name='modules',
+        on_delete=models.CASCADE,
+        )
     title = models.CharField(max_length=250)
     description = models.TextField(blank=True)
     order = OrderField(blank=True, for_fields=['course'])
 
     def __str__(self):
-        return '{}. {}'.format(self.order, self.title)
+        return '{0}. {1}'.format(self.order, self.title)
 
 
 class Content(models.Model):
     class Meta:
         ordering = ['order']
 
-    module = models.ForeignKey(Module,
-                                related_name='contents',
-                                on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType,
-                                    on_delete=models.CASCADE,
-                                     limit_choices_to={'model__in': (
-                                                        'text',
-                                                        'video',
-                                                        'image',
-                                                        'file',
-                                                        'question',
-                                                        'blockly',
-                                                        'c_plus_plus')})
+    module = models.ForeignKey(
+        Module,
+        related_name='contents',
+        on_delete=models.CASCADE,
+        )
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        limit_choices_to={
+            'model__in': (
+                'text',
+                'video',
+                'image',
+                'file',
+                'question',
+                'blockly',
+                'c_plus_plus',
+                )
+            }
+        )
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
     order = OrderField(blank=True, for_fields=['module'])
 
 
 class ItemBase(models.Model):
-    owner = models.ForeignKey(User,
-                              related_name='%(class)s_related',
-                              on_delete=models.CASCADE)
+    owner = models.ForeignKey(
+        User,
+        related_name='%(class)s_related',
+        on_delete=models.CASCADE,
+        )
     title = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
