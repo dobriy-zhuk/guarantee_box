@@ -1,10 +1,10 @@
+"""Module where described the logic for user response."""
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from students.forms import CourseEnrollForm, StudentSignupForm
+from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
 from courses.models import Course
 from django.views.generic.detail import DetailView
 from students.models import Student
@@ -12,11 +12,81 @@ from guardian.shortcuts import assign_perm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views import View
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from students.tokens import account_activation_token
+from django.utils.encoding import force_text
+
+
+def activation_sent_view(request):
+    """Render template when activation code was sent to user.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render 'activation_sent.html'
+    """
+    return render(
+        request=request,
+        template_name='students/student/activation_sent.html',
+    )
+
+
+def activate(request, uidb64, token):
+    """Verifies the user and token.
+
+    Arguments:
+        request: client request
+        uidb64: The primary key of the user, encoded in base 64
+        token: token which was generated
+
+    Returns:
+        redirect(): if user exists and token is matched then redirect
+        to students/student/
+
+        render(): if user does not exist or token did not match
+        then render activation_invalid.html
+    """
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    # import pdb
+    # pdb.set_trace()
+    # FIXME: user = True
+    # account_activation_token.check_token(user, token) = False
+    # почему так?
+    if user and account_activation_token.check_token(user, token):
+        user.is_active = True
+        student = Student.objects.get(user=user)
+        student.signup_confirmation = True
+        user.save()
+        student.save()
+        user = authenticate(
+            username=user.username,
+            password=user.password,
+            )
+        if user and user.is_active:
+            login(request, user)
+            return redirect(to='student')
+    else:
+        return render(
+            request=request,
+            template_name='students/student/activation_invalid.html',
+        )
 
 
 class StudentRegistrationView(View):
+    """Class-based view for user signup."""
+
     template_name = 'students/student/registration.html'
-    user_form_class = UserCreationForm
+    user_form_class = UserSignupForm
     student_form_class = StudentSignupForm
     success_url = reverse_lazy('student_course_list')
 
@@ -37,7 +107,7 @@ class StudentRegistrationView(View):
             context={
                 'user_form': user_form,
                 'student_form': student_form,
-                }
+            },
         )
 
     def post(self, request):
@@ -48,7 +118,7 @@ class StudentRegistrationView(View):
 
         Returns:
             redirect(): if forms are valid, user and student created,
-            user authenticated and user is active redirect to 
+            user authenticated and user is active redirect to
             /students/student/
 
             render(): if forms are not valid render the template
@@ -56,48 +126,43 @@ class StudentRegistrationView(View):
         """
         user_form = self.user_form_class(request.POST)
         student_form = self.student_form_class(request.POST)
-        # import pdb
-        # pdb.set_trace()
         if user_form.is_valid() and student_form.is_valid():
-            username = user_form.cleaned_data.get('username')
-            password = user_form.cleaned_data.get('password1')
             user = user_form.save()
             student_form.save(commit=False)
             student = Student.objects.create(
                 user=user,
-                patronymic = student_form.cleaned_data.get('patronymic'),
-                age = student_form.cleaned_data.get('age'),
-                phone = student_form.cleaned_data.get('phone'),
-                city = student_form.cleaned_data.get('city'),
+                name=student_form.cleaned_data.get('name'),
+                age=student_form.cleaned_data.get('age'),
+                phone=student_form.cleaned_data.get('phone'),
+                city=student_form.cleaned_data.get('city'),
             )
             student.save()
-            user = authenticate(
-                username=username,
-                password=password,
-            )
-            if user and user.is_active:
-                login(request, user)
-                return redirect(to='student')
+            user.is_active = False
+            user.save()
+            current_site = get_current_site(request)
+            email_subject = 'Please Activate Your Account'
+            email_message = render_to_string(
+                template_name='students/student/activation_request.html',
+                context={
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(
+                        user=user
+                        ),
+                    },
+                )
+            user.email_user(email_subject, email_message)
+            return redirect(to='activation_sent')
+        # FIXME: здесь ошибка при рендере пришло 8 значений, а надо 2
         return render(
             request=request,
             template_name=self.template_name,
             context={
                 'user_form': user_form,
                 'student_form': student_form,
-            }
+            },
         )
-
-
-    # def form_valid(self, form):
-    #     result = super(StudentRegistrationView,
-    #                    self).form_valid(form)
-    #     cleaned_data_from_form = form.cleaned_data
-    #     user = authenticate(
-    #         username=cleaned_data_from_form.get('username'),
-    #         password=cleaned_data_from_form.get('password1'),
-    #         )
-    #     login(self.request, user)
-    #     return result
 
 
 @login_required(login_url='/accounts/login/')

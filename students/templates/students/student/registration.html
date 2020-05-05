@@ -8,15 +8,19 @@ Sign up </h1>
     <div class="module">
         <p>Enter your details to create an account:</p>
         <form action="" method="post">
-{{ user_form.as_p }}
-{{ student_form.as_p }}
-{% for field, errors in user_form.errors %}
-{% endfor %}
-{% for field, errors in student_form.errors %}
-{% endfor %}
-{{ error }}
-{% csrf_token %}
-<p><input type="submit" value="Create my account"></p>
+            {{ user_form.as_p }}
+            {{ student_form.as_p }}
+        
+            {% for field, errors in user_form.errors %}
+            {{ field }}{{ error }}
+            {% endfor %}
+        
+            {% for field, errors in student_form.errors %}
+            {{ field }}{{ error }}
+            {% endfor %}
+        
+            {% csrf_token %}
+            <p><input type="submit" value="Create my account"></p>
         </form>
     </div>
 {% endblock %}

@@ -34,15 +34,20 @@ class Student(models.Model):
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
-    patronymic = models.CharField(max_length=200, default='')
     age = models.PositiveSmallIntegerField(default=0)
     phone = models.TextField(max_length=500, blank=True, default='712312')
     city = models.CharField(max_length=60, default='')
     amount = models.IntegerField(default=0)
     status = models.ForeignKey(StudentStatus, default=1, on_delete=models.CASCADE)
     currency = models.CharField(max_length=3, default='RUB')
+    signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
+        """Override the str() behavior, for instance of class.
+
+        Returns:
+            self.title: Instance title
+        """
         return self.name
 
 

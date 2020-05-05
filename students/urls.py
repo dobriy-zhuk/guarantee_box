@@ -18,4 +18,6 @@ urlpatterns = [
     path('course/<pk>/<module_id>/',
          views.StudentCourseDetailView.as_view(),
          name='student_course_detail_module'),
+    path('sent/', views.activation_sent_view, name="activation_sent"),
+    path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate'),
 ]
