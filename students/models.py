@@ -3,6 +3,16 @@ from django.contrib.auth.models import User
 
 
 class StudentStatus(models.Model):
+    """Describe status for Student.
+
+    Note: Student can be 'lead' or 'full stundet'
+    'lead' is student before enroll
+    'full student' is student after enroll
+
+    Arguments:
+        models.Model: superclass which describes fields
+        for database
+    """
     name = models.CharField(max_length=200, default='')
 
     def __str__(self):
@@ -17,8 +27,15 @@ class TeacherStatus(models.Model):
 
 
 class Student(models.Model):
+    """Describe students_student table in database.
+
+    Arguments:
+        models.Model: superclass which describes fields for database
+    """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
+    patronymic = models.CharField(max_length=200, default='')
+    age = models.PositiveSmallIntegerField(default=0)
     phone = models.TextField(max_length=500, blank=True, default='712312')
     city = models.CharField(max_length=60, default='')
     amount = models.IntegerField(default=0)
