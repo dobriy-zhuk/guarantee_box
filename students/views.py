@@ -4,31 +4,100 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import CourseEnrollForm
+from students.forms import CourseEnrollForm, StudentSignupForm
 from courses.models import Course
 from django.views.generic.detail import DetailView
-from .models import Student
+from students.models import Student
 from guardian.shortcuts import assign_perm
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views import View
 
 
-class StudentRegistrationView(CreateView):
-    # TODO: сделать регистрацию пользователя
+class StudentRegistrationView(View):
     template_name = 'students/student/registration.html'
-    form_class = UserCreationForm
+    user_form_class = UserCreationForm
+    student_form_class = StudentSignupForm
     success_url = reverse_lazy('student_course_list')
 
-    def form_valid(self, form):
-        result = super(StudentRegistrationView,
-                       self).form_valid(form)
-        cleaned_data_from_form = form.cleaned_data
-        user = authenticate(
-            username=cleaned_data_from_form.get('username'),
-            password=cleaned_data_from_form.get('password1'),
+    def get(self, request):
+        """GET-request treatment.
+
+        Arguments:
+            request: client request
+
+        Returns:
+            render(): render template html with empy forms
+        """
+        user_form = self.user_form_class
+        student_form = self.student_form_class
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={
+                'user_form': user_form,
+                'student_form': student_form,
+                }
+        )
+
+    def post(self, request):
+        """POST-request treatment.
+
+        Arguments:
+            request: client request
+
+        Returns:
+            redirect(): if forms are valid, user and student created,
+            user authenticated and user is active redirect to 
+            /students/student/
+
+            render(): if forms are not valid render the template
+            html with forms contains errors
+        """
+        user_form = self.user_form_class(request.POST)
+        student_form = self.student_form_class(request.POST)
+        # import pdb
+        # pdb.set_trace()
+        if user_form.is_valid() and student_form.is_valid():
+            username = user_form.cleaned_data.get('username')
+            password = user_form.cleaned_data.get('password1')
+            user = user_form.save()
+            student_form.save(commit=False)
+            student = Student.objects.create(
+                user=user,
+                patronymic = student_form.cleaned_data.get('patronymic'),
+                age = student_form.cleaned_data.get('age'),
+                phone = student_form.cleaned_data.get('phone'),
+                city = student_form.cleaned_data.get('city'),
             )
-        login(self.request, user)
-        return result
+            student.save()
+            user = authenticate(
+                username=username,
+                password=password,
+            )
+            if user and user.is_active:
+                login(request, user)
+                return redirect(to='student')
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={
+                'user_form': user_form,
+                'student_form': student_form,
+            }
+        )
+
+
+    # def form_valid(self, form):
+    #     result = super(StudentRegistrationView,
+    #                    self).form_valid(form)
+    #     cleaned_data_from_form = form.cleaned_data
+    #     user = authenticate(
+    #         username=cleaned_data_from_form.get('username'),
+    #         password=cleaned_data_from_form.get('password1'),
+    #         )
+    #     login(self.request, user)
+    #     return result
 
 
 @login_required(login_url='/accounts/login/')

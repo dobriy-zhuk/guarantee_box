@@ -9,18 +9,34 @@ from django.template.loader import render_to_string
 
 
 class Subject(models.Model):
+    """Describe the courses_subject table in database.
+
+    Subject is the theme of lesson.
+
+    Arguments:
+        models.Model: superclass where describe the fields
+    """
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
 
     class Meta:
+        """Metadata class.
+
+        When Django make Subject class, Meta override the ordering.
+        """
         ordering = ['title']
 
     def __str__(self):
+        """Override the str() behavior, for instance of class.
+
+        Returns:
+            self.title: Instance title
+        """
         return self.title
 
 
 class Course(models.Model):
-    # TODO: атрибус пройден/непройден
+    # TODO: атрибус пройден/непройден 
     # TODO: Отправка информации о прохождении курсов, выполнении дз и полной статистики на емайл
     owner = models.ForeignKey(
         User,
