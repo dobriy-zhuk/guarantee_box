@@ -1,7 +1,7 @@
 """Module where described the logic for user response."""
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
@@ -126,6 +126,10 @@ class StudentRegistrationView(View):
         if user_form.is_valid() and student_form.is_valid():
             user = user_form.save()
             user.refresh_from_db()
+
+            students_group = Group.objects.get(name='Students')
+            students_group.user_set.add(user)
+
             student_form.save(commit=False)
             student = Student.objects.create(
                 user=user,
@@ -193,16 +197,25 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
             )
 
 
-class StudentCourseListView(LoginRequiredMixin, DetailView):
-    model = Course
-    template_name = 'students/course/list.html'
+@login_required(login_url='/accounts/login/')
+def get_courses_list(request):
+    """Returns courses list.
 
-    def get_queryset(self):
-        query_set = super(
-            StudentCourseListView,
-            self
-            ).get_queryset()
-        return query_set.filter(students__in=[self.request.user])
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render list.html with courses list which
+        contains user.student
+    """
+    courses = Course.objects.filter(
+        students__in=[request.user],
+        )
+    return render(
+        request=request,
+        template_name='students/course/list.html',
+        context={'object_list': courses},
+    )
 
 
 class StudentCourseDetailView(DetailView):
