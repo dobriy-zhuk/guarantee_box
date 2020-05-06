@@ -32,7 +32,7 @@ class Student(models.Model):
     Arguments:
         models.Model: superclass which describes fields for database
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     age = models.PositiveSmallIntegerField(default=0)
     phone = models.TextField(max_length=500, blank=True, default='712312')
