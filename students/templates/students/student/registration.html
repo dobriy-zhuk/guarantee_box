@@ -1,26 +1,26 @@
 {% extends "base/base_courses.html" %}
 {% block title %}
-    Sign up
+Sign up
 {% endblock %}
 {% block content %}
-    <h1>
-Sign up </h1>
-    <div class="module">
-        <p>Enter your details to create an account:</p>
-        <form action="" method="post">
-            {{ user_form.as_p }}
-            {{ student_form.as_p }}
-        
-            {% for field, errors in user_form.errors %}
-            {{ field }}{{ error }}
-            {% endfor %}
-        
-            {% for field, errors in student_form.errors %}
-            {{ field }}{{ error }}
-            {% endfor %}
-        
-            {% csrf_token %}
-            <p><input type="submit" value="Create my account"></p>
-        </form>
-    </div>
+<h1>
+    Sign up </h1>
+<div class="module">
+    <p>Enter your details to create an account:</p>
+    <form action="" method="post">
+        {{ user_form.as_p }}
+        {{ student_form.as_p }}
+
+        {% for errors in user_form.errors %}
+        {{ error }}
+        {% endfor %}
+
+        {% for errors in student_form.errors %}
+        {{ error }}
+        {% endfor %}
+
+        {% csrf_token %}
+        <p><input type="submit" value="Create my account"></p>
+    </form>
+</div>
 {% endblock %}

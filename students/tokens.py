@@ -23,10 +23,9 @@ class AccountActivationTokenGenerator(PasswordResetTokenGenerator):
         Returns:
             token (str): unique token
         """
-        student = Student.objects.get(user=user)
         return (
             str(user.pk) + str(timestamp) + 
-            str(student.signup_confirmation)
+            str(user.student.signup_confirmation)
         )
 
 account_activation_token = AccountActivationTokenGenerator()
