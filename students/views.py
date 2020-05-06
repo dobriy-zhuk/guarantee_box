@@ -39,6 +39,11 @@ def activation_sent_view(request):
 def activate(request, uidb64, token):
     """Verifies the user and token.
 
+    Note: We need specifi the backend for login(), here is
+    native django backend auth, that is becauser we have
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+
     Arguments:
         request: client request
         uidb64: The primary key of the user, encoded in base 64
@@ -57,13 +62,10 @@ def activate(request, uidb64, token):
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    import pdb
-    pdb.set_trace()
     if user and account_activation_token.check_token(user, token):
         user.is_active = True
         user.student.signup_confirmation = True
         user.save()
-        pdb.set_trace()
         login(
             request=request,
             user=user,
@@ -83,7 +85,7 @@ class StudentRegistrationView(View):
     template_name = 'students/student/registration.html'
     user_form_class = UserSignupForm
     student_form_class = StudentSignupForm
-    success_url = reverse_lazy('student_course_list')
+    # success_url = reverse_lazy('student_course_list')
 
     def get(self, request):
         """GET-request treatment.
@@ -125,11 +127,14 @@ class StudentRegistrationView(View):
             user = user_form.save()
             user.refresh_from_db()
             student_form.save(commit=False)
-            student = Student.objects.create(user=user)
-            user.student.name = student_form.cleaned_data.get('name')
-            user.student.age = student_form.cleaned_data.get('age')
-            user.student.phone = student_form.cleaned_data.get('phone')
-            user.student.city = student_form.cleaned_data.get('city')
+            student = Student.objects.create(
+                user=user,
+                name=student_form.cleaned_data.get('name'),
+                age=student_form.cleaned_data.get('age'),
+                phone=student_form.cleaned_data.get('phone'),
+                city=student_form.cleaned_data.get('city'),
+            )
+            student.save()
             user.is_active = False
             user.save()
             current_site = get_current_site(request)

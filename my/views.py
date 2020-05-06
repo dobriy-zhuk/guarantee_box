@@ -10,6 +10,8 @@ def index(request):
 
 @login_required
 def profile(request):
+    import pdb
+    pdb.set_trace()
     group = request.user.groups.filter(user=request.user)[0]
 
     if group.name == "Administrator":
