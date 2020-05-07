@@ -21,6 +21,3 @@ urlpatterns = [
     path('sent/', views.activation_sent_view, name="activation_sent"),
     path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate'),
 ]
-# FIXME: ошибка AttributeError at /students/courses/
-# Generic detail view StudentCourseListView must be
-# called with either an object pk or a slug in the URLconf.
