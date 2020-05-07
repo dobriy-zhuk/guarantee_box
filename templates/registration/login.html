@@ -15,8 +15,14 @@
             <input type="hidden" name="next" value="{{ next }}" />
             <p><input type="submit" class="btn btn-success" value="Войти"></p>
         </form>
+        {% if next > 0 %}
+        <p id="reset-password"><a href="{% url "password_reset" %}">Забыли пароль?</a></p>
+        {% endif %}
+
         {% if do_clock %}
+
         <div id="countdown"></div>
+
         <script>
             function declOfNum(n, titles) {
                 return titles[n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2];
@@ -37,6 +43,7 @@
                 timeleft -= 1;
             }, 1000);
         </script>
+
         {% endif %}
     </div>
 </div>

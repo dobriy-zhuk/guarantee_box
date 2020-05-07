@@ -29,7 +29,6 @@ def profile(request):
 
 
 class CustomLoginView(View):
-# TODO: добавить проверку на количество повторений == 5 раз заморозка на 30 секунд
 # TODO: добавить функцию восстановления пароля по email
     """Custom LoginView for handling the login amout.
 
@@ -88,10 +87,8 @@ class CustomLoginView(View):
         next_try += 1
 
         form = AuthenticationForm(request, data=request.POST)
-        import pdb
-        pdb.set_trace()
 
-        while next_try <= 5:
+        while next_try < 5:
             if form.is_valid():
                 user = authenticate(
                     username=form.cleaned_data.get('username'),
