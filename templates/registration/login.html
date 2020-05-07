@@ -5,16 +5,46 @@
     <div class="row text-center">
         <h1>Личный кабинет</h1>
         {% if form.errors %}
-        <p>Данные некорректны. Попробуйте еще раз.</p>
+        <p id='message'></p>
         {% else %}
         <p>Введите данные для входа:</p>
         {% endif %}
-        <form action="{% url 'login' %}" method="post">
+        <form action="{% url 'login' %}" method="post" id='input_form'>
             {{ form.as_p }}
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}" />
             <p><input type="submit" class="btn btn-success" value="Войти"></p>
         </form>
+        {% if next > 0 %}
+        <p id="reset-password"><a href="{% url "password_reset" %}">Забыли пароль?</a></p>
+        {% endif %}
+
+        {% if do_clock %}
+
+        <div id="countdown"></div>
+
+        <script>
+            function declOfNum(n, titles) {
+                return titles[n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2];
+            }
+            var timeleft = 30;
+            var downloadTimer = setInterval(function () {
+                if (timeleft <= 0) {
+                    clearInterval(downloadTimer);
+                    document.getElementById('input_form').hidden = false;
+                    document.getElementById('message').textContent = 'Данные некорректны. Попробуйте еще раз.'
+                    document.getElementById('countdown').hidden = true;
+                } else {
+                    document.getElementById('input_form').hidden = true;
+                    document.getElementById('message').textContent = 'Данные некорректны. Попробуйте еще раз через:'
+                    secondsTitle = declOfNum(timeleft, ['секунду', 'секунды', 'секунд'])
+                    document.getElementById('countdown').innerHTML = timeleft + " " + secondsTitle;
+                }
+                timeleft -= 1;
+            }, 1000);
+        </script>
+
+        {% endif %}
     </div>
 </div>
 {% endblock %}

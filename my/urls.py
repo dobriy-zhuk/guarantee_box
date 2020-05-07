@@ -24,12 +24,40 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('profile/', views.profile, name='profile'),
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path(
+        'accounts/login/',
+        views.CustomLoginView.as_view(),
+        name='login'
+    ),
+    path(
+        'accounts/logout/',
+        auth_views.LogoutView.as_view(),
+        name='logout'
+    ),
     path('admin/', admin.site.urls),
     path('courses/', include('courses.urls')),
     path('students/', include('students.urls')),
     path('managers/', include('managers.urls')),
+    path(
+        'password-reset/',
+        auth_views.PasswordResetView.as_view(),
+        name='password_reset'
+    ),
+    path(
+        'password-reset/done/',
+        auth_views.PasswordResetDoneView.as_view(),
+        name='password_reset_done'
+    ),
+    path(
+        'password-reset/confirm/<slug:uidb64>/<slug:token>/',
+        auth_views.PasswordResetConfirmView.as_view(),
+        name='password_reset_confirm'
+    ),
+    path(
+        'password-reset/complete/',
+        auth_views.PasswordResetCompleteView.as_view(),
+        name='password_reset_complete'
+    ),
 ]
 
 if settings.DEBUG:
