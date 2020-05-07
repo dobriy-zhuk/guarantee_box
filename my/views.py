@@ -42,6 +42,9 @@ class CustomLoginView(View):
     def get(self, request):
         """Handling GET-request.
 
+        next_try is amount of user login trying, it is increments
+        then user have paste wrong login, password
+
         Arguments:
             request: client request
 
@@ -52,6 +55,8 @@ class CustomLoginView(View):
             render(): if user is not authenticated, then
             return empty AuthenticationForm instance
         """
+        next_try = 0
+
         if request.user.is_authenticated:
             return redirect(to='index')
         else:
@@ -59,7 +64,10 @@ class CustomLoginView(View):
             return render(
                 request=request,
                 template_name=self.template_name,
-                context={'form': form},
+                context={
+                    'form': form,
+                    'next': next_try,
+                    },
             )
 
     def post(self, request):
@@ -76,19 +84,39 @@ class CustomLoginView(View):
             then return form and render page, where is form.errors
             which describes the problem
         """
-        form = AuthenticationForm(request, data=request.POST)
+        next_try = int(request.POST.get('next'))
+        next_try += 1
 
-        if form.is_valid():
-            user = authenticate(
-                username=form.cleaned_data.get('username'),
-                password=form.cleaned_data.get('password'),
-            )
-            if user and user.is_active:
-                login(request, user)
-                return redirect(to='profile')
+        form = AuthenticationForm(request, data=request.POST)
+        import pdb
+        pdb.set_trace()
+
+        while next_try <= 5:
+            if form.is_valid():
+                user = authenticate(
+                    username=form.cleaned_data.get('username'),
+                    password=form.cleaned_data.get('password'),
+                )
+                if user and user.is_active:
+                    login(request, user)
+                    next_try = 0
+                    return redirect(to='profile')
+            else:
+                return render(
+                    request=request,
+                    template_name=self.template_name,
+                    context={
+                        'form': form,
+                        'next': next_try,
+                        }
+                )
         else:
             return render(
                 request=request,
                 template_name=self.template_name,
-                context={'form': form}
+                context={
+                    'form': form,
+                    'next': next_try,
+                    'do_clock': True,
+                }
             )
