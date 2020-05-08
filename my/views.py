@@ -1,45 +1,73 @@
-from django.shortcuts import render
+"""Module for client requests handling."""
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.views import View
 
 
 def index(request):
+    """Render index.html.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render index.html page
+    """
     return render(request, 'index.html', {})
 
 
 @login_required
 def profile(request):
+    """Redirect to profile page to which group user belongs.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        HttpResponseRedirect: if
+        request.user.groups.filter(user=request.user)[0] = Administrator
+        then redirect to administrator/profile page TODO: test it
+
+        HttpResponseRedirect: if
+        request.user.groups.filter(user=request.user)[0] = Teachers
+        then redirect to courses/course_list/ page
+
+        HttpResponseRedirect: if
+        request.user.groups.filter(user=request.user)[0] = Students
+        then redirect to students/student profile page
+    """
     group = request.user.groups.filter(user=request.user)[0]
 
-    if group.name == "Administrator":
+    if group.name == 'Administrator':
         return HttpResponseRedirect(reverse('administrator'))
-    elif group.name == "Teachers":
+    elif group.name == 'Teachers':
         return HttpResponseRedirect(reverse('course_list'))
-    elif group.name == "Students":
+    elif group.name == 'Students':
         return HttpResponseRedirect(reverse('student'))
 
     context = {}
-    template = "profile.html"
+    template = 'profile.html'
     return render(request, template, context)
 
 
 class CustomLoginView(View):
-# TODO: добавить функцию восстановления пароля по email
     """Custom LoginView for handling the login amout.
 
+    TODO: добавить функцию восстановления пароля по email
+
     Arguments:
-        View: default view superclass 
+        View: default view superclass
     """
+
     form_class = AuthenticationForm()
     template_name = 'registration/login.html'
 
     def get(self, request):
-        """Handling GET-request.
+        """Handle GET-request.
 
         next_try is amount of user login trying, it is increments
         then user have paste wrong login, password
@@ -58,19 +86,18 @@ class CustomLoginView(View):
 
         if request.user.is_authenticated:
             return redirect(to='index')
-        else:
-            form = self.form_class
-            return render(
-                request=request,
-                template_name=self.template_name,
-                context={
-                    'form': form,
-                    'next': next_try,
-                    },
-            )
+        form = self.form_class
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={
+                'form': form,
+                'next': next_try,
+                },
+        )
 
     def post(self, request):
-        """Handling POST-request.
+        """Handle POST-request.
 
         Arguments:
             request: client request
@@ -88,32 +115,20 @@ class CustomLoginView(View):
 
         form = AuthenticationForm(request, data=request.POST)
 
-        while next_try < 5:
-            if form.is_valid():
-                user = authenticate(
-                    username=form.cleaned_data.get('username'),
-                    password=form.cleaned_data.get('password'),
-                )
-                if user and user.is_active:
-                    login(request, user)
-                    next_try = 0
-                    return redirect(to='profile')
-            else:
-                return render(
-                    request=request,
-                    template_name=self.template_name,
-                    context={
-                        'form': form,
-                        'next': next_try,
-                        }
-                )
-        else:
-            return render(
-                request=request,
-                template_name=self.template_name,
-                context={
-                    'form': form,
-                    'next': next_try,
-                    'do_clock': True,
-                }
+        if form.is_valid():
+            user = authenticate(
+                username=form.cleaned_data.get('username'),
+                password=form.cleaned_data.get('password'),
             )
+            if user and user.is_active:
+                login(request, user)
+                next_try = 0
+                return redirect(to='profile')
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={
+                'form': form,
+                'next': next_try,
+            },
+        )

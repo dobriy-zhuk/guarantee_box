@@ -19,7 +19,7 @@
         <p id="reset-password"><a href="{% url "password_reset" %}">Забыли пароль?</a></p>
         {% endif %}
 
-        {% if do_clock %}
+        {% if next > 4 %}
 
         <div id="countdown"></div>
 

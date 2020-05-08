@@ -38,6 +38,31 @@ class Subject(models.Model):
 class Course(models.Model):
     # TODO: атрибус пройден/непройден 
     # TODO: Отправка информации о прохождении курсов, выполнении дз и полной статистики на емайл
+    """Class describes courses_course table in db.
+
+    Note: чтобы проставить атрибут 'course_done', если пользователь закончил курс
+    можно прописать:
+        class Meta:
+            permissions = (
+                ('course_done', 'Course done')
+            )
+
+    и отдельно для каждого пользователя можно делать:
+        from guardian.shortcuts import assign_perm
+        assign_perm('course_done', student, course)
+
+        student.has_perm('course_done', course)
+        True
+    Это значит для конкретного 'student' и 'course'
+    значение 'course_done' будет свое
+
+
+    Arguments:
+        models.Model: superclass where describe the fields
+
+    Returns:
+        [type] -- [description]
+    """
     owner = models.ForeignKey(
         User,
         related_name='courses_created',
