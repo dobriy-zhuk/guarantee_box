@@ -29,6 +29,9 @@ class TeacherStatus(models.Model):
 class Student(models.Model):
     """Describe students_student table in database.
 
+    amount: account balance, how much money does the student have
+    currency: RUB, USD or EUR
+
     Arguments:
         models.Model: superclass which describes fields for database
     """
@@ -60,5 +63,3 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.name
-
-
