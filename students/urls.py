@@ -3,6 +3,16 @@ from . import views
 
 urlpatterns = [
     path('', views.get_profile, name='student'),
+    path(
+         'send-stats/',
+         views.send_stats_to_email,
+         name='send_email_stats',
+     ),
+     path(
+         'sent-stats/',
+         views.stats_email_sent_view,
+         name='stats_email_sent',
+     ),
     path('register/',
          views.StudentRegistrationView.as_view(),
          name='student_registration'),

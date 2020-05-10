@@ -19,6 +19,76 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from students.tokens import account_activation_token
 from django.utils.encoding import force_text
+from guardian.shortcuts import get_objects_for_user
+
+
+def send_stats_to_email(request):
+    """Send student's stats to email.
+
+    TODO: Отправка информации о прохождении курсов(course_done),
+    выполнении дз и полной статистики на емайл
+
+    Как это пока работает:
+    Пользователь делает запрос на отправку сообщения по email
+    и пока отправляются только законченные курсы
+    как будет добавлена зависимость по модели домашнего
+    задания, можно будет делать выборку по многим зависимостям пользователя
+
+    How to select done courses by student:
+
+    from students.models import Student
+    from courses.models import Course
+    from guardian.shortcuts import get_objects_for_user
+    student = Student.objects.get(name='testuser testuser')
+
+    'courses.course_done'
+        ^         ^
+    app name | permission for model
+
+    done_student_courses = get_objects_for_user(student.user, 'courses.course_done')
+    done_student_courses
+    <QuerySet [<Course: Программирование 1-4 класс>]>
+
+    Arguments:
+        request: client request
+
+    Returns:
+        redirect: after sending a message redirect to 
+        stats_email_sent
+        
+    """
+    done_student_courses = get_objects_for_user(
+        request.user,
+        'courses.course_done',
+    )
+    email_subject = 'Please Activate Your Account'
+    email_message = render_to_string(
+        template_name='students/student/student_stats_to_email.html',
+        context={
+            'user': request.user,
+            'courses': done_student_courses,
+            },
+        )
+    request.user.email_user(email_subject, email_message)
+    return redirect(to='stats_email_sent')
+
+
+def stats_email_sent_view(request):
+    """Render template when user sent stats to email.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render 'stats_sent.html'
+    """
+    current_site = get_current_site(request)
+
+    return render(
+        request=request,
+        template_name='students/student/stats_sent.html',
+        context={'domain': current_site}
+    )
 
 
 def activation_sent_view(request):
@@ -85,7 +155,6 @@ class StudentRegistrationView(View):
     template_name = 'students/student/registration.html'
     user_form_class = UserSignupForm
     student_form_class = StudentSignupForm
-    # success_url = reverse_lazy('student_course_list')
 
     def get(self, request):
         """GET-request treatment.
