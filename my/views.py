@@ -49,7 +49,7 @@ def profile(request):
     elif group.name == 'Students':
         return HttpResponseRedirect(reverse('student'))
 
-    context = {}
+    context: dict = {}
     template = 'profile.html'
     return render(request, template, context)
 
@@ -82,7 +82,7 @@ class CustomLoginView(View):
             render(): if user is not authenticated, then
             return empty AuthenticationForm instance
         """
-        next_try = 0
+        next_try: int = 0
 
         if request.user.is_authenticated:
             return redirect(to='index')
@@ -110,7 +110,7 @@ class CustomLoginView(View):
             then return form and render page, where is form.errors
             which describes the problem
         """
-        next_try = int(request.POST.get('next'))
+        next_try: int = int(request.POST.get('next'))
         next_try += 1
 
         form = AuthenticationForm(request, data=request.POST)

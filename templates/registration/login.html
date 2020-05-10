@@ -15,11 +15,14 @@
             <input type="hidden" name="next" value="{{ next }}" />
             <p><input type="submit" class="btn btn-success" value="Войти"></p>
         </form>
+        <p>Нет профиля?<br>
+            <a href="{% url 'student_registration' %}">Зарегистрируйтесь</a> 
+            <!-- TODO:  добавить ссылку на форму регистрации а оттуда на выбор дня пробного урока-->
+        или <a href='#'>пройдите пробный урок</a>.</p>
         {% if next > 0 %}
         <p id="reset-password"><a href="{% url "password_reset" %}">Забыли пароль?</a></p>
-        {% endif %}
 
-        {% if next > 4 %}
+        {% elif next > 4 %}
 
         <div id="countdown"></div>
 
