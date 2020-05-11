@@ -7,19 +7,64 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
 from courses.models import Course
 from django.views.generic.detail import DetailView
-from students.models import Student
+from students.models import Student, Teacher, TeacherSchedule
 from guardian.shortcuts import assign_perm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes, force_text
+from django.http import JsonResponse
 from students.tokens import account_activation_token
-from django.utils.encoding import force_text
 from guardian.shortcuts import get_objects_for_user
+
+
+class CalendarView(View):
+    """Describe view for calendar.
+
+    Arguments:
+        View: dafault django superclass
+    """
+
+    def get(self, request):
+        """Send json with teacher free day and time.
+
+        Arguments:
+            request: client request
+
+        Resturns:
+            JsonResponse(): 
+            returns list of teachers busy time in json format
+            {
+                "list_of_busy_time":[
+                    {
+                        "id": 1,
+                        "teacher_id": 1,
+                        "busy_date_time": "2020-05-11T21:52:55.646Z"
+                    }
+                ]
+            }
+        """
+        teachers_busy_date_time = list(
+            TeacherSchedule.objects.values()
+        )
+        return JsonResponse(
+            {'list_of_busy_time':teachers_busy_date_time}
+        )
+    
+
+    def post(self, request):
+        """Reseive json with day and time.
+
+        Student set time which he wants
+        to do a free trial lesson
+
+        Arguments:
+            request {[type]} -- [description]
+        """
+        pass
 
 
 def send_stats_to_email(request):

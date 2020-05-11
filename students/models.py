@@ -55,7 +55,7 @@ class Student(models.Model):
 
 
 class Teacher(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     phone = models.TextField(max_length=500, blank=True, default='79151761287')
     city = models.CharField(max_length=60, default='')
@@ -63,3 +63,8 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TeacherSchedule(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    busy_date_time = models.DateTimeField()

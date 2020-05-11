@@ -59,7 +59,7 @@ class Course(models.Model):
     Это значит для конкретного 'student' и 'course'
     значение 'course_done' будет свое
 
-    чтобы удалить артбрибут:
+    чтобы удалить атрибут:
 
         from guardian.shortcuts import remove_perm
         remove_perm('course_done', student, course)
