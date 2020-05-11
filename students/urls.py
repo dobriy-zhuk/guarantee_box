@@ -8,11 +8,16 @@ urlpatterns = [
          views.send_stats_to_email,
          name='send_email_stats',
      ),
-     path(
+    path(
          'sent-stats/',
          views.stats_email_sent_view,
          name='stats_email_sent',
      ),
+    path(
+         'calendar/',
+         views.CalendarView.as_view(),
+         name='student_calendar'
+    ),
     path('register/',
          views.StudentRegistrationView.as_view(),
          name='student_registration'),
