@@ -58,6 +58,11 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name='password_reset_complete'
     ),
+    path(
+         'calendar/',
+         views.CalendarView.as_view(),
+         name='student_calendar'
+    ),
 ]
 
 if settings.DEBUG:

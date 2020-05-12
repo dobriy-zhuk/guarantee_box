@@ -1,11 +1,13 @@
 """Module for client requests handling."""
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views import View
+
+from students.models import TeacherSchedule
 
 
 def index(request):
@@ -56,8 +58,6 @@ def profile(request):
 
 class CustomLoginView(View):
     """Custom LoginView for handling the login amout.
-
-    TODO: добавить функцию восстановления пароля по email
 
     Arguments:
         View: default view superclass
@@ -132,3 +132,49 @@ class CustomLoginView(View):
                 'next': next_try,
             },
         )
+
+
+class CalendarView(View):
+    """Describe view for calendar.
+
+    Arguments:
+        View: dafault django superclass
+    """
+
+    def get(self, request):
+        """Send json with teacher free day and time.
+
+        Arguments:
+            request: client request
+
+        Resturns:
+            JsonResponse(): 
+            returns list of teachers busy time in json format
+            {
+                "list_of_busy_time":[
+                    {
+                        "id": 1,
+                        "teacher_id": 1,
+                        "busy_date_time": "2020-05-11T21:52:55.646Z"
+                    }
+                ]
+            }
+        """
+        teachers_busy_date_time = list(
+            TeacherSchedule.objects.values()
+        )
+        return JsonResponse(
+            {'list_of_busy_time':teachers_busy_date_time}
+        )
+    
+
+    def post(self, request):
+        """Reseive json with day and time.
+
+        Student set time which he wants
+        to do a free trial lesson
+
+        Arguments:
+            request {[type]} -- [description]
+        """
+        pass
