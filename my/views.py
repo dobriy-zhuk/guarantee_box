@@ -136,10 +136,13 @@ class CustomLoginView(View):
 
 class CalendarView(View):
     """Describe view for calendar.
+    TODO: принять json на фронте или оставить render?
 
     Arguments:
         View: dafault django superclass
     """
+
+    template_name = 'calendar.html'
 
     def get(self, request):
         """Send json with teacher free day and time.
@@ -160,11 +163,17 @@ class CalendarView(View):
                 ]
             }
         """
-        teachers_busy_date_time = list(
-            TeacherSchedule.objects.values()
-        )
-        return JsonResponse(
-            {'list_of_busy_time':teachers_busy_date_time}
+        # teachers_busy_date_time = list(
+        #     TeacherSchedule.objects.values()
+        # )
+        teachers_busy_date_time = list(TeacherSchedule.objects.values())
+        # return JsonResponse(
+        #     {'list_of_busy_time':teachers_busy_date_time}
+        # )
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={'datetime': teachers_busy_date_time},
         )
     
 
