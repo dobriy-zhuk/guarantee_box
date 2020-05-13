@@ -2,7 +2,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
@@ -136,7 +136,7 @@ class CustomLoginView(View):
 
 class CalendarView(View):
     """Describe view for calendar.
-    TODO: принять json на фронте или оставить render?
+    
 
     Arguments:
         View: dafault django superclass
@@ -145,31 +145,40 @@ class CalendarView(View):
     template_name = 'calendar.html'
 
     def get(self, request):
-        """Send json with teacher free day and time.
+        """Send list with teacher free day and time.
 
         Arguments:
             request: client request
 
         Resturns:
-            JsonResponse(): 
-            returns list of teachers busy time in json format
-            {
-                "list_of_busy_time":[
+            render(): 
+            returns dict
+            { 
+                'datetime': [
                     {
-                        "id": 1,
-                        "teacher_id": 1,
-                        "busy_date_time": "2020-05-11T21:52:55.646Z"
+                        'id': 2,
+                        'teacher_id': 1,
+                        'busy_date_time': datetime.datetime(
+                            2020, 5, 12, 23, 3, 54, 91707, tzinfo=<UTC>
+                        )
+                    },
+                    {
+                        'id': 3,
+                        'teacher_id': 1,
+                        'busy_date_time': datetime.datetime(
+                            2020, 5, 13, 12, 35, 20, 251542, tzinfo=<UTC>
+                        )
                     }
                 ]
             }
         """
-        # teachers_busy_date_time = list(
-        #     TeacherSchedule.objects.values()
-        # )
-        teachers_busy_date_time = list(TeacherSchedule.objects.values())
-        # return JsonResponse(
-        #     {'list_of_busy_time':teachers_busy_date_time}
-        # )
+        teachers_busy_date_time = list(TeacherSchedule.objects.values(
+            'id',
+            'teacher_id',
+            'busy_date_time',
+            )
+        )
+
         return render(
             request=request,
             template_name=self.template_name,
