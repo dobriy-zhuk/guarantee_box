@@ -72,11 +72,27 @@ class Teacher(models.Model):
 class TeacherSchedule(models.Model):
     """Class describe teacher cheduler.
 
+    start_timestamp: начальная отметка времени, когда преподаватель занят
+    end_timestamp: конечная отметка времени, когда преподаватель занят
+
+    theory:
+        timedelta = datetime.timedelta(minutes=45)
+        
+        what can be transferred to timedelta:
+        class datetime.timedelta(
+            days=0, seconds=0, microseconds=0,
+            milliseconds=0, minutes=0, hours=0, weeks=0
+
+    example:
+        end_timestamp = start_timestamp + datetime.timedelta(minutes=45)
+
     Arguments:
         models.Model: superclass which describes fields for database
     """
+
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     parent_name = models.CharField(max_length=200)
     student_name = models.CharField(max_length=200)
     phone = models.TextField(max_length=500, blank=True, default='79151761287')
-    busy_date_time = models.DateTimeField()
+    start_timestamp = models.DateTimeField()
+    end_timestamp = models.DateTimeField()
