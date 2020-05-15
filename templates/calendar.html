@@ -97,8 +97,30 @@
                 integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
                 </script>
             <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
-            <script type="text/javascript" src="{% static 'js/calendar.js' %}"></script>        
+            <script type="text/javascript" src="{% static 'js/calendar.js' %}"></script>
         </div>
     </div>
 </div>
+
+<div id="test-ajax"></div>
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            url: '/api/0/get-schedule/',
+            data: data,
+            success: function (response) {
+                console.log(response.message);
+                $('#test-ajax').append(response.data);
+            }
+        });
+    });
+
+</script>
+
+
+
 {% endblock %}

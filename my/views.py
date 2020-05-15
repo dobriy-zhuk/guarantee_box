@@ -2,7 +2,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
@@ -134,6 +134,49 @@ class CustomLoginView(View):
         )
 
 
+def get_json_busy_datetime(request, api_version):
+    """Returns json-file with teachers busy datetime.
+
+
+
+    Arguments:
+        request: client request
+
+    Returns:
+        JsonResponse (json): 
+        { 
+            'shedule': [
+                {
+                    'id': 2,
+                    'teacher_id': 1,
+                    'busy_date_time': datetime.datetime(
+                        2020, 5, 12, 23, 3, 54, 91707, tzinfo=<UTC>
+                    )
+                },
+                {
+                    'id': 3,
+                    'teacher_id': 1,
+                    'busy_date_time': datetime.datetime(
+                        2020, 5, 13, 12, 35, 20, 251542, tzinfo=<UTC>
+                    )
+                }
+            ]
+        }
+
+    """
+    if api_version == 0:
+        schedule = list(TeacherSchedule.objects.values(
+                'id',
+                'teacher_id',
+                'start_timestamp',
+                'end_timestamp',
+                )
+            )
+        return JsonResponse({'shedule': schedule})
+    else:
+        return JsonResponse({})
+
+
 class CalendarView(View):
     """Describe view for calendar.
     
@@ -152,37 +195,10 @@ class CalendarView(View):
 
         Resturns:
             render(): 
-            returns dict
-            { 
-                'datetime': [
-                    {
-                        'id': 2,
-                        'teacher_id': 1,
-                        'busy_date_time': datetime.datetime(
-                            2020, 5, 12, 23, 3, 54, 91707, tzinfo=<UTC>
-                        )
-                    },
-                    {
-                        'id': 3,
-                        'teacher_id': 1,
-                        'busy_date_time': datetime.datetime(
-                            2020, 5, 13, 12, 35, 20, 251542, tzinfo=<UTC>
-                        )
-                    }
-                ]
-            }
         """
-        teachers_busy_date_time = list(TeacherSchedule.objects.values(
-            'id',
-            'teacher_id',
-            'busy_date_time',
-            )
-        )
-
         return render(
             request=request,
             template_name=self.template_name,
-            context={'datetime': teachers_busy_date_time},
         )
     
 
