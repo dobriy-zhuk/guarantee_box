@@ -1,12 +1,8 @@
-FROM python:3.8
-
-WORKDIR /app
-
-ADD src/requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
-
-COPY src/ .
-
-RUN  python manage.py collectstatic --noinput
-
-CMD  ["/bin/sh","-c","python manage.py migrate --noinput"]
+=======
+FROM python:3
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /my
+WORKDIR /my
+COPY requirements.txt /my/
+RUN pip install -r requirements.txt
+COPY . /my/
