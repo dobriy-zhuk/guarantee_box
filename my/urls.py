@@ -58,6 +58,16 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name='password_reset_complete'
     ),
+    path(
+         'calendar/',
+         views.CalendarView.as_view(),
+         name='student_calendar'
+    ),
+    path(
+         'api/<int:api_version>/get-schedule/',
+         views.get_json_busy_datetime,
+         name='api_get_schedule'
+    ),
 ]
 
 if settings.DEBUG:

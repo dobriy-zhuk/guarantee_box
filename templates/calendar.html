@@ -1,0 +1,126 @@
+{% extends 'base/base_courses.html' %}
+{% load static %}
+
+{% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}
+
+{% block tags %}
+<meta name="description"
+    content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ" />
+<meta name="keywords"
+    content="гарантия знаний, программирование, курсы, робототехника, занятия, химия, английский, физика, математика, русский, французский, предпринимательство, финансы, моделирование, обществознание, егэ, огэ, экзамены, лагерь, детский" />
+<meta name="author" content="dobriy_zhuk" />
+<meta property="og:title"
+    content="ГАРАНТИЯ ЗНАНИЙ - Робототехника, Программирование, Химия, а также курсы ЕГЭ и ОГЭ для детей" />
+<meta property="og:description"
+    content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ для детей" />
+<meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://garantylearning.com/index.html" />
+{% endblock %}
+
+{% block content %}
+<!-- Здесь передаются элементы по get-запросу -->
+{{ datetime }}
+
+<div class="fh5co-contact" id="contacts">
+    <div class="container">
+        <div class="row">
+
+            <div class="content">
+                <div class="calendar-container">
+                    <div class="calendar">
+                        <div class="year-header">
+                            <span class="left-button" id="prev"> &lang; </span>
+                            <span class="year" id="label"></span>
+                            <span class="right-button" id="next"> &rang; </span>
+                        </div>
+                        <table class="months-table">
+                            <tbody>
+                                <tr class="months-row">
+                                    <td class="month">Jan</td>
+                                    <td class="month">Feb</td>
+                                    <td class="month">Mar</td>
+                                    <td class="month">Apr</td>
+                                    <td class="month">May</td>
+                                    <td class="month">Jun</td>
+                                    <td class="month">Jul</td>
+                                    <td class="month">Aug</td>
+                                    <td class="month">Sep</td>
+                                    <td class="month">Oct</td>
+                                    <td class="month">Nov</td>
+                                    <td class="month">Dec</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="days-table">
+                            <td class="day">Sun</td>
+                            <td class="day">Mon</td>
+                            <td class="day">Tue</td>
+                            <td class="day">Wed</td>
+                            <td class="day">Thu</td>
+                            <td class="day">Fri</td>
+                            <td class="day">Sat</td>
+                        </table>
+                        <div class="frame">
+                            <table class="dates-table">
+                                <tbody class="tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="button" id="add-button">Записаться</button>
+                    </div>
+                </div>
+                <div class="events-container">
+                </div>
+                <div class="dialog" id="dialog">
+                    <h2 class="dialog-header">Запись на занятия</h2>
+                    <form class="form" id="form">
+                        <div class="form-container" align="center">
+                            <label class="form-label" id="parents_name_in" for="name">Имя родителя</label>
+                            <input class="input" type="text" id="parents_name" maxlength="36">
+
+                            <label class="form-label" id="kids_name_in" for="name">Имя ребенка</label>
+                            <input class="input" type="text" id="kids_name" maxlength="36">
+
+                            <label class="form-label" id="phone_in" for="name">Телефон родителя</label>
+                            <input class="input" type="text" id="phone" maxlength="36">
+
+                            <input type="button" value="Отмена" class="button" id="cancel-button">
+                            <input type="button" value="OK" class="button" id="ok-button">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+                </script>
+            <link rel="stylesheet" href="{% static 'css/calendar.css' %}">
+            <script type="text/javascript" src="{% static 'js/calendar.js' %}"></script>
+        </div>
+    </div>
+</div>
+
+<div id="test-ajax"></div>
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            url: '/api/0/get-schedule/',
+            data: data,
+            success: function (response) {
+                console.log(response.message);
+                $('#test-ajax').append(response.data);
+            }
+        });
+    });
+
+</script>
+
+
+
+{% endblock %}

@@ -13,11 +13,6 @@ urlpatterns = [
          views.stats_email_sent_view,
          name='stats_email_sent',
      ),
-    path(
-         'calendar/',
-         views.CalendarView.as_view(),
-         name='student_calendar'
-    ),
     path('register/',
          views.StudentRegistrationView.as_view(),
          name='student_registration'),
