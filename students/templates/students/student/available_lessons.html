@@ -1,5 +1,5 @@
 {% extends 'base/base_profile.html' %}
-{% block title %}ГАРАНТИЯ ЗНАНИЙ - Профиль ученика{% endblock title %}
+{% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}
 
 {% block tags %}
 <meta name="description"
@@ -17,38 +17,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="col-md-3">
-    <h3>Личный кабинет</h3>
-    <div class="list-group">
-        <a href="#" class="list-group-item active">
-            <h4 class="list-group-item-heading">Все курсы</h4>
-        </a>
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Мои курсы</h4>
-        </a>
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Домашние задания</h4>
-        </a>
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Оплата</h4>
-        </a>
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Учитесь бесплатно</h4>
-        </a>
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Тест видеосвязи</h4>
-        </a>
-        <a href="{% url 'send_email_stats' %}" class="list-group-item">
-            <h4 class="list-group-item-heading">Отправить статистику на почту</h4>
-        </a>
-        <!-- TODO: СДЕЛАТЬ URL -->
-        <a href="{% url '' %}" class="list-group-item">
-            <h4 class="list-group-item-heading">Доступные занятия</h4>
-        </a>
-    </div>
-</div>
-<div class="col-md-9">
+<!-- Here is a list of available lessons -->
 
-</div>
+{{ lessons }}
 
 {% endblock %}

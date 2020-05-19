@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from .fields import OrderField
 from django.template.loader import render_to_string
+from students.models import Student, Teacher
 
 
 class Subject(models.Model):
@@ -38,8 +39,6 @@ class Subject(models.Model):
 class Course(models.Model):
     """Class describes courses_course table in db.
 
-    TODO: Отправка информации о прохождении курсов, выполнении дз и полной статистики на емайл
-
     Note: чтобы проставить атрибут 'course_done', если пользователь закончил курс
     можно прописать:
 
@@ -71,30 +70,30 @@ class Course(models.Model):
         models.Model: superclass where describe the fields
     """
     owner = models.ForeignKey(
-        User,
+        Teacher,
         related_name='courses_created',
         on_delete=models.CASCADE,
-        )
+    )
     subject = models.ForeignKey(
         Subject,
         related_name='courses',
         on_delete=models.CASCADE,
-        )
+    )
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     students = models.ManyToManyField(
-        User,
+        Student,
         related_name='courses_joined',
         blank=True,
-        )
+    )
 
     class Meta:
         ordering = ['-created']
         permissions = (
                 ('course_done', 'Course done'),
-            )
+        )
 
     def __str__(self):
         return self.title
