@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'courses.apps.CoursesConfig',
     'students.apps.StudentsConfig',
-    'embed_video',
     'guardian',
     'managers',
 ]
@@ -90,10 +89,10 @@ WSGI_APPLICATION = 'my.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'kursokrf_learn',
-        'USER': 'kursokrf_learn',
-        'PASSWORD': 'Dobriy76!',
-        'HOST': 'pg2.sweb.ru',
+        'NAME': 'guarantee',
+        'USER': 'guarantee',
+        'PASSWORD': '787876',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }

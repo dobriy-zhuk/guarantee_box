@@ -4,20 +4,19 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}
-    </title>
+    <title>{% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}</title>
     {% block tags %}
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-    <meta name="author" content="dobriy_zhuk" />
-    <meta property="og:title" content="" />
-    <meta property="og:description" content="" />
-    <meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://garantylearning.com/index.html" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="author" content="dobriy_zhuk" />
+        <meta property = "og:title" content = "" />
+        <meta property = "og:description" content = "" />
+        <meta property = "og:image" content = "http://garantylearning.com/images/slide_1.jpg" />
+        <meta property = "og:type" content = "website" />
+        <meta property = "og:url" content = "https://garantylearning.com/index.html" />
     {% endblock tags %}
 
     {% block css %}
@@ -37,14 +36,10 @@
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
 
 
-    <script
-        type="text/javascript">!function () { var t = document.createElement("script"); t.type = "text/javascript", t.async = !0, t.src = "https://vk.com/js/api/openapi.js?160", t.onload = function () { VK.Retargeting.Init("VK-RTRG-330177-2ZUge"), VK.Retargeting.Hit() }, document.head.appendChild(t) }();</script>
-    <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-330177-2ZUge" style="position:fixed; left:-999px;"
-            alt="" /></noscript>
+	<script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?160",t.onload=function(){VK.Retargeting.Init("VK-RTRG-330177-2ZUge"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=VK-RTRG-330177-2ZUge" style="position:fixed; left:-999px;" alt=""/></noscript>
 </head>
-
-<body>
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
+	<body>
+    <div class="navbar navbar-default navbar-fixed-top"  role="navigation" id="navbar">
         <div class="container">
             <div class="navbar-header" itemscope itemtype="http://schema.org/Organization">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -53,26 +48,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand scrollTo title" href="{% url 'index' %}" itemprop="name"><img
-                        style="width: 64px;" src="{% static 'images/logo.png' %}">ГАРАНТИЯ ЗНАНИЙ</a>
+                <a class="navbar-brand scrollTo title" href="{% url 'index' %}" itemprop="name"><img style="width: 64px;" src="{% static 'images/logo.png' %}">ГАРАНТИЯ ЗНАНИЙ</a>
             </div>
             <div class="navbar-collapse collapse" id="navigation">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="schools.html" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                            aria-haspopup="true" aria-expanded="false">Школьные предметы <span class="caret"></span></a>
+                        <a href="schools.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Школьные предметы <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="school/russian.html">Русский язык</a></li>
                             <li><a href="school/math.html">Математика</a></li>
                             <li><a href="school/mental_arithmetic.html#mental_arithmetic">Ментальная арифметика</a></li>
                             <li><a href="school/physics.html">Физика</a></li>
                             <li><a href="school/english.html">Английский язык</a></li>
-                            <li><a href="school/prolongation.html">Продленка</a></li>
+							<li><a href="school/prolongation.html">Продленка</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="engineering.html" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                            aria-haspopup="true" aria-expanded="false">Инженерные курсы <span class="caret"></span></a>
+                        <a href="engineering.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Инженерные курсы <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="stem/robotics.html">Робототехника</a></li>
                             <li><a href="stem/programming.html">Программирование</a></li>
@@ -82,8 +74,7 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="exams.html" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                            aria-haspopup="true" aria-expanded="false">ЕГЭ/ОГЭ <span class="caret"></span></a>
+                        <a href="exams.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ЕГЭ/ОГЭ <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="exam/math.html">Математика</a></li>
                             <li><a href="exam/russian.html">Русский язык</a></li>
@@ -93,71 +84,63 @@
                         </ul>
                     </li>
                     {% if request.user.is_authenticated %}
-                    <li><a href="{% url 'profile' %}">Профиль</a></li>
-                    <li><a href="{% url 'logout' %}">Выйти</a></li>
+                        <li><a href="{% url 'profile' %}">Профиль</a></li>
+                        <li><a href="{% url 'logout' %}">Выйти</a></li>
                     {% else %}
-                    <li><a href="{% url "login" %}">Войти</a></li>
-                    <li><a href="{% url "student_calendar" %}">Пробный урок</a></li>
+                        <li><a href="{% url "login" %}">Войти</a></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </div>
     <div class="fh5co-contact" id="contacts">
-        {% block content %}
-        {% endblock %}
+    {% block content %}
+    {% endblock %}
     </div>
-    <footer id="fh5co-footer" role="contentinfo">
-        <div class="container">
-            <div class="col-md-3 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
-                <h3><a class="about" href="#">О компании</a></h3>
-                <p>При помощи занятий мы помогаем Вашим детям раскрыть в себе таланты ученых, инженеров и
-                    предпринимателей!</p>
-                <p><a href="contact.html#contacts" class="btn btn-danger btn-outline with-arrow btn-sm">Записаться <i
-                            class="icon-arrow-right"></i></a></p>
-            </div>
-            <div class="col-md-6 col-md-push-1 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
-                <h3>Наши проекты</h3>
+	<footer id="fh5co-footer" role="contentinfo">
+		<div class="container">
+			<div class="col-md-3 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
+				<h3><a class="about" href="#">О компании</a></h3>
+				<p>При помощи занятий мы помогаем Вашим детям раскрыть в себе таланты ученых, инженеров и предпринимателей!</p>
+				<p><a href="contact.html#contacts" class="btn btn-danger btn-outline with-arrow btn-sm">Записаться <i class="icon-arrow-right"></i></a></p>
+			</div>
+			<div class="col-md-6 col-md-push-1 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
+				<h3>Наши проекты</h3>
                 <ul class="float">
                     <li><a href="https://franchise.garantylearning.com/" target="_blank">Франшиза</a></li>
                     <li><a rel="nofollow" href="https://myelectron.ru" target="_blank">Электроника &amp; Химия</a></li>
-                    <li><a rel="nofollow" href="documents/politic.pdf" target="_blank">Политика конфиденциальности</a>
-                    </li>
+                    <li><a rel="nofollow" href="documents/politic.pdf" target="_blank">Политика конфиденциальности</a></li>
                     <li><a href="https://job.garantylearning.com" target="_blank">Вакансии</a></li>
                 </ul>
                 <ul class="float">
                     <li><a href="camp/camp.html">Лагерь Науки</a></li>
                     <li><a href="documents/mk_garantylearning.pdf" target="_blank">Мастер-классы</a></li>
                     <li><a href="corporate/corporate.html#corporate">Корпоративные занятия</a></li>
-                    <li><a href="new_year/new_year.html">Новогодние праздники</a></li>
+					<li><a href="new_year/new_year.html">Новогодние праздники</a></li>
                     <li><a href="documents.html">Документы</a></li>
-                    <li><a href="https://knowledgecenter.s20.online" target="_blank">Личный кабинет</a></li>
+					<li><a href="https://knowledgecenter.s20.online" target="_blank">Личный кабинет</a></li>
                 </ul>
-            </div>
+			</div>
             <div class="col-md-2 col-md-push-1 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
                 <h3>Подписывайтесь</h3>
                 <ul class="fh5co-social">
-                    <li><a href="https://www.facebook.com/garantytoknow/" target="_blank"><i
-                                class="icon-facebook"></i></a></li>
+                    <li><a href="https://www.facebook.com/garantytoknow/" target="_blank"><i class="icon-facebook"></i></a></li>
                     <li><a href="https://vk.com/znaniya_courses" target="_blank"><i class="icon-vk"></i></a></li>
-                    <li><a href="https://twitter.com/garanty_to_know" target="_blank"><i class="icon-twitter"></i></a>
-                    </li>
-                    <li><a href="https://www.instagram.com/garantylearning/" target="_blank"><i
-                                class="icon-instagram"></i></a></li>
-                </ul>
+                    <li><a href="https://twitter.com/garanty_to_know" target="_blank"><i class="icon-twitter"></i></a></li>
+                    <li><a href="https://www.instagram.com/garantylearning/" target="_blank"><i class="icon-instagram"></i></a></li>
+				</ul>
             </div>
             <div class="col-md-12 fh5co-copyright text-center">
-                <p>&copy; 2020. Все права защищены. <span>ГАРАНТИЯ ЗНАНИЙ с <i class="icon-heart"></i> к детям</span>
-                </p>
+                <p>&copy; 2020. Все права защищены. <span>ГАРАНТИЯ ЗНАНИЙ с <i class="icon-heart"></i> к детям</span></p>
             </div>
-        </div>
-    </footer>
+		</div>
+	</footer>
 
-    <script> $(document).ready(function () {
-            {% block domready %}
-            {% endblock %}
-        });
-    </script>
+    <script> $(document).ready(function() {
+      {% block domready %}
+      {% endblock %}
+    });
+  </script>
 
 
     {% block javascript %}
@@ -173,6 +156,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery- ui.min.js"></script>
 
 
-</body>
-
+	</body>
 </html>
+

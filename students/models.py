@@ -81,13 +81,13 @@ class Teacher(models.Model):
 
 
 class TeacherSchedule(models.Model):
-    """Class describe teacher cheduler.
+    """Class describe teacher scheduler.
 
     start_timestamp: начальная отметка времени, когда преподаватель занят
     end_timestamp: конечная отметка времени, когда преподаватель занят
 
     theory:
-        timedelta = datetime.timedelta(minutes=45)
+        timedelta = datetime.timedelta(minumanage.py migrate --faketes=45)
         
         what can be transferred to timedelta:
         class datetime.timedelta(
