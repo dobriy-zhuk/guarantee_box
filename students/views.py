@@ -20,6 +20,23 @@ from students.tokens import account_activation_token
 from guardian.shortcuts import get_objects_for_user
 
 
+def get_available_lessons(request):
+    """Render available lessons list html.
+
+    Arguments:
+        request: 
+    """
+    template_name = 'students/student/available_lessons.html'
+
+    lessons = {} 
+
+    return render(
+        request=request,
+        template_name=template_name,
+        context={'lessons': lessons}
+    )
+
+
 def send_stats_to_email(request):
     """Send student's stats to email.
 
@@ -82,11 +99,12 @@ def stats_email_sent_view(request):
     Returns:
         render(): render 'stats_sent.html'
     """
+    template_name = 'students/student/stats_sent.html'
     current_site = get_current_site(request)
 
     return render(
         request=request,
-        template_name='students/student/stats_sent.html',
+        template_name=template_name,
         context={'domain': current_site}
     )
 

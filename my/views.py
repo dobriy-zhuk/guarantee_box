@@ -123,6 +123,7 @@ class CustomLoginView(View):
             if user and user.is_active:
                 login(request, user)
                 next_try = 0
+                # FIXME: какая группа присваивается? Не происходит редирект
                 return redirect(to='profile')
         return render(
             request=request,
@@ -137,8 +138,6 @@ class CustomLoginView(View):
 def get_json_busy_datetime(request, api_version):
     """Returns json-file with teachers busy datetime.
 
-
-
     Arguments:
         request: client request
 
@@ -149,16 +148,14 @@ def get_json_busy_datetime(request, api_version):
                 {
                     'id': 2,
                     'teacher_id': 1,
-                    'busy_date_time': datetime.datetime(
-                        2020, 5, 12, 23, 3, 54, 91707, tzinfo=<UTC>
-                    )
+                    'start_timestamp': '2020-05-15T22:42:37.763Z',
+                    'end_timestamp': '2020-05-15T23:27:37.763Z'
                 },
                 {
                     'id': 3,
                     'teacher_id': 1,
-                    'busy_date_time': datetime.datetime(
-                        2020, 5, 13, 12, 35, 20, 251542, tzinfo=<UTC>
-                    )
+                    'start_timestamp': '2020-05-16T22:42:37.763Z',
+                    'end_timestamp': '2020-05-16T23:27:37.763Z'
                 }
             ]
         }

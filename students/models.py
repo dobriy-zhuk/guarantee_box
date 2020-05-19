@@ -26,6 +26,17 @@ class TeacherStatus(models.Model):
         return self.name
 
 
+# class LessonRoom(models.Model):
+#     """Describe students_lessonroom table in database.
+
+#     It can 
+
+#     Arguments:
+#         models {[type]} -- [description]
+#     """
+#     room_id = models.CharField
+
+
 class Student(models.Model):
     """Describe students_student table in database.
 
