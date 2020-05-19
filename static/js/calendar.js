@@ -161,7 +161,7 @@ function new_event(event) {
                  phone: phone,
                  start_timestamp: Date.now(),
             };
-            $.post("/URL-HERE!!!/", data, function (data, status) {
+            $.post("/calendar/", data, function (data, status) {
                 console.log(`${data} and status is ${status}`)
             });
 

@@ -202,10 +202,10 @@ class CalendarView(View):
     def post(self, request):
         """Reseive json with day and time.
 
-        Student set time which he wants
+        Student set time which he/she wants
         to do a free trial lesson
 
         Arguments:
-            request {[type]} -- [description]
+            request: client request
         """
-        pass
+        print(request.POST)
