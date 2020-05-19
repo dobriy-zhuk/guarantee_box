@@ -153,7 +153,19 @@ function new_event(event) {
         }
         else {
             $("#dialog").hide(250);
-            console.log("new event");
+
+            const data={
+                 teacher: 'demo',
+                 parent_name: parents_name,
+                 student_name: kids_name,
+                 phone: phone,
+                 start_timestamp: Date.now(),
+            };
+            $.post("/URL-HERE!!!/", data, function (data, status) {
+                console.log(`${data} and status is ${status}`)
+            });
+
+            console.log("new event123");
             new_event_json(kids_name, 1, date, day);
             date.setDate(day);
             init_calendar(date);
@@ -222,7 +234,7 @@ function check_events(day, month, year) {
 // Given data for events in JSON format
 var event_data = {
     "events": [
-    {
+    /*{
         "occasion": " Repeated Test Event ",
         "invited_count": 120,
         "year": 2017,
@@ -304,7 +316,7 @@ var event_data = {
         "year": 2017,
         "month": 5,
         "day": 11
-    }
+    }*/
     ]
 };
 

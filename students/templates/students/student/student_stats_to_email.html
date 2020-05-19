@@ -1,0 +1,11 @@
+{% autoescape off %}
+Привет, {{ user.username }},
+
+Статистика прохождения курсов
+
+Законченные курсы:
+{% for course in courses %}
+{{ course }}
+{% endfor %}
+
+{% endautoescape %}

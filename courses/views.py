@@ -180,9 +180,13 @@ class CourseListView(TemplateResponseMixin, View):
         if subject:
             subject = get_object_or_404(Subject, slug=subject)
             courses = courses.filter(subject=subject)
-        return self.render_to_response({'subjects': subjects,
-                                        'subject': subject,
-                                        'courses': courses})
+        return self.render_to_response(
+            {
+                'subjects': subjects,
+                'subject': subject,
+                'courses': courses,
+            },
+        )
 
 
 class CourseDetailView(DetailView):
@@ -190,10 +194,12 @@ class CourseDetailView(DetailView):
     template_name = 'courses/course/detail.html'
 
     def get_context_data(self, **kwargs):
-        context = super(CourseDetailView,
-                        self).get_context_data(**kwargs)
+        context = super(
+            CourseDetailView,
+            self,
+            ).get_context_data(**kwargs)
         context['enroll_form'] = CourseEnrollForm(
-                                    initial={'course': self.object})
+            initial={'course': self.object},
+                )
 
         return context
-
