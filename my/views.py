@@ -48,7 +48,7 @@ def profile(request):
         return HttpResponseRedirect(reverse('administrator'))
     elif group.name == 'Teachers':
         return HttpResponseRedirect(reverse('course_list'))
-    elif group.name == 'Students':
+    else:
         return HttpResponseRedirect(reverse('student'))
 
     context: dict = {}
