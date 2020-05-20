@@ -141,8 +141,6 @@
             url: '/api/0/get-schedule/',
             success: function (response) {
                 myjson = JSON.stringify(response);
-                console.log(response);
-                alert(myjson);
                 $("#test-ajax").prepend(myjson);
             }
         });

@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 from students.models import TeacherSchedule
 
@@ -174,15 +176,19 @@ def get_json_busy_datetime(request, api_version):
         return JsonResponse({})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CalendarView(View):
     """Describe view for calendar.
-    
+
+    !!!! Note: I don't use csrf-token now, look at 
+        csrf_exempt decorator    
 
     Arguments:
         View: dafault django superclass
     """
 
-    template_name = 'calendar.html'
+    get_template_name = 'calendar.html'
+    post_template_name = 'trial_lesson_approved.html'
 
     def get(self, request):
         """Send list with teacher free day and time.
@@ -195,12 +201,13 @@ class CalendarView(View):
         """
         return render(
             request=request,
-            template_name=self.template_name,
+            template_name=self.get_template_name,
         )
     
 
     def post(self, request):
         """Reseive json with day and time.
+
 
         Student set time which he/she wants
         to do a free trial lesson
@@ -208,4 +215,9 @@ class CalendarView(View):
         Arguments:
             request: client request
         """
+        
         print(request.POST)
+        return render(
+            request=request,
+            template_name=self.post_template_name,
+        )
