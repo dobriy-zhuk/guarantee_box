@@ -1,7 +1,11 @@
 from django.contrib import admin
-from .models import Student, StudentStatus, Teacher, TeacherStatus
+from .models import (
+    Student, StudentStatus,
+    Teacher, TeacherStatus, TeacherSchedule
+)
 
 admin.site.register(StudentStatus)
 admin.site.register(Student)
 admin.site.register(TeacherStatus)
 admin.site.register(Teacher)
+admin.site.register(TeacherSchedule)

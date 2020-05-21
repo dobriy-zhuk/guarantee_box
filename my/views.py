@@ -9,7 +9,11 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
-from students.models import TeacherSchedule
+import datetime
+import time
+
+from students.models import Teacher, TeacherSchedule
+
 
 
 def index(request):
@@ -212,11 +216,58 @@ class CalendarView(View):
         Student set time which he/she wants
         to do a free trial lesson
 
+        For creating a schedule of new students, I use teacher
+        with name schedule_teacher, when manager can change a
+        instance of teacher. Also, I make a 
+        end_timestamp = start_timestamp + 45min. If manager wants to 
+        change value it could be.
+
+        schedule_teacher is not real person.
+
+        TODO: form for validation a client request.
+        TODO: change render to redirect('lesson_approved')
+        TODO: render() does not work
+        FIXME: datetime.datetime to timezone, now I don't use tz
+        but I should
+
+        A Unix timestamp is the number of seconds between a particular
+        date and January 1, 1970 at UTC. You can convert
+        a timestamp to date using fromtimestamp() method.
+
+
+        JS from calendar.js:
+        const data={
+                teacher: 'demo',
+                parent_name: parents_name,
+                student_name: kids_name,
+                phone: phone,
+                start_timestamp: Date.now(), <- !!!returns milliseconds
+            };
+
         Arguments:
             request: client request
         """
+        teacher = Teacher.objects.get(name='schedule_teacher')
+
+        parent_name = request.POST.get('parent_name')
+        student_name = request.POST.get('student_name')
+        phone = request.POST.get('phone')
+
+        start_timestamp = datetime.datetime.fromtimestamp(
+            int(request.POST.get('start_timestamp')) / 1000.0,
+        )
         
-        print(request.POST)
+        end_timestamp = (start_timestamp + datetime.timedelta(minutes=45))
+
+        teacher_schedule = TeacherSchedule.objects.create(
+            teacher = teacher,
+            parent_name=parent_name,
+            student_name=student_name,
+            phone=phone,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp
+        )
+        
         return render(
             request=request,
             template_name=self.post_template_name,
