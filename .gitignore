@@ -1,3 +1,13 @@
+# For resolving conflicts with database you need to do:
+# if you makeking new models or update a old one you need to do
+# makemigrations and then migrate
+# it will create new migration files
+# local check and push, I need all migration files!
+# When I will do a git pull or git fetch, first what I should do is
+# migrate and only that, because I don't need to do new migration files
+# check what you have done migrations for all apps.
+# Here is an opinion https://stackoverflow.com/questions/28035119/should-i-be-adding-the-django-migration-files-in-the-gitignore-file
+# Best regards, Ian.
 venv/
 .idea
 .vscode
