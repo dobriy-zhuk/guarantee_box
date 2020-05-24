@@ -22,12 +22,12 @@ def post_coding(request):
 class OwnerMixin(object):
     def get_queryset(self):
         qs = super(OwnerMixin, self).get_queryset()
-        return qs.filter(owner=self.request.user)
+        return qs.filter(owner=self.request.user.teacher)
 
 
 class OwnerEditMixin(object):
     def form_valid(self, form):
-        form.instance.owner = self.request.user
+        form.instance.owner = self.request.user.teacher
         return super(OwnerEditMixin, self).form_valid(form)
 
 
@@ -72,7 +72,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
     def dispatch(self, request, pk):
         self.course = get_object_or_404(Course,
                                         id=pk,
-                                        owner=request.user)
+                                        owner=request.user.teacher)
         return super(CourseModuleUpdateView,
                  self).dispatch(request, pk)
 
@@ -168,7 +168,7 @@ class ModuleContentListView(TemplateResponseMixin, View):
     def get(self, request, module_id):
         module = get_object_or_404(Module,
                                    id=module_id,
-                                   course__owner=request.user)
+                                   course__owner=request.user.teacher)
         return self.render_to_response({'module': module})
 
 

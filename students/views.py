@@ -256,8 +256,8 @@ class StudentRegistrationView(View):
 
 @login_required(login_url='/accounts/login/')
 def get_profile(request):
-    # student = Student.objects.get(user=request.user)
-    student = get_object_or_404(Student, user=request.user)
+    student = Student.objects.get(user=request.user)
+    #student = get_object_or_404(Student, user=request.user)
     return render(
         request=request,
         template_name='students/student/profile.html',
