@@ -91,8 +91,8 @@
                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                         <li><a href="{% url 'logout' %}">Выйти</a></li>
                     {% else %}
-                        <li><a href="{% url "login" %}">Войти</a></li>
-                        <li><a href="{% url "student_calendar" %}">Пробный урок</a></li>
+                        <li><a href="{% url 'login' %}">Войти</a></li>
+                        <li><a href="{% url 'student_calendar' %}">Пробный урок</a></li>
                     {% endif %}
                 </ul>
             </div>
