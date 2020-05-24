@@ -89,6 +89,7 @@ WSGI_APPLICATION = 'my.wsgi.application'
 #dev = kursokrf_learn
 #test = kursokrf_learn_t
 #master = kursokrf_learn_m
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
