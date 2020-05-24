@@ -29,5 +29,14 @@ urlpatterns = [
          views.StudentCourseDetailView.as_view(),
          name='student_course_detail_module'),
     path('sent/', views.activation_sent_view, name="activation_sent"),
-    path('activate/<slug:uidb64>/<slug:token>/', views.activate, name='activate'),
+    path(
+         'activate/<slug:uidb64>/<slug:token>/',
+         views.activate,
+         name='activate',
+     ),
+    path(
+         'available-lessons/',
+         views.get_available_lessons,
+         name='available_lessons',
+     ),
 ]
