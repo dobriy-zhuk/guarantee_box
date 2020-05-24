@@ -52,37 +52,10 @@
             </div>
             <div class="navbar-collapse collapse" id="navigation">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="schools.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Школьные предметы <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="school/russian.html">Русский язык</a></li>
-                            <li><a href="school/math.html">Математика</a></li>
-                            <li><a href="school/mental_arithmetic.html#mental_arithmetic">Ментальная арифметика</a></li>
-                            <li><a href="school/physics.html">Физика</a></li>
-                            <li><a href="school/english.html">Английский язык</a></li>
-							<li><a href="school/prolongation.html">Продленка</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="engineering.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Инженерные курсы <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="stem/robotics.html">Робототехника</a></li>
-                            <li><a href="stem/programming.html">Программирование</a></li>
-                            <li><a href="stem/chemistry.html">Школа "Юного Химика"</a></li>
-                            <li><a href="stem/printing.html">3D-моделирование и печать</a></li>
-                            <li><a href="stem/enterprise.html">Основы предпринимательства</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="exams.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ЕГЭ/ОГЭ <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="exam/math.html">Математика</a></li>
-                            <li><a href="exam/russian.html">Русский язык</a></li>
-                            <li><a href="exam/physics.html">Физика</a></li>
-                            <li><a href="exam/sociology.html">Обществознание</a></li>
-                            <li><a href="exam/informatics.html">Информатика</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="{% url 'profile' %}">Главная</a></li>
+                    <li><a href="{% url 'profile' %}">Курсы</a></li>
+                    <li><a href="{% url 'profile' %}">Мои уроки</a></li>
+                    <li><a href="{% url 'profile' %}">Оплата</a></li>
                     {% if request.user.is_authenticated %}
                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                         <li><a href="{% url 'logout' %}">Выйти</a></li>
