@@ -89,10 +89,10 @@ WSGI_APPLICATION = 'my.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'guarantee',
-        'USER': 'guarantee',
-        'PASSWORD': '787876',
-        'HOST': '127.0.0.1',
+        'NAME': 'kursokrf_learn',
+        'USER': 'kursokrf_learn',
+        'PASSWORD': 'Dobriy76!',
+        'HOST': 'pg2.sweb.ru',
         'PORT': '5432',
     }
 }

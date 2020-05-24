@@ -24,6 +24,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('profile/', views.profile, name='profile'),
+    path('teacher/', views.teacher, name='teacher'),
     path(
         'accounts/login/',
         views.CustomLoginView.as_view(),
