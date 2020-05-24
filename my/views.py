@@ -228,7 +228,7 @@ class CalendarView(View):
         TODO: change render to redirect('lesson_approved')
         TODO: render() does not work
         FIXME: datetime.datetime to timezone, now I don't use tz
-        but I should
+        but it should
 
         A Unix timestamp is the number of seconds between a particular
         date and January 1, 1970 at UTC. You can convert

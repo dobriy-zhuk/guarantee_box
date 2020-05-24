@@ -26,17 +26,6 @@ class TeacherStatus(models.Model):
         return self.name
 
 
-# class LessonRoom(models.Model):
-#     """Describe students_lessonroom table in database.
-
-#     It can 
-
-#     Arguments:
-#         models {[type]} -- [description]
-#     """
-#     room_id = models.CharField
-
-
 class Student(models.Model):
     """Describe students_student table in database.
 
@@ -46,6 +35,7 @@ class Student(models.Model):
     Arguments:
         models.Model: superclass which describes fields for database
     """
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     age = models.PositiveSmallIntegerField(default=0)
@@ -77,6 +67,11 @@ class Teacher(models.Model):
     )
 
     def __str__(self):
+        """Override the str() behavior, for instance of class.
+
+        Returns:
+            self.name: Instance name
+        """
         return self.name
 
 
@@ -107,3 +102,15 @@ class TeacherSchedule(models.Model):
     phone = models.TextField(max_length=500, blank=True, default='79151761287')
     start_timestamp = models.DateTimeField()
     end_timestamp = models.DateTimeField()
+
+    def __str__(self):
+        """Override the str() behavior, for instance of class.
+
+        Returns:
+            self.parent_name: Instance parent_name
+            self.student_name: Instance student_name
+        """
+        return (
+        'Родитель ' + self.parent_name +
+        ' ребёнок ' + self.student_name
+        )

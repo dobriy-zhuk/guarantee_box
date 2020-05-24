@@ -1,8 +1,12 @@
 from django.contrib import admin
-from .models import Subject, Course, Module
+from courses.models import Subject, Course, Module, ZoomModuleRoom
 
 
-# Register your models here.
+@admin.register(ZoomModuleRoom)
+class ZoomModuleRoom(admin.ModelAdmin):
+    list_display = ['module_name', 'teacher', 'room_id']
+
+
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug']

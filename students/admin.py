@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import (
+from students.models import (
     Student, StudentStatus,
-    Teacher, TeacherStatus, TeacherSchedule
+    Teacher, TeacherStatus, TeacherSchedule,
 )
 
 admin.site.register(StudentStatus)
