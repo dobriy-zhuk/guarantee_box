@@ -99,7 +99,7 @@ class CustomLoginView(View):
             context={
                 'form': form,
                 'next': next_try,
-                },
+            },
         )
 
     def post(self, request):

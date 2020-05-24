@@ -213,6 +213,13 @@ class ZoomModuleRoom(models.Model):
     ForeignKey because one teacher for many module rooms.
     ManyToMany because many students for many module rooms.
 
+    FIXME: когда я в админке и пытаюсь зайти в таблицу,
+    вместо пустотых строк выдется эта ошибка:
+
+    ProgrammingError at /admin/courses/zoommoduleroom/
+    relation "courses_zoommoduleroom" does not exist
+    LINE 1: SELECT COUNT(*) AS "__count" FROM "courses_zoommoduleroom"
+
     Arguments:
         models.Model: superclass which describes fields for database
     """

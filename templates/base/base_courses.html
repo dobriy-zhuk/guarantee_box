@@ -33,10 +33,10 @@
     <![endif]-->
 
 
-    <script type="text/javascript" src="{% static "blockly/blockly_compressed.js" %}"></script>
-    <script type="text/javascript" src="{% static "blockly/blocks_compressed.js" %}"></script>
-    <script type="text/javascript" src="{% static "blockly/javascript_compressed.js" %}"></script>
-    <script type="text/javascript" src="{% static "blockly/msg/js/ru.js" %}"></script>
+    <script type="text/javascript" src="{% static 'blockly/blockly_compressed.js' %}"></script>
+    <script type="text/javascript" src="{% static 'blockly/blocks_compressed.js' %}"></script>
+    <script type="text/javascript" src="{% static 'blockly/javascript_compressed.js' %}"></script>
+    <script type="text/javascript" src="{% static 'blockly/msg/js/ru.js' %}"></script>
 
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
 
@@ -92,8 +92,8 @@
                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                         <li><a href="{% url 'logout' %}">Выйти</a></li>
                     {% else %}
-                        <li><a href="{% url "login" %}">Войти</a></li>
-                        <li><a href="{% url "student_calendar" %}">Пробный урок</a></li>
+                        <li><a href="{% url 'login' %}">Войти</a></li>
+                        <li><a href="{% url 'student_calendar' %}">Пробный урок</a></li>
                     {% endif %}
                 </ul>
             </div>
