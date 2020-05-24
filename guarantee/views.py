@@ -247,7 +247,6 @@ class CalendarView(View):
         Arguments:
             request: client request
         """
-<<<<<<< HEAD:my/views.py
         teacher = Teacher.objects.get(name='schedule_teacher')
 
         parent_name = request.POST.get('parent_name')
@@ -273,11 +272,8 @@ class CalendarView(View):
             request=request,
             template_name=self.post_template_name,
         )
-=======
-        print(request.POST)
 
 
 @login_required
 def teacher(request):
     return render(request, "teacher/profile.html", {})
->>>>>>> origin/developer:guarantee/views.py
