@@ -36,16 +36,19 @@ Reverse for '' not found. '' is not a valid view function or pattern name.
 ```html
 <a href="{% url '' %}" class="list-group-item">
             <h4 class="list-group-item-heading">Доступные занятия</h4>
+</a>
 ```
 Urls in templates are required
 ```html
 <a href="{% url 'course_list' %}" class="list-group-item">
             <h4 class="list-group-item-heading">Доступные занятия</h4>
+</a>
 ```
 If you comment it, it will pesponse you an same error. So be attentive.   
 ```html
 <!-- <a href="{% url '' %}" class="list-group-item">
-            <h4 class="list-group-item-heading">Доступные занятия</h4> -->
+            <h4 class="list-group-item-heading">Доступные занятия</h4>
+</a> -->
 ```
 
 #### Best regards, Ian.
