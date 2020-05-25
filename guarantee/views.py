@@ -42,11 +42,11 @@ def profile(request):
 
         HttpResponseRedirect: if
         request.user.groups.filter(user=request.user)[0] = Teachers
-        then redirect to courses/course_list/ page
+        then redirect to courses/ page
 
         HttpResponseRedirect: if
         request.user.groups.filter(user=request.user)[0] = Students
-        then redirect to students/student profile page
+        then redirect to students/ profile page
     """
     group = request.user.groups.filter(user=request.user)[0]
 
@@ -56,7 +56,6 @@ def profile(request):
         return HttpResponseRedirect(reverse('teacher'))
     elif group.name == 'Students':
         return HttpResponseRedirect(reverse('student'))
-
     context: dict = {}
     template = 'profile.html'
     return render(request, template, context)
@@ -129,7 +128,6 @@ class CustomLoginView(View):
             if user and user.is_active:
                 login(request, user)
                 next_try = 0
-                # FIXME: какая группа присваивается? Не происходит редирект
                 return redirect(to='profile')
         return render(
             request=request,
@@ -188,7 +186,7 @@ class CalendarView(View):
         csrf_exempt decorator    
 
     Arguments:
-        View: dafault django superclass
+        View: default django superclass
     """
 
     get_template_name = 'calendar.html'

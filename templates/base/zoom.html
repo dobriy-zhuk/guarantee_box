@@ -4,19 +4,20 @@
 
 <head>
     <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}</title>
+    <title>{% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}
+    </title>
     {% block tags %}
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
-        <meta name="author" content="dobriy_zhuk" />
-        <meta property = "og:title" content = "" />
-        <meta property = "og:description" content = "" />
-        <meta property = "og:image" content = "http://garantylearning.com/images/slide_1.jpg" />
-        <meta property = "og:type" content = "website" />
-        <meta property = "og:url" content = "https://garantylearning.com/index.html" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="dobriy_zhuk" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://garantylearning.com/index.html" />
     {% endblock tags %}
 
     {% block css %}
@@ -34,16 +35,20 @@
     <script type="text/javascript" src="{% static 'blockly/msg/js/ru.js' %}"></script>
 
 
-    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.7.5/css/bootstrap.css"/>
-    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.7.5/css/react-select.css"/>
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.7.5/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/1.7.5/css/react-select.css" />
 
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
 
 
-	<script type="text/javascript">!function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?160",t.onload=function(){VK.Retargeting.Init("VK-RTRG-330177-2ZUge"),VK.Retargeting.Hit()},document.head.appendChild(t)}();</script><noscript><img src="https://vk.com/rtrg?p=VK-RTRG-330177-2ZUge" style="position:fixed; left:-999px;" alt=""/></noscript>
+    <script
+        type="text/javascript">!function () { var t = document.createElement("script"); t.type = "text/javascript", t.async = !0, t.src = "https://vk.com/js/api/openapi.js?160", t.onload = function () { VK.Retargeting.Init("VK-RTRG-330177-2ZUge"), VK.Retargeting.Hit() }, document.head.appendChild(t) }();</script>
+    <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-330177-2ZUge" style="position:fixed; left:-999px;"
+            alt="" /></noscript>
 </head>
-	<body>
-    <div class="navbar navbar-default navbar-fixed-top"  role="navigation" id="navbar">
+
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
         <div class="container">
             <div class="navbar-header" itemscope itemtype="http://schema.org/Organization">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -52,23 +57,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand scrollTo title" href="{% url 'index' %}" itemprop="name"><img style="width: 64px;" src="{% static 'images/logo.png' %}">ГАРАНТИЯ ЗНАНИЙ</a>
+                <a class="navbar-brand scrollTo title" href="{% url 'index' %}" itemprop="name"><img
+                        style="width: 64px;" src="{% static 'images/logo.png' %}">ГАРАНТИЯ ЗНАНИЙ</a>
             </div>
             <div class="navbar-collapse collapse" id="navigation">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
-                        <a href="schools.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Школьные предметы <span class="caret"></span></a>
+                        <a href="schools.html" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-haspopup="true" aria-expanded="false">Школьные предметы <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="school/russian.html">Русский язык</a></li>
                             <li><a href="school/math.html">Математика</a></li>
                             <li><a href="school/mental_arithmetic.html#mental_arithmetic">Ментальная арифметика</a></li>
                             <li><a href="school/physics.html">Физика</a></li>
                             <li><a href="school/english.html">Английский язык</a></li>
-							<li><a href="school/prolongation.html">Продленка</a></li>
+                            <li><a href="school/prolongation.html">Продленка</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="engineering.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Инженерные курсы <span class="caret"></span></a>
+                        <a href="engineering.html" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-haspopup="true" aria-expanded="false">Инженерные курсы <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="stem/robotics.html">Робототехника</a></li>
                             <li><a href="stem/programming.html">Программирование</a></li>
@@ -78,7 +86,8 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="exams.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ЕГЭ/ОГЭ <span class="caret"></span></a>
+                        <a href="exams.html" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                            aria-haspopup="true" aria-expanded="false">ЕГЭ/ОГЭ <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="exam/math.html">Математика</a></li>
                             <li><a href="exam/russian.html">Русский язык</a></li>
@@ -88,49 +97,53 @@
                         </ul>
                     </li>
                     {% if request.user.is_authenticated %}
-                        <li><a href="{% url 'profile' %}">Профиль</a></li>
-                        <li><a href="{% url 'logout' %}">Выйти</a></li>
+                    <li><a href="{% url 'profile' %}">Профиль</a></li>
+                    <li><a href="{% url 'logout' %}">Выйти</a></li>
                     {% else %}
-                        <li><a href="{% url 'login' %}">Войти</a></li>
-                        <li><a href="{% url 'student_calendar' %}">Пробный урок</a></li>
+                    <li><a href="{% url 'login' %}">Войти</a></li>
+                    <li><a href="{% url 'student_calendar' %}">Пробный урок</a></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </div>
     <div class="fh5co-contact" id="contacts">
-    <nav id="nav-tool" class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">MyMeetingApp</a>
-        </div>
-        <div id="navbar">
-            <form class="navbar-form navbar-right" id="meeting_form">
-                <div class="form-group">
-                    <input type="text" name="display_name" id="display_name" value="1.7.5#Local" placeholder="Name" class="form-control" required>
+        <nav id="nav-tool" class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">MyMeetingApp</a>
                 </div>
-                <div class="form-group">
-                    <input type="text" name="meeting_number" id="meeting_number" value="" placeholder="Meeting Number" class="form-control" required>
+                <div id="navbar">
+                    <form class="navbar-form navbar-right" id="meeting_form">
+                        <div class="form-group">
+                            <input type="text" name="display_name" id="display_name" value="1.7.5#Local"
+                                placeholder="Name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="meeting_number" id="meeting_number" value=""
+                                placeholder="Meeting Number" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="meeting_pwd" id="meeting_pwd" value=""
+                                placeholder="Meeting Password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <select id="meeting_role" class="selectpicker">
+                                <option value=0>Attendee</option>
+                                <option value=1>Host</option>
+                                <option value=5>Assistant</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="join_meeting">Join</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <input type="text" name="meeting_pwd" id="meeting_pwd" value="" placeholder="Meeting Password" class="form-control">
-                </div>
-                <div class="form-group">
-                    <select id="meeting_role" class="selectpicker">
-                        <option value=0>Attendee</option>
-                        <option value=1>Host</option>
-                        <option value=5>Assistant</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary" id="join_meeting">Join</button>
-            </form>
-        </div><!--/.navbar-collapse -->
+                <!--/.navbar-collapse -->
+            </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
     </div>
-</nav>
-    {% block content %}
-    {% endblock %}
-    </div>
-	<!--footer id="fh5co-footer" role="contentinfo">
+    <!--footer id="fh5co-footer" role="contentinfo">
 		<div class="container">
 			<div class="col-md-3 col-sm-12 col-sm-push-0 col-xs-12 col-xs-push-0">
 				<h3><a class="about" href="#">О компании</a></h3>
@@ -178,13 +191,13 @@
 
     {% block javascript %}
     {% endblock %}
-    <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/main.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/modernizr-2.6.2.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.easing.1.3.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.waypoints.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/jquery.flexslider-min.js" %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/modernizr-2.6.2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.flexslider-min.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery- ui.min.js"></script>
 
@@ -196,10 +209,9 @@
     <script src="https://source.zoom.us/1.7.5/lib/vendor/lodash.min.js"></script>
 
     <script src="https://source.zoom.us/zoom-meeting-1.7.5.min.js"></script>
-    <script src="{% static "js/zoom_tools.js" %}"></script>
-    <script src="{% static "js/zoom.js" %}"></script>
+    <script src="{% static 'js/zoom_tools.js' %}"></script>
+    <script src="{% static 'js/zoom.js' %}"></script>
 
 
 	</body>
 </html>
-

@@ -262,7 +262,7 @@ def get_profile(request):
         request=request,
         template_name='students/student/profile.html',
         context={'student': student},
-        )
+    )
 
 
 class StudentEnrollCourseView(LoginRequiredMixin, FormView):
