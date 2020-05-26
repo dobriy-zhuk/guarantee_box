@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from .fields import OrderField
+from courses.fields import OrderField
 from django.template.loader import render_to_string
 from students.models import Student, Teacher
 
@@ -107,7 +107,7 @@ class Module(models.Model):
             )
 
     course = models.ForeignKey(
-        Course,
+        'Course',
         related_name='modules',
         on_delete=models.CASCADE,
         )
@@ -124,7 +124,7 @@ class Content(models.Model):
         ordering = ['order']
 
     module = models.ForeignKey(
-        Module,
+        'Module',
         related_name='contents',
         on_delete=models.CASCADE,
         )
@@ -206,3 +206,34 @@ class Image(ItemBase):
 class Video(ItemBase):
     url = models.URLField()
 
+
+class ZoomModuleRoom(models.Model):
+    """Describe courses_zoommoduleroom table in database.
+
+    ForeignKey because one teacher for many module rooms.
+    ManyToMany because many students for many module rooms.
+
+    FIXME: когда я в админке и пытаюсь зайти в таблицу,
+    вместо пустотых строк выдется эта ошибка:
+
+    ProgrammingError at /admin/courses/zoommoduleroom/
+    relation "courses_zoommoduleroom" does not exist
+    LINE 1: SELECT COUNT(*) AS "__count" FROM "courses_zoommoduleroom"
+
+    Arguments:
+        models.Model: superclass which describes fields for database
+    """
+
+    module_name = models.CharField(max_length=200)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    students = models.ManyToManyField(Student, blank=True)
+    room_id = models.CharField(max_length=200, default='')
+    room_password = models.CharField(max_length=200, default='')
+
+    def __str__(self):
+        """Override the str() behavior, for instance of class.
+
+        Returns:
+            self.module_name: Instance module_name
+        """
+        return self.module_name

@@ -6,8 +6,14 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
-from students.models import TeacherSchedule
+import datetime
+import time
+
+from students.models import Teacher, TeacherSchedule
+
 
 
 def index(request):
@@ -36,11 +42,11 @@ def profile(request):
 
         HttpResponseRedirect: if
         request.user.groups.filter(user=request.user)[0] = Teachers
-        then redirect to courses/course_list/ page
+        then redirect to courses/ page
 
         HttpResponseRedirect: if
         request.user.groups.filter(user=request.user)[0] = Students
-        then redirect to students/student profile page
+        then redirect to students/ profile page
     """
     group = request.user.groups.filter(user=request.user)[0]
 
@@ -50,7 +56,6 @@ def profile(request):
         return HttpResponseRedirect(reverse('teacher'))
     elif group.name == 'Students':
         return HttpResponseRedirect(reverse('student'))
-
     context: dict = {}
     template = 'profile.html'
     return render(request, template, context)
@@ -93,7 +98,7 @@ class CustomLoginView(View):
             context={
                 'form': form,
                 'next': next_try,
-                },
+            },
         )
 
     def post(self, request):
@@ -123,7 +128,6 @@ class CustomLoginView(View):
             if user and user.is_active:
                 login(request, user)
                 next_try = 0
-                # FIXME: какая группа присваивается? Не происходит редирект
                 return redirect(to='profile')
         return render(
             request=request,
@@ -174,15 +178,19 @@ def get_json_busy_datetime(request, api_version):
         return JsonResponse({})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class CalendarView(View):
     """Describe view for calendar.
-    
+
+    !!!! Note: I don't use csrf-token now, look at 
+        csrf_exempt decorator    
 
     Arguments:
-        View: dafault django superclass
+        View: default django superclass
     """
 
-    template_name = 'calendar.html'
+    get_template_name = 'calendar.html'
+    post_template_name = 'trial_lesson_approved.html'
 
     def get(self, request):
         """Send list with teacher free day and time.
@@ -195,20 +203,73 @@ class CalendarView(View):
         """
         return render(
             request=request,
-            template_name=self.template_name,
+            template_name=self.get_template_name,
         )
     
 
     def post(self, request):
         """Reseive json with day and time.
 
+
         Student set time which he/she wants
         to do a free trial lesson
+
+        For creating a schedule of new students, I use teacher
+        with name schedule_teacher, when manager can change a
+        instance of teacher. Also, I make a 
+        end_timestamp = start_timestamp + 45min. If manager wants to 
+        change value it could be.
+
+        schedule_teacher is not real person.
+
+        TODO: form for validation a client request.
+        TODO: change render to redirect('lesson_approved')
+        TODO: render() does not work
+        FIXME: datetime.datetime to timezone, now I don't use tz
+        but it should
+
+        A Unix timestamp is the number of seconds between a particular
+        date and January 1, 1970 at UTC. You can convert
+        a timestamp to date using fromtimestamp() method.
+
+
+        JS from calendar.js:
+        const data={
+                teacher: 'demo',
+                parent_name: parents_name,
+                student_name: kids_name,
+                phone: phone,
+                start_timestamp: Date.now(), <- !!!returns milliseconds
+            };
 
         Arguments:
             request: client request
         """
-        print(request.POST)
+        teacher = Teacher.objects.get(name='schedule_teacher')
+
+        parent_name = request.POST.get('parent_name')
+        student_name = request.POST.get('student_name')
+        phone = request.POST.get('phone')
+
+        start_timestamp = datetime.datetime.fromtimestamp(
+            int(request.POST.get('start_timestamp')) / 1000.0,
+        )
+        
+        end_timestamp = (start_timestamp + datetime.timedelta(minutes=45))
+
+        teacher_schedule = TeacherSchedule.objects.create(
+            teacher = teacher,
+            parent_name=parent_name,
+            student_name=student_name,
+            phone=phone,
+            start_timestamp=start_timestamp,
+            end_timestamp=end_timestamp
+        )
+        
+        return render(
+            request=request,
+            template_name=self.post_template_name,
+        )
 
 
 @login_required
