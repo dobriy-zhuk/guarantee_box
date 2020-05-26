@@ -271,22 +271,26 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
 
     def form_valid(self, form):
         self.course = form.cleaned_data.get('course')
-        self.course.students.add(self.request.user)
+        self.course.students.add(self.request.user.student)
         return super(
             StudentEnrollCourseView,
             self,
-            ).form_valid(form)
+        ).form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy(
             'student_course_detail',
             args=[self.course.id]
-            )
+        )
 
 
 @login_required(login_url='/accounts/login/')
 def get_courses_list(request):
     """Returns courses list.
+
+    TODO: Это для студентов или для преподавателей?
+     потому что оно перенаправляет на страницу, где можно 
+     редактировать курс.
 
     Arguments:
         request: client request
@@ -296,8 +300,8 @@ def get_courses_list(request):
         contains user.student
     """
     courses = Course.objects.filter(
-        students__in=[request.user],
-        )
+        students__in=[request.user.student],
+    )
     return render(
         request=request,
         template_name='students/course/list.html',
@@ -311,7 +315,7 @@ class StudentCourseDetailView(DetailView):
 
     def get_queryset(self):
         query_set = super(StudentCourseDetailView, self).get_queryset()
-        return query_set.filter(students__in=[self.request.user])
+        return query_set.filter(students__in=[self.request.user.student])
 
     def get_context_data(self, **kwargs):
         context = super(StudentCourseDetailView, self).get_context_data(**kwargs)
