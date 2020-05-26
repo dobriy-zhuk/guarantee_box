@@ -51,6 +51,18 @@ If you comment it, it will pesponse you an same error. So be attentive.
 </a> -->
 ```
 
+## One more thing about jinja
+It doesn't work, because jinja doesn't let quotes like this
+```
+"{% url "some_url" %}"
+``` 
+Upper is 2 different strings  
+Please do like this:
+```
+"{% url 'some_url' %}"
+```
+It's string in string and jinja lets you to do that
+
 #### Best regards, Ian.
 
 If you have some good info about project please share with us below.
