@@ -114,7 +114,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         self.module = get_object_or_404(
             Module,
             id = module_id,
-            course__owner = request.user
+            course__owner = request.user.teacher
         )
         self.model = self.get_model(model_name)
         if id:
