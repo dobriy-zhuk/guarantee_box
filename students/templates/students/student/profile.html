@@ -1,4 +1,5 @@
 {% extends 'base/base_profile.html' %}
+{% load static %}
 {% block title %}ГАРАНТИЯ ЗНАНИЙ - Профиль ученика{% endblock title %}
 
 {% block tags %}
@@ -17,6 +18,182 @@
 {% endblock %}
 
 {% block content %}
+             <!-- have-project Start-->
+         <div class="have-project mb-30">
+            <div class="container">
+                <div class="haveAproject"  data-background="assets/img/team/have.jpg">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-xl-7 col-lg-9 col-md-12">
+                            <div class="wantToWork-caption">
+                                <h2>Учиться бесплатно?</h2>
+                                <p>Пригласите троих друзей по промокоду: "GUARANTEE21" и занимайтесь весь месяц бесплатно.</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-3 col-md-12">
+                           <div class="wantToWork-btn f-right">
+                                <a href="#" class="btn btn-ans">Поделиться</a>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- have-project End -->
+            <!-- Generating Start -->
+        <div class="generating-area ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5">
+                        <div class="single-element-widget">
+                            <div class="single-generating d-flex mb-30">
+                            <div class="generating-icon">
+                                <span class="flaticon-social-media-marketing"></span>
+                            </div>
+                            <div class="generating-cap">
+                                <h4>Мой профиль</h4>
+                                <form action="#">
+                                    <div class="mt-10">
+                                        <input type="text" name="first_name" placeholder="First Name"
+                                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'" required
+                                            class="single-input">
+							        </div>
+                                    <div class="mt-10">
+								<input type="text" name="last_name" placeholder="Last Name"
+									onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" required
+									class="single-input">
+							</div>
+                                    <div class="mt-10">
+								<input type="text" name="age_kids" placeholder="Child age
+									onfocus=" onblur="this.placeholder = 'Child age'"
+									required class="single-input">
+							</div>
+                                    <div class="mt-10">
+                                        <input type="email" name="EMAIL" placeholder="Email address"
+                                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email address'" required
+                                            class="single-input">
+                                    </div>
+                                    <div class="input-group-icon mt-10">
+								<div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+								<div class="form-select" id="default-select">
+									<select>
+                                        <option value=" 1">Country</option>
+                                        <option value="1">Bangladesh</option>
+                                        <option value="1">India</option>
+                                        <option value="1">England</option>
+                                        <option value="1">Srilanka</option>
+									</select>
+								</div>
+                                        </div>
+                                <div class="mt-10">
+                                    <input type="text" name="address" placeholder="Address" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'Address'" required class="single-input">
+                                </div>
+                                   <br><a href="{% url 'send_email_stats' %}" class="genric-btn info-border">Сохранить</a>
+                                </form>
+                            </div>
+                        </div>
+
+                        </div>
+                        <div class="single-generating d-flex mb-30">
+                                <div class="generating-icon">
+                                    <span class="flaticon-award"></span>
+                                </div>
+                                <div class="generating-cap text-center center">
+                                    <h4>Мои награды</h4>
+                                    <p style="font-size: 30px; color: #c02323">100 бонусов</p>
+                                    <p class=" text-center center"><br><a href="{% url 'send_email_stats' %}" class="genric-btn info-border">Обменять</a></p>
+
+                                </div>
+                            </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7">
+                         <div class="single-element-widget">
+                                <div class="single-generating d-flex mb-30">
+                                <div class="generating-cap">
+                                    <h4>Ближайшие уроки</h4>
+                                    <h5>Математика</h5>
+                                    <style>
+                                        /* CSS style for Boxes */
+                                        span_time {
+                                            display: inline-flex;
+                                            width: 70px;
+                                            height: 70px;
+                                            background-color: white;
+                                            justify-content: center;
+                                            align-items: center;
+                                        }
+                                         span_big {
+                                            display: inline-flex;
+                                            width: 120px;
+                                            height: 120px;
+                                            background-color: white;
+                                            justify-content: center;
+                                            align-items: center;
+                                        }
+                                    </style>
+                                    <span_time class="border border-primary rounded">10 дней</span_time>
+                                    <span_time class="border border-primary rounded">5 часов</span_time>
+                                    <span_time class="border border-primary rounded">8 минут</span_time>
+                                    <p><br><a href="{% url 'send_email_stats' %}" class="genric-btn info-border">Подключиться</a></p>
+                                </div>
+                            </div>
+                                <div class="single-generating d-flex mb-30">
+                                <div class="generating-cap">
+                                    <h4>Статистика</h4>
+                                    <div class="table-responsive">
+                                      <table class="table">
+                                      <caption><a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Отправить статистику на почту</a>
+                                </caption>
+                                      <thead>
+                                        <tr>
+                                          <th scope="col">#</th>
+                                          <th scope="col">First</th>
+                                          <th scope="col">Last</th>
+                                          <th scope="col">Handle</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <th scope="row">1</th>
+                                          <td>Mark</td>
+                                          <td>Otto asdas asd as</td>
+                                          <td><div class="progress">
+									<div class="progress-bar color-1" role="progressbar" style="width: 100%"
+										aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+								</div></td>
+                                        </tr>
+                                        <tr>
+                                          <th scope="row">2</th>
+                                          <td>Jacob</td>
+                                          <td>Thornton</td>
+                                          <td><div class="progress">
+									<div class="progress-bar color-2" role="progressbar" style="width: 80%"
+										aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+								</div></td>
+                                        </tr>
+                                        <tr>
+                                          <th scope="row">3</th>
+                                          <td>Larry</td>
+                                          <td>the Bird</td>
+                                          <td><div class="progress">
+									<div class="progress-bar color-3" role="progressbar" style="width: 30%"
+										aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+								</div></td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                 <div class="row">
+                 </div>
+            </div>
+        </div>
+        <!-- Generating End -->
 <div class="col-md-3">
     <h3>Личный кабинет</h3>
     <div class="list-group">

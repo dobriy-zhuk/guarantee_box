@@ -54,7 +54,7 @@
 <body>
 <!-- Preloader Start -->
 <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader d-flex align-items-center justify-content-center" >
             <div class="preloader-inner position-relative">
                 <div class="preloader-circle"></div>
                 <div class="preloader-img pere-text">
@@ -65,13 +65,13 @@
     </div>
 <!-- Preloader Start -->
     <header>
-       <div class="header-area header-transparrent ">
+       <div class="header-area header-transparrent">
             <div class="main-header header-sticky">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-xl-2 col-lg-2 col-md-1">
                             <div class="logo">
-                                <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" alt="" width="50px"></a>
+                                <a href="{% url 'index' %}"><img src="{% static 'images/logo-rus.png' %}" alt="" height="75px"></a>
                             </div>
                         </div>
                         <div class="col-xl-8 col-lg-8 col-md-8">
@@ -80,8 +80,8 @@
                                     <ul id="navigation">
                                         <li><a href="index.html">Главная</a></li>
                                         <li><a href="about.html">Курсы</a></li>
-                                        <li><a href="services.html">Services</a></li>
-                                        <li><a href="{% url 'profile' %}">Профиль</a></li>
+                                        <li><a href="services.html">Урок</a></li>
+                                        <li><a href="{% url 'profile' %}">Оплата</a></li>
                                         {% if request.user.is_authenticated %}
                                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                                         <li><a href="{% url 'logout' %}">Выйти</a></li>
@@ -110,60 +110,31 @@
     </header>
 <main>
 
-        <!-- Slider Area Start-->
-        <div class="slider-area ">
-            <div class="slider-active">
-                <div class="single-slider slider-height d-flex align-items-center" data-background="assets/img/hero/h1_hero.png">
-                    <div class="container">
-                        <div class="row d-flex align-items-center">
-                            <div class="col-lg-7 col-md-9 ">
-                                <div class="hero__caption">
-                                    <h1 data-animation="fadeInLeft" data-delay=".4s">We Collect<br> High Quality Leads</h1>
-                                    <p data-animation="fadeInLeft" data-delay=".6s">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravi.</p>
-                                    <!-- Hero-btn -->
-                                    <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s">
-                                        <a href="industries.html" class="btn hero-btn">Contact Us</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="hero__img d-none d-lg-block" data-animation="fadeInRight" data-delay="1s">
-                                    <img src="assets/img/hero/hero_right.png" alt="">
-                                </div>
-                            </div>
-                        </div>
+    <!-- Slider Area Start-->
+    <div class="services-area">
+        <div class="container">
+            <!-- Section-tittle -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-tittle text-center mb-80">
+                        <span>{{ request.user }}</span>
+                        <h2>Личный кабинет​</h2>
                     </div>
                 </div>
-                <div class="single-slider slider-height d-flex align-items-center" data-background="assets/img/hero/h1_hero.png">
-                    <div class="container">
-                        <div class="row d-flex align-items-center">
-                            <div class="col-lg-7 col-md-9 ">
-                                <div class="hero__caption">
-                                    <h1 data-animation="fadeInLeft" data-delay=".4s">We Collect<br> High Quality Leads</h1>
-                                    <p data-animation="fadeInLeft" data-delay=".6s">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravi.</p>
-                                    <!-- Hero-btn -->
-                                    <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s">
-                                        <a href="industries.html" class="btn hero-btn">Contact Us</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="hero__img d-none d-lg-block" data-animation="fadeInRight" data-delay="1s">
-                                    <img src="assets/img/hero/hero_right.png" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
-        <!-- Slider Area End-->
-        {% block content %}
+    </div>
+    {% block content %}
         {% endblock %}
+    <!-- Slider Area End-->
         <!-- What We do start-->
         <div class="what-we-do we-padding">
             <div class="container">
                 <!-- Section-tittle -->
+                <div class="row d-flex">
+
+                </div>
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
                         <div class="section-tittle text-center">
@@ -562,7 +533,7 @@
 
     </main>
    <footer>
-      <div class="footer-main" data-background="assets/img/shape/footer_bg.png">
+      <div class="footer-main" data-background="{% static 'images/shape/footer_bg.png' %}">
         <div class="footer-area footer-padding">
             <div class="container">
                 <div class="row d-flex justify-content-between">
