@@ -92,7 +92,7 @@ class Course(models.Model):
     class Meta:
         ordering = ['-created']
         permissions = (
-                ('course_done', 'Course done'),
+            ('course_done', 'Course done'),
         )
 
     def __str__(self):
@@ -103,14 +103,14 @@ class Module(models.Model):
     class Meta:
         ordering = ['order']
         permissions = (
-                ('view_current_module', 'Can view current module'),
-            )
+            ('view_current_module', 'Can view current module'),
+        )
 
     course = models.ForeignKey(
         'Course',
         related_name='modules',
         on_delete=models.CASCADE,
-        )
+    )
     title = models.CharField(max_length=250)
     description = models.TextField(blank=True)
     order = OrderField(blank=True, for_fields=['course'])
@@ -127,12 +127,14 @@ class Content(models.Model):
         'Module',
         related_name='contents',
         on_delete=models.CASCADE,
-        )
+    )
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
-        limit_choices_to={
-            'model__in': (
+        limit_choices_to=
+        {
+            'model__in': 
+            (
                 'text',
                 'video',
                 'image',
@@ -140,9 +142,9 @@ class Content(models.Model):
                 'question',
                 'blockly',
                 'c_plus_plus',
-                )
-            }
-        )
+            )
+        }
+    )
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
     order = OrderField(blank=True, for_fields=['module'])

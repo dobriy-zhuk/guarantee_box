@@ -331,9 +331,15 @@ class StudentCourseDetailView(DetailView):
         if 'module_id' in self.kwargs:
         # get current module
             context['module'] = course.modules.get(
-                id=self.kwargs['module_id'])
+                id=self.kwargs['module_id']
+            )
         else:
         # get first module
-            context['module'] = course.modules.all()[0]
+            try:
+                context['module'] = course.modules.all()[0]
+            except IndexError:
+                # TODO: добавить тут или в шаблон вывод текста, что
+                #  не были добавлены уроки
+                context['module'] = course.modules.none()
             assign_perm('view_current_module', context['user'], context['module'])
         return context
