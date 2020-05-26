@@ -91,6 +91,20 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
 
 
 class ContentCreateUpdateView(TemplateResponseMixin, View):
+    """Describe here!!!
+
+    Note: Я пока не знаю почему на 141 и на 166 требует request.user,
+    а не request.user.teacher, хотя
+    owner в модели Course это ссылка на Teacher.
+    TODO: разобраться почему так происходит
+
+    Arguments:
+        TemplateResponseMixin {[type]} -- [description]
+        View {[type]} -- [description]
+
+    Returns:
+        [type] -- [description]
+    """
     module = None
     model = None
     obj = None
@@ -98,56 +112,71 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
 
 
     def get_model(self, model_name):
-        if model_name in ['text', 'video', 'image', 'file', 'question', 'blockly', 'c_plus_plus', 'drag_and_drop']:
-            return apps.get_model(app_label='courses',
-                                  model_name = model_name)
+        content_list = [
+            'text', 'video', 'image', 'file',
+            'question', 'blockly', 'c_plus_plus', 'drag_and_drop',
+        ]
+        if model_name in content_list:
+            return apps.get_model(
+                app_label='courses',
+                model_name = model_name,
+            )
         return None
 
     def get_form(self, model, *args, **kwargs):
-        Form = modelform_factory(model, exclude=['owner',
-                                                 'order',
-                                                 'created',
-                                                 'updated'])
+        Form = modelform_factory(
+            model, exclude=['owner', 'order', 'created', 'updated']
+        )
         return Form(*args, **kwargs)
 
     def dispatch(self, request, module_id, model_name, id = None):
         self.module = get_object_or_404(
             Module,
             id = module_id,
-            course__owner = request.user.teacher
+            course__owner = request.user.teacher,
         )
         self.model = self.get_model(model_name)
         if id:
             self.obj = get_object_or_404(
                 self.model,
                 id = id,
-                owner = request.user
+                # owner = request.user.teacher,
+                owner = request.user,
             )
-        return super(ContentCreateUpdateView, self).dispatch(request, module_id, model_name, id)
+        return super(ContentCreateUpdateView, self).dispatch(
+            request, module_id, model_name, id
+        )
 
     def get(self, request, module_id, model_name, id=None):
         form = self.get_form(self.model, instance=self.obj)
-        return self.render_to_response({'form': form,
-                                        'object': self.obj,
-                                        'model': model_name})
+        return self.render_to_response(
+            {
+                'form': form,
+                'object': self.obj,
+                'model': model_name,
+            }
+        )
 
     def post(self, request, module_id, model_name, id=None):
-        form = self.get_form(self.model,
-                             instance=self.obj, data=request.POST,
-                             files=request.FILES)
+        form = self.get_form(
+            self.model,
+            instance=self.obj, data=request.POST,
+            files=request.FILES,
+        )
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.owner = request.user.teacher
+            # obj.owner = request.user.teacher
+            obj.owner = request.user
             obj.save()
             if not id:
                 # new content
-                Content.objects.create(module=self.module,
-                                       item = obj)
-            return redirect('module_content_list',
-                            self.module.id)
+                Content.objects.create(
+                    module=self.module,
+                    item = obj
+                )
+            return redirect('module_content_list', self.module.id)
 
-        return self.render_to_response({'form': form,
-                                        'object': self.obj})
+        return self.render_to_response({'form': form, 'object': self.obj})
 
 
 class ContentDeleteView(View):
