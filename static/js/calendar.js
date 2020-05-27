@@ -155,7 +155,6 @@ function new_event(event) {
             $("#dialog").hide(250);
 
             const data={
-                 teacher: 'demo',
                  parent_name: parents_name,
                  student_name: kids_name,
                  phone: phone,

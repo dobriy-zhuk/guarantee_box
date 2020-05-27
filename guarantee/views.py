@@ -232,7 +232,6 @@ class CalendarView(View):
 
         JS from calendar.js:
         const data={
-                teacher: 'demo',
                 parent_name: parents_name,
                 student_name: kids_name,
                 phone: phone,
@@ -260,12 +259,13 @@ class CalendarView(View):
         
         end_timestamp = (start_timestamp + datetime.timedelta(minutes=45))
 
-        Schedule.objects.create(
+        schedule = Schedule.objects.create(
             user=user,
             comment=comment,
             start_timestamp=start_timestamp,
             end_timestamp=end_timestamp,
         )
+        schedule.save()
         
         return render(
             request=request,
