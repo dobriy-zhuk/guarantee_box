@@ -34,8 +34,6 @@ class Student(models.Model):
 
     Student phone is writed in comment
 
-    TODO: нужно-ли добавить поле parent_name?
-
     Arguments:
         models.Model: superclass which describes fields for database
     """
@@ -92,19 +90,26 @@ class Schedule(models.Model):
     start_timestamp: начальная отметка времени, когда user занят
     end_timestamp: конечная отметка времени, когда user занят
 
-    TODO:
-    Только будет дополнительное поле, что это преподаватель или ученик
     Когда я создаю пользователя, то, только в связанных таблицах Teacher или 
     Student он указывает свое имя, которео можно подтянуть user.student или
     user.teacher. Если хотите взять узнать телефон, то нужно вызвать
     user.student.phone или user.teacher.phone
 
-    Comment (str): parent_name + parent_phone + student_name 
+    Comment (str): '{0} имя родителя, {1} тел. родителя,
+            {2} имя ученика'.format(
+                parent_name, parent_phone, student_name,
+            )
 
     Схема Schedule выяглядит таким образом
 
-    User|Comment|Start_timestamp|End_timestamp
-    ----+-------+---------------+-------------
+    User | Comment | Start_timestamp | End_timestamp
+    -----+---------+-----------------+--------------
+    user1            29.12.2020 12:45  29.12.2020 13:15
+    user1            30.12.2020 12:45  30.12.2020 13:15
+
+    user1.teacher = True
+    timedelta = user1.end_timestamp - user1.start_timestamp
+    timedelta : time when teacher is busy
     
     theory:
         timedelta = datetime.timedelta(minutes=45)
@@ -134,4 +139,4 @@ class Schedule(models.Model):
             self.parent_name: Instance parent_name
             self.student_name: Instance student_name
         """
-        return self.user + ' schedule'
+        return '{0} schedule'.format(self.user)
