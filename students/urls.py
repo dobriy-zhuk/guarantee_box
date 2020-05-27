@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.get_profile, name='student'),
+    path('payment/', views.get_payment, name='payment'),
     path(
          'send-stats/',
          views.send_stats_to_email,

@@ -265,6 +265,17 @@ def get_profile(request):
     )
 
 
+@login_required(login_url='/accounts/login/')
+def get_payment(request):
+    student = Student.objects.get(user=request.user)
+    #student = get_object_or_404(Student, user=request.user)
+    return render(
+        request=request,
+        template_name='students/student/payment.html',
+        context={'student': student},
+    )
+
+
 class StudentEnrollCourseView(LoginRequiredMixin, FormView):
     course = None
     form_class = CourseEnrollForm

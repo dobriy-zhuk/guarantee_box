@@ -78,10 +78,10 @@
                             <div class="main-menu f-right d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a href="index.html">Главная</a></li>
+                                        <li><a href="{% url 'index' %}">Главная</a></li>
                                         <li><a href="about.html">Курсы</a></li>
                                         <li><a href="services.html">Урок</a></li>
-                                        <li><a href="{% url 'profile' %}">Оплата</a></li>
+                                        <li><a href="{% url 'payment' %}">Оплата</a></li>
                                         {% if request.user.is_authenticated %}
                                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                                         <li><a href="{% url 'logout' %}">Выйти</a></li>
@@ -110,21 +110,7 @@
     </header>
 <main>
 
-    <!-- Slider Area Start-->
-    <div class="services-area">
-        <div class="container">
-            <!-- Section-tittle -->
-            <div class="row d-flex justify-content-center">
-                <div class="col-lg-8">
-                    <div class="section-tittle text-center mb-80">
-                        <span>{{ request.user }}</span>
-                        <h2>Личный кабинет​</h2>
-                    </div>
-                </div>
 
-            </div>
-        </div>
-    </div>
     {% block content %}
         {% endblock %}
     <!-- Slider Area End-->
@@ -273,70 +259,7 @@
             </div>
         </div>
         <!-- Generating End -->
-        <!--Choose Best start-->
-        <div class="choose-best choose-padding">
-            <div class="container">
-                <!-- Section-tittle -->
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-7">
-                        <div class="section-tittle text-center">
-                            <h2>Choose Your Very Best Pricing Plan </h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-choose text-center mb-30">
-                            <div class="do-icon">
-                                <span  class="flaticon-growth"></span>
-                            </div>
-                            <div class="do-caption">
-                                <h4>$ 05.00</h4>
-                                <ul>
-                                    <li>Increase traffic 50%</li>
-                                    <li>Social Media Marketing</li>
-                                    <li>10 Free Optimization</li>
-                                    <li>24/7  support</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="col-lg-4 col-md-6">
-                        <div class="single-choose active text-center mb-30">
-                            <div class="do-icon">
-                                <span class="flaticon-award"></span>
-                            </div>
-                            <div class="do-caption">
-                                <h4>$ 20.00</h4>
-                                <ul>
-                                    <li>Increase traffic 50%</li>
-                                    <li>Social Media Marketing</li>
-                                    <li>10 Free Optimization</li>
-                                    <li>24/7  support</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="col-lg-4 col-md-6">
-                        <div class="single-choose text-center mb-30">
-                            <div class="do-icon">
-                                <span  class="flaticon-project"></span>
-                            </div>
-                            <div class="do-caption">
-                                <h4>$ 30.00</h4>
-                                <ul>
-                                    <li>Increase traffic 50%</li>
-                                    <li>Social Media Marketing</li>
-                                    <li>10 Free Optimization</li>
-                                    <li>24/7  support</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Choose Best do End-->
+
         <!-- Visit Stuffs Start -->
         <div class="visit-area fix visite-padding">
             <div class="container">
