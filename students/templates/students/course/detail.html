@@ -1,46 +1,63 @@
-{% extends "base/base_courses.html" %}
+{% extends "base/base_profile.html" %}
 {% block title %}
 {{ object.title }}
 {% endblock %}
 {% load guardian_tags %}
 {% load index %}
+
 {% block content %}
-<div class="container">
-    <h1>{{ module.title }}</h1>
-    <div class="row">
-        <div class="col-md-3">
-            <h3>Модули</h3>
-            <div class="list-group">
-                {% for m in object.modules.all %}
-
-                <a data-id="{{ m.id }}" {% if m == module and user_permission|index:forloop.counter0 == True %}
-                    class="list-group-item active" href="{% url 'student_course_detail_module' object.id m.id %}"
-                    {% elif m != module and user_permission|index:forloop.counter0 == True %} class="list-group-item"
-                    href="{% url 'student_course_detail_module' object.id m.id %}"
-                    {% elif user_permission|index:forloop.counter0 == False %} class="list-group-item disabled"
-                    {% endif %}>
-                    <h4 class="list-group-item-heading">Модуль <span class="order">
-                            {{ m.order|add:1 }}
-                        </span></h4>
-                    <p class="list-group-item-text">{{ m.title }}</p>
-                </a>
-                {% empty %}
-                <li>No modules yet.</li>
-                {% endfor %}
+   <section class="blog_area single-post-area section-padding" style="margin-top: 150px">
+      <div class="container">
+      <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center">
+                            <h2>{{ object.title }}</h2>
+                        </div>
+                    </div>
+                </div>
+         <div class="row">
+             <div class="col-lg-4">
+               <div class="blog_right_sidebar">
+                  <aside class="single_sidebar_widget post_category_widget">
+                     <h4 class="widget_title">Теория и практика</h4>
+                     <ul class="list cat-list">
+                         {% for m in object.modules.all %}
+                            <li>
+                               <a data-id="{{ m.id }}" {% if m == module and user_permission|index:forloop.counter0 == True %}
+                                    class="d-flex active" href="{% url 'student_course_detail_module' object.id m.id %}"
+                                    {% elif m != module and user_permission|index:forloop.counter0 == True %} class="d-flex"
+                                    href="{% url 'student_course_detail_module' object.id m.id %}"
+                                    {% elif user_permission|index:forloop.counter0 == False %} class="d-flex disabled"
+                                    {% endif %}>
+                                  <p>Занятие {{ m.order|add:1 }}. {{ m.title }}</p>
+                               </a>
+                            </li>
+                        {% empty %}
+                        <li>No modules yet.</li>
+                    {% endfor %}
+                     </ul>
+                  </aside>
+               </div>
             </div>
-        </div>
-        <div class="col-md-9">
-
-            {% for content in module.contents.all %}
-            <div class="row">
-                {% with item=content.item %}
-                <h2>{{ item.title }}</h2>
-                {{ item.render }}
-                {% endwith %}
+            <div class="col-lg-8 posts-list">
+               <div class="single-post">
+                  {% for content in module.contents.all %}
+                  <div class="blog_details">
+                     {% with item=content.item %}
+                     <h2>{{ module.title }}
+                     </h2>
+                     <p>
+                       {{ item.render }}
+                     </p>
+                      {% endwith %}
+                  </div>
+                    {% endfor %}
+               </div>
             </div>
-            <br>
-            {% endfor %}
-        </div>
-    </div>
-</div>
+         </div>
+      </div>
+   </section>
 {% endblock %}
+
+
+
