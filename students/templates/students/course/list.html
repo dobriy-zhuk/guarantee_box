@@ -7,13 +7,16 @@
     {% for course in object_list %}
     <div class="course-info">
         <h3>{{ course.title }}</h3>
+        <!-- TODO: test it -->
+        <p><a href="{% url 'student_course_detail' course.id %}"> Access contents</a></p>
     </div>
     {% endfor %}
-    {% else %}
-    <p>
-        You are not enrolled in any courses yet.
-        <a href="{% url 'course_list' %}">Browse courses</a> to enroll in a course.
-    </p>
-    {% endif %}
+</div>
+{% else %}
+<p>
+    You are not enrolled in any courses yet.
+    <a href="{% url 'course_list' %}">Browse courses</a> to enroll in a course.
+</p>
+{% endif %}
 </div>
 {% endblock %}
