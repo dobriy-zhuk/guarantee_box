@@ -58,7 +58,7 @@ class Student(models.Model):
         """Override the str() behavior, for instance of class.
 
         Returns:
-            self.title: Instance title
+            self.name: Instance name
         """
         return self.name
 
@@ -70,6 +70,11 @@ class Teacher(models.Model):
     city = models.CharField(max_length=60, default='')
     status = models.ForeignKey(
         TeacherStatus, default=1, on_delete=models.CASCADE
+    )
+    students = models.ManyToManyField(
+        'Student',
+        related_name='teachers',
+        blank=True,
     )
 
     def __str__(self):
