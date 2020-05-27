@@ -2,7 +2,9 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, JsonResponse
+from django.db import DatabaseError
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
@@ -12,7 +14,7 @@ from django.utils.decorators import method_decorator
 import datetime
 import time
 
-from students.models import Teacher, TeacherSchedule
+from students.models import Teacher, Schedule, Student
 
 
 
@@ -146,18 +148,14 @@ def get_json_busy_datetime(request, api_version):
         request: client request
 
     Returns:
-        JsonResponse (json): 
-        { 
+        JsonResponse (json):
+        {
             'shedule': [
                 {
-                    'id': 2,
-                    'teacher_id': 1,
                     'start_timestamp': '2020-05-15T22:42:37.763Z',
                     'end_timestamp': '2020-05-15T23:27:37.763Z'
                 },
                 {
-                    'id': 3,
-                    'teacher_id': 1,
                     'start_timestamp': '2020-05-16T22:42:37.763Z',
                     'end_timestamp': '2020-05-16T23:27:37.763Z'
                 }
@@ -166,16 +164,17 @@ def get_json_busy_datetime(request, api_version):
 
     """
     if api_version == 0:
-        schedule = list(TeacherSchedule.objects.values(
-                'id',
-                'teacher_id',
-                'start_timestamp',
-                'end_timestamp',
-                )
+        try:
+            schedule = list(Schedule.objects.values(
+                'start_timestamp', 'end_timestamp',
+                ).distinct(),
             )
+        except DatabaseError:
+            schedule = []
+
         return JsonResponse({'shedule': schedule})
-    else:
-        return JsonResponse({})
+
+    return JsonResponse({})
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -210,7 +209,6 @@ class CalendarView(View):
     def post(self, request):
         """Reseive json with day and time.
 
-
         Student set time which he/she wants
         to do a free trial lesson
 
@@ -232,7 +230,6 @@ class CalendarView(View):
         date and January 1, 1970 at UTC. You can convert
         a timestamp to date using fromtimestamp() method.
 
-
         JS from calendar.js:
         const data={
                 teacher: 'demo',
@@ -245,11 +242,17 @@ class CalendarView(View):
         Arguments:
             request: client request
         """
-        teacher = Teacher.objects.get(name='schedule_teacher')
+        user = User.objects.get(name='schedule_user')
 
         parent_name = request.POST.get('parent_name')
+        parent_phone = request.POST.get('phone')
         student_name = request.POST.get('student_name')
-        phone = request.POST.get('phone')
+
+        comment = '{0} имя родителя,\
+            {1} тел. родителя,\
+            {2} имя ученика'.format(
+                parent_name, parent_phone, student_name,
+            )
 
         start_timestamp = datetime.datetime.fromtimestamp(
             int(request.POST.get('start_timestamp')) / 1000.0,
@@ -257,13 +260,11 @@ class CalendarView(View):
         
         end_timestamp = (start_timestamp + datetime.timedelta(minutes=45))
 
-        teacher_schedule = TeacherSchedule.objects.create(
-            teacher = teacher,
-            parent_name=parent_name,
-            student_name=student_name,
-            phone=phone,
+        Schedule.objects.create(
+            user=user,
+            comment=comment,
             start_timestamp=start_timestamp,
-            end_timestamp=end_timestamp
+            end_timestamp=end_timestamp,
         )
         
         return render(
@@ -274,4 +275,4 @@ class CalendarView(View):
 
 @login_required
 def teacher(request):
-    return render(request, "teacher/profile.html", {})
+    return render(request, 'teacher/profile.html', {})
