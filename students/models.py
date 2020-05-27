@@ -32,6 +32,10 @@ class Student(models.Model):
     amount: account balance, how much money does the student have
     currency: RUB, USD or EUR
 
+    Student phone is writed in comment
+
+    TODO: нужно-ли добавить поле parent_name?
+
     Arguments:
         models.Model: superclass which describes fields for database
     """
@@ -39,7 +43,9 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     age = models.PositiveSmallIntegerField(default=0)
-    phone = models.TextField(max_length=500, blank=True, default='712312')
+    parent_phone = models.TextField(
+        max_length=500, blank=True, default='712312',
+    )
     city = models.CharField(max_length=60, default='')
     amount = models.IntegerField(default=0)
     status = models.ForeignKey(
@@ -75,19 +81,34 @@ class Teacher(models.Model):
         return self.name
 
 
-class TeacherSchedule(models.Model):
-    """Class describe teacher scheduler.
+class Schedule(models.Model):
+    """Class describe user scheduler.
 
-    start_timestamp: начальная отметка времени, когда преподаватель занят
-    end_timestamp: конечная отметка времени, когда преподаватель занят
+    start_timestamp: начальная отметка времени, когда user занят
+    end_timestamp: конечная отметка времени, когда user занят
 
+    TODO:
+    Только будет дополнительное поле, что это преподаватель или ученик
+    Когда я создаю пользователя, то, только в связанных таблицах Teacher или 
+    Student он указывает свое имя, которео можно подтянуть user.student или
+    user.teacher. Если хотите взять узнать телефон, то нужно вызвать
+    user.student.phone или user.teacher.phone
+
+    Comment (str): parent_name + parent_phone + student_name 
+
+    Схема Schedule выяглядит таким образом
+
+    User|Comment|Start_timestamp|End_timestamp
+    ----+-------+---------------+-------------
+    
     theory:
-        timedelta = datetime.timedelta(minumanage.py migrate --faketes=45)
+        timedelta = datetime.timedelta(minutes=45)
         
         what can be transferred to timedelta:
         class datetime.timedelta(
             days=0, seconds=0, microseconds=0,
-            milliseconds=0, minutes=0, hours=0, weeks=0
+            milliseconds=0, minutes=45, hours=0, weeks=0
+        )
 
     example:
         end_timestamp = start_timestamp + datetime.timedelta(minutes=45)
@@ -96,10 +117,8 @@ class TeacherSchedule(models.Model):
         models.Model: superclass which describes fields for database
     """
 
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    parent_name = models.CharField(max_length=200)
-    student_name = models.CharField(max_length=200)
-    phone = models.TextField(max_length=500, blank=True, default='79151761287')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.CharField(max_length=300, blank=True)
     start_timestamp = models.DateTimeField()
     end_timestamp = models.DateTimeField()
 
@@ -110,7 +129,4 @@ class TeacherSchedule(models.Model):
             self.parent_name: Instance parent_name
             self.student_name: Instance student_name
         """
-        return (
-        'Родитель ' + self.parent_name +
-        ' ребёнок ' + self.student_name
-        )
+        return self.user + ' schedule'
