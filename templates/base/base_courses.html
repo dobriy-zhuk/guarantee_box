@@ -87,13 +87,12 @@
                                         <li><a href="{% url 'logout' %}">Выйти</a></li>
                                         {% else %}
                                         <li><a href="{% url 'login' %}">Войти</a></li>
-                                        <li><a href="{% url 'student_calendar' %}">Пробный урок</a></li>
                                         {% endif %}
                                     </ul>
                                 </nav>
                             </div>
                         </div>
-                        {% if request.user.is_authenticated %}
+                        {% if request.user.is_authenticated == False %}
                         <div class="col-xl-2 col-lg-2 col-md-3">
                             <div class="header-right-btn f-right d-none d-lg-block">
                                 <a href="{% url 'student_calendar' %}" class="btn header-btn">Пробный урок</a>
