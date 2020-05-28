@@ -180,7 +180,7 @@ class ContentDeleteView(View):
         content = get_object_or_404(
             Content,
             id=id,
-            module__course__owner=request.user
+            module__course__owner=request.user.teacher
         )
         module = content.module
         content.item.delete()
