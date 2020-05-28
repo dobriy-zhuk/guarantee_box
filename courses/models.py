@@ -7,6 +7,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from courses.fields import OrderField
 from django.template.loader import render_to_string
 from students.models import Student, Teacher
+from embed_video.fields import EmbedVideoField
 
 
 class Subject(models.Model):

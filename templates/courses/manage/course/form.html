@@ -1,4 +1,4 @@
-{% extends "base/base_courses.html" %}
+{% extends "base/base_teacher.html" %}
 {% block title %}
   {% if object %}
 Редактировать курс "{{ object.title }}" {% else %}
@@ -6,17 +6,29 @@
   {% endif %}
 {% endblock %}
 {% block content %}
-    <div class="container">
-  <h1>{% if object %} Редактировать курс "{{ object.title }}"
-    {% else %}
-      Создать новый курс
-    {% endif %}
-  </h1>
-    <h2>Информация о курсе</h2>
-    <form action="." method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Сохранить курс"></p>
-    </form>
-</div>
+        <div class="choose-best choose-padding">
+            <div class="container">
+                <!-- Section-tittle -->
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="section-tittle text-center">
+                            <h2>{% if object %} Описание курса "{{ object.title }}"
+                                {% else %}
+                                  Создать новый курс
+                                {% endif %}
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <form action="." method="post">
+                            {{ form.as_p }}
+                            {% csrf_token %}
+                       <input type="submit" class="genric-btn info-border radius btn-block" value="Сохранить описание курса">
+                    </form>
+                        </div>
+                </div>
+            </div>
+        </div>
 {% endblock %}

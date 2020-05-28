@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'students.apps.StudentsConfig',
     'guardian',
     'managers',
+    'embed_video',
 ]
 
 STATIC_URL = '/static/'

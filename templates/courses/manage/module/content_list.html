@@ -1,66 +1,74 @@
-{% extends "base/base_courses.html" %}
+{% extends "base/base_teacher.html" %}
 {% load course %}
 {% block title %}
 Module {{ module.order|add:1 }}: {{ module.title }}
 {% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row">
-    <h1>
-{% with course=module.course %}
-<h1>Курс "{{ course.title }}"</h1>
-</h1>
-    </div>
-    <div class="row">
-            <div class="col-md-3">
-                    <div class="list-group">
-                    {% for m in course.modules.all %}
-                        <a data-id="{{ m.id }}" {% if m == module %} class="list-group-item active" {% else %} class="list-group-item" {% endif %} href="{% url "module_content_list" m.id %}" >
-                            <h4 class="list-group-item-heading">{{ m.order|add:1 }}. {{ m.title }}</h4>
-                            <p class="list-group-item-text">{{ m.total_modules }} модуль(ей)</p>
-                        </a>
-                        {% empty %}
-                        <a class="list-group-item">Уроки отсутствуют.</a>
-                    {% endfor %}
-                    <p><a href="{% url "course_module_update" course.id %}">
-                    Редактировать уроки</a></p>
+    {% with course=module.course %}
+      <section class="blog_area single-post-area section-padding" style="margin-top: 150px">
+      <div class="container">
+      <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center">
+                            <h2>{{ course.title }}</h2>
+                        </div>
                     </div>
                 </div>
-<div class="col-md-9">
-<h2>{{ module.order|add:1 }}. {{ module.title }}</h2>
-<h3>Содержание:</h3>
-{% for content in module.contents.all %}
-<div data-id="{{ content.id }}"> {% with item=content.item %}
-<p>{{ item }} ({{ item|model_name }})</p>
-<a href="{% url "module_content_update" module.id item|model_name item.id %}">Edit</a>
-<form action="{% url "module_content_delete" content.id %}"
-             method="post">
-              <input type="submit" value="Delete">
-              {% csrf_token %}
-            </form>
-          {% endwith %}
-        </div>
-      {% empty %}
-<p>This module has no contents yet.</p>
-{% endfor %}
-<br>
-<h3>Add new content:</h3>
-    <ul class="content-types">
-        <li><a href="{% url "module_content_create" module.id "text" %}"> Text</a></li>
-        <li><a href="{% url "module_content_create" module.id "image" %}"> Image</a></li>
-        <li><a href="{% url "module_content_create" module.id "video" %}"> Video</a></li>
-        <li><a href="{% url "module_content_create" module.id "file" %}"> File</a></li>
-        <li><a href="{% url "module_content_create" module.id "question" %}">Question</a></li>
-        <li><a href="{% url "module_content_create" module.id "blockly" %}">Blockly</a></li>
-        <li><a href="{% url "module_content_create" module.id "c_plus_plus" %}">C++ Compiler</a></li>
-        <li><a href="{% url "module_content_create" module.id "drag_and_drop" %}">Drag and Drop Question</a></li>
-    </ul>
-</div>
-    </div>
-    </div>
-
-
-
-
+         <div class="row">
+             <div class="col-lg-4">
+               <div class="blog_right_sidebar">
+                  <aside class="single_sidebar_widget post_category_widget">
+                     <h4 class="widget_title">Уроки курса</h4>
+                     <ul class="list cat-list">
+                         {% for m in course.modules.all %}
+                            <li>
+                               <a data-id="{{ m.id }}" {% if m == module %} style="color: red"  {% endif %} href="{% url "module_content_list" m.id %}" >
+                                  Занятие {{ m.order|add:1 }}. {{ m.title }} ({{ m.total_modules }})
+                               </a>
+                            </li>
+                        {% empty %}
+                        <li>Уроки отсутствуют.</li>
+                    {% endfor %}
+                     <p><a style="color: black" href="{% url "course_module_update" course.id %}">
+                    Редактировать уроки</a></p>
+                     </ul>
+                  </aside>
+               </div>
+            </div>
+            <div class="col-lg-8 posts-list">
+               <div class="single-post">
+               <h3>Схема урока</h3>
+                  {% for content in module.contents.all %}
+                  <div class="blog_details">
+                     {% with item=content.item %}
+                     <p>{{ item }} ({{ item|model_name }})</p>
+                       <a class="genric-btn info-border small" href="{% url "module_content_update" module.id item|model_name item.id %}">Изменить</a>
+                         <form action="{% url "module_content_delete" content.id %}" method="post">
+                            <input type="submit" class="genric-btn danger-border small" value="Удалить">
+                            {% csrf_token %}
+                         </form>
+                      {% endwith %}
+                  </div>
+                      {% empty %}
+                        <p>Этот урок не содержит обьектов.</p>
+                    {% endfor %}
+               <br>
+                <h3>Добавить новый обьект:</h3>
+                    <ul class="unordered-list">
+                        <li><a style="color: black" href="{% url "module_content_create" module.id "text" %}"> Тест</a></li>
+                        <li><a style="color: black" href="{% url "module_content_create" module.id "image" %}"> Изображение</a></li>
+                        <li><a style="color: black" href="{% url "module_content_create" module.id "video" %}"> Видео</a></li>
+                        <li><a style="color: black" href="{% url "module_content_create" module.id "file" %}"> Файл</a></li>
+                        <li><a style="color: black" href="{% url "module_content_create" module.id "question" %}">Стандартный вопрос</a></li>
+                        <li><a style="color: black" href="{% url "module_content_create" module.id "blockly" %}">Blockly</a></li>
+                        <li><a style="color: black" href="{% url "module_content_create" module.id "c_plus_plus" %}">C++ компилятор</a></li>
+                        <li><a style="color: black" href="{% url "module_content_create" module.id "drag_and_drop" %}">Drag and Drop вопрос</a></li>
+                    </ul>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
 {% endwith %}
+
 {% endblock %}
