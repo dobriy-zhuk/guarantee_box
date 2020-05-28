@@ -257,11 +257,18 @@ class StudentRegistrationView(View):
 @login_required(login_url='/accounts/login/')
 def get_profile(request):
     student = Student.objects.get(user=request.user)
-    #student = get_object_or_404(Student, user=request.user)
+    courses = Course.objects.all()
+    student_courses = Course.objects.filter(
+        students__in=[student],
+    )
     return render(
         request=request,
         template_name='students/student/profile.html',
-        context={'student': student},
+        context={
+            'student': student,
+            'courses': courses,
+            'student_courses': student_courses,
+        },
     )
 
 
@@ -354,3 +361,31 @@ class StudentCourseDetailView(DetailView):
                 context['module'] = course.modules.none()
             assign_perm('view_current_module', context['user'], context['module'])
         return context
+
+
+# def get_json_student_profile(request, api_version, student_id):
+#     """Returns json-file with student profile.
+
+#     Arguments:
+#         request: client request
+
+#     Returns:
+#         JsonResponse (json):
+#         {
+#             'profile': [
+#                 {
+                    
+#                 }
+#             ]
+#         }
+
+#     """
+#     if api_version == 0:
+#         try:
+#             profile = list(Student.objects.values().get(id=student_id))
+#         except DatabaseError:
+#             profile = []
+
+#         return JsonResponse({'profile': profile})
+
+#     return JsonResponse({})

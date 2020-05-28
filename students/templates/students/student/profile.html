@@ -263,7 +263,6 @@
         </a> -->
     </div>
 <!-- Передать данные из бека -->
-{{ student }}
     <div class="row">
         <div class="col-md-12">
             <h3>Главная</h3>
@@ -275,6 +274,19 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Курсы</h3>
+            Все курсы: <br>
+            {% for course in courses %}
+                Название курса: {{ course.title }} <br>
+                Описание курса: {{ course.slug }} <br>
+            {% endfor %} <br>
+
+            Курсы на которые зарегистрирован ученик: <br>
+            {% for student_course in student_courses %}
+                Название курса:{{ student_course.title }} <br>
+                Описание курса:{{ student_course.slug }} <br>
+            {% endfor %} <br>
+
+            <!-- Задание -->
             Список курсов всех + те на которые зарегистрирован ученик + их описание:<br>
             Расписание доступных курсов<br>
         </div>
@@ -290,26 +302,41 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Оплата</h3>
-            Остаток денежных средств в базе: <br>
+            Остаток денежных средств в базе: {{ student.amount }}<br>
             <button class="btn btn-success "> Оплатить</button>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <h3>Профиль</h3>
-            ФИО родителя: <br>
-            ФИО ученика: <br>
-            Аватар ученика: <br>
-            Возраст ученика: <br>
-            Емайл родителя: <br>
-            Емайл ученика: <br>
-            Телефон родителя: <br>
-            Телефон ученика: <br>
+            ФИО родителя: {{ student.parent_name }}<br>
+            ФИО ученика: {{ student.name }}<br>
+            Аватар ученика: {{ student.student_image }} <br>
+            Возраст ученика: {{ student.age }}<br>
+            Емайл родителя: {{ student.parent_email }} <br>
+            Емайл ученика: {{ student.email }}<br>
+            Телефон родителя: {{ student.parent_phone }}<br>
+            Телефон ученика: {{ student.phone }}<br>
+            <!-- <div id="profileAjax"></div> -->
         </div>
     </div>
 </div>
 <div class="col-md-9">
 
 </div>
+
+<!-- <script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            url: '/api/0/student_id/get-student-profile/',
+            success: function (response) {
+                profileJson = JSON.stringify(response);
+                $("#profileAjax").prepend(profileJson);
+            }
+        });
+    });
+</script> -->
 
 {% endblock %}

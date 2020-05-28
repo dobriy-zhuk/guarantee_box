@@ -40,16 +40,23 @@ class Student(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
+    parent_name = models.CharField(max_length=200, default='')
     age = models.PositiveSmallIntegerField(default=0)
+    phone = models.TextField(
+        max_length=500, blank=True, default='7123123',
+    )
     parent_phone = models.TextField(
         max_length=500, blank=True, default='712312',
     )
+    email = models.EmailField(max_length=254, default='')
+    parent_email = models.EmailField(max_length=254, default='')
     city = models.CharField(max_length=60, default='')
     amount = models.IntegerField(default=0)
     status = models.ForeignKey(
         StudentStatus, default=1, on_delete=models.CASCADE
     )
     currency = models.CharField(max_length=3, default='RUB')
+    student_image = models.ImageField(blank=True, default='')
     signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
