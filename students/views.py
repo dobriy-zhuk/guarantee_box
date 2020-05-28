@@ -261,6 +261,9 @@ def get_profile(request):
     student_courses = Course.objects.filter(
         students__in=[student],
     )
+    available_courses = Course.objects.exclude(
+        students__in=[student],
+    )
     return render(
         request=request,
         template_name='students/student/profile.html',
@@ -268,6 +271,7 @@ def get_profile(request):
             'student': student,
             'courses': courses,
             'student_courses': student_courses,
+            'available_courses': available_courses,
         },
     )
 

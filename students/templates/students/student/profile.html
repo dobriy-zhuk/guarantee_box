@@ -282,8 +282,14 @@
 
             Курсы на которые зарегистрирован ученик: <br>
             {% for student_course in student_courses %}
-                Название курса:{{ student_course.title }} <br>
-                Описание курса:{{ student_course.slug }} <br>
+                Название курса: {{ student_course.title }} <br>
+                Описание курса: {{ student_course.slug }} <br>
+            {% endfor %} <br>
+
+            Курсы доступные для ученика: <br>
+            {% for available_course in available_courses %}
+                Название курса: {{ available_course.title }} <br>
+                Описание курса: {{ available_course.slug }} <br>
             {% endfor %} <br>
 
             <!-- Задание -->
