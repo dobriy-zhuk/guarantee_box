@@ -63,6 +63,7 @@ class Course(models.Model):
         related_name='courses_joined',
         blank=True,
     )
+    course_image = models.ImageField(blank=True, default='')
 
     class Meta:
         ordering = ['-created']
@@ -102,6 +103,22 @@ class Module(models.Model):
 
         student.user.has_perm('module_done', module)
         False
+
+    How to get QuerySet of student.user permissions:
+
+        from guardians.shortcuts import get_objects_for_user
+
+        student.user.has_perm('module_done')
+        False
+        
+        You need to specifi the instanse for permission
+        student.user.has_perm('module_done', module)
+        True
+
+        get_objects_for_user(student.user, 'courses.module_done')
+                                              ^
+                                    name of app required
+        <QuerySet [<Module: 0. Переменные>]>
 
     Arguments:
         models {[type]} -- [description]

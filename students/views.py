@@ -1,23 +1,23 @@
 """Module where described the logic for user response."""
-from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User, Group
-from django.views.generic.edit import FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
-from courses.models import Course
-from django.views.generic.detail import DetailView
-from students.models import Student, Teacher
-from guardian.shortcuts import assign_perm
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import Group, User
 from django.contrib.sites.shortcuts import get_current_site
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views import View
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import FormView
+from guardian.shortcuts import assign_perm, get_objects_for_user
+
+from courses.models import Course, Module
+from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
+from students.models import Student, Teacher
 from students.tokens import account_activation_token
-from guardian.shortcuts import get_objects_for_user
 
 
 def get_available_lessons(request):
@@ -258,12 +258,21 @@ class StudentRegistrationView(View):
 def get_profile(request):
     student = Student.objects.get(user=request.user)
     courses = Course.objects.all()
-    student_courses = Course.objects.filter(
-        students__in=[student],
-    )
-    available_courses = Course.objects.exclude(
-        students__in=[student],
-    )
+    student_courses = courses.filter(students__in=[student])
+    available_courses = courses.exclude(students__in=[student])
+    
+    done_modules = get_objects_for_user(student.user, 'courses.module_done')
+    # student_modules = student_courses.modules.all()
+    # работает только для одного курса student_course.modules.all()
+    # нужно взять модули одного круса из них модули,
+    # которые закончил пользователь, а дальше по формуле ниже
+    # чтобы узнать процент завершенности курса
+    # 8 - пусть общее количество всех модулей в курсе
+    # 5 - пусть кол-во пройденных модулей в курсе
+    # 8 / 5 = 100 / x => 8 * x = 100 * 5 => x = (100 * 5) / 8   
+    # courses_with_done_modules = student_courses.intersection()
+
+    done_percent = 'answer'
     return render(
         request=request,
         template_name='students/student/profile.html',
@@ -272,6 +281,7 @@ def get_profile(request):
             'courses': courses,
             'student_courses': student_courses,
             'available_courses': available_courses,
+            'done_modules': done_modules,
         },
     )
 
