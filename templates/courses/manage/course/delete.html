@@ -1,12 +1,27 @@
-{% extends "base/base_courses.html" %}
-{% block title %}Delete course{% endblock %}
+{% extends "base/base_teacher.html" %}
+{% block title %}Удаление курса{% endblock %}
 {% block content %}
-<h1>Delete course "{{ object.title }}"</h1>
-  <div class="module">
-    <form action="" method="post">
-      {% csrf_token %}
-      <p>Are you sure you want to delete "{{ object }}"?</p>
-      <input type="submit" class="button" value="Confirm">
-    </form>
-  </div>
+    <div class="choose-best choose-padding">
+            <div class="container">
+                <!-- Section-tittle -->
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-12 text-center">
+                        <div class="section-tittle text-center">
+                            <h2>Удаление курса "{{ object.title }}"</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <form action="" method="post">
+                          {% csrf_token %}
+                          <p>Вы уверены, что хотите удалить курс "{{ object }}"? Действие необратимо!</p>
+                          <input type="submit" class="genric-btn danger-border radius" value="Подтвердить">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 {% endblock %}

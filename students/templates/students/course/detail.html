@@ -29,7 +29,7 @@
                                     href="{% url 'student_course_detail_module' object.id m.id %}"
                                     {% elif user_permission|index:forloop.counter0 == False %} class="d-flex disabled"
                                     {% endif %}>
-                                  <p>Занятие {{ m.order|add:1 }}. {{ m.title }}</p>
+                                  Занятие {{ m.order|add:1 }}. {{ m.title }}
                                </a>
                             </li>
                         {% empty %}

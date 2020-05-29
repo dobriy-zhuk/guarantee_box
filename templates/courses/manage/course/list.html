@@ -1,31 +1,46 @@
-{% extends "base/base_courses.html" %}
+{% extends "base/base_teacher.html" %}
 {% block title %}Все курсы Гарантия Знаний{% endblock %}
 {% block content %}
-  <div class="container">
-  <h1>Мои курсы</h1>
-{% for course in object_list %}
-    <div class="row">
-        <div class="col-md-12">
-            <h3>{{ course.title }}</h3>
-            <p>
-                <a href="{% url "course_edit" course.id %}">Изменить</a> |
-                <a href="{% url "course_delete" course.id %}">Удалить</a> |
-                <a href="{% url "course_module_update" course.id %}">Редактировать уроки</a>
-            {% if course.modules.count > 0 %}
-                <br><a href="{% url "module_content_list" course.modules.first.id %}"> Управление контентом</a>
-            {% endif %}
-         </p>
+    <div class="generating-area" style="margin-top: 150px">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center">
+                            <h2>Мои курсы</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                {% if object_list %}
+                    {% for course in object_list %}
+                    <div class="col-lg-6 col-md-6">
+                        <div class="single-generating d-flex mb-30">
+                            <div class="generating-icon">
+                                <span class="flaticon-chart"></span>
+                            </div>
+                            <div class="generating-cap">
+                                <h4>{{ course.title }}</h4>
+                                <p>{{ course.overview }}<br>
+                                        <a class="genric-btn info-border small" href="{% url "course_edit" course.id %}">Изменить</a> |
+                                        <a class="genric-btn info-border small" href="{% url "course_delete" course.id %}"> Удалить</a> |
+                                        <a class="genric-btn info-border small" href="{% url "course_module_update" course.id %}"> Редактировать уроки</a>
+                                    {% if course.modules.count > 0 %}
+                                         |<br><a class="genric-btn info-border small" href="{% url "module_content_list" course.modules.first.id %}"> Управление контентом</a>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <p>
+                   Вы еще не создали ни одного курса.
+                    <a style="color: black" href="{% url "course_create" %}" class="button">Создать новый курс</a>
+                </p>
+                {% endif %}
+                </div>
+            </div>
         </div>
-    </div>
-    {% empty %}
-    <div class="row">
-        <div class="col-md-12">
-    <p>Вы еще не создали ни одного курса.</p>
-        </div>
-    </div>
-{% endfor %}
-    <p>
-        <a href="{% url "course_create" %}" class="button">Создать новый курс</a>
-    </p>
-    </div>
+
+
 {% endblock %}

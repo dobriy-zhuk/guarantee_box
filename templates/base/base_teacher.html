@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}
+    <title>{% block title %}ГАРАНТИЯ ЗНАНИЙ - личный кабинет преподавателя{% endblock title %}
     </title>
     {% block tags %}
     <meta name="description" content="" />
@@ -78,11 +78,11 @@
                             <div class="main-menu f-right d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a href="{% url 'index' %}">Главная</a></li>
+                                        <li><a href="{% url 'manage_course_list' %}">Курсы</a></li>
                                         {% if request.user.is_authenticated %}
-                                        <li><a href="{% url 'student_course_list' %}">Курсы</a></li>
-                                        <li><a href="#">Урок</a></li>
-                                        <li><a href="{% url 'payment' %}">Оплата</a></li>
+                                        <li><a href="{% url 'student_course_list' %}">Уроки</a></li>
+                                        <li><a href="{% url 'payment' %}">Расписание</a></li>
+                                        <li><a href="{% url 'payment' %}">Зарплата</a></li>
                                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                                         <li><a href="{% url 'logout' %}">Выйти</a></li>
                                         {% else %}
@@ -92,13 +92,6 @@
                                 </nav>
                             </div>
                         </div>
-                        {% if request.user.is_authenticated == False %}
-                        <div class="col-xl-2 col-lg-2 col-md-3">
-                            <div class="header-right-btn f-right d-none d-lg-block">
-                                <a href="{% url 'student_calendar' %}" class="btn header-btn">Пробный урок</a>
-                            </div>
-                        </div>
-                        {% endif %}
                         <div class="col-12">
                             <div class="mobile_menu d-block d-lg-none"></div>
                         </div>
