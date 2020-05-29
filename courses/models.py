@@ -39,36 +39,11 @@ class Subject(models.Model):
 class Course(models.Model):
     """Class describes courses_course table in db.
 
-    Note: чтобы проставить атрибут 'course_done', если пользователь закончил курс
-    можно прописать:
-
-        class Meta:
-            permissions = (
-                ('course_done', 'Course done')
-            )
-
-    и отдельно для каждого пользователя можно делать:
-
-        from guardian.shortcuts import assign_perm
-        assign_perm('course_done', student, course)
-
-        student.has_perm('course_done', course)
-        True
-    
-    Это значит для конкретного 'student' и 'course'
-    значение 'course_done' будет свое
-
-    чтобы удалить атрибут:
-
-        from guardian.shortcuts import remove_perm
-        remove_perm('course_done', student, course)
-
-        student.has_perm('course_done', course)
-        False
 
     Arguments:
         models.Model: superclass where describe the fields
     """
+
     owner = models.ForeignKey(
         Teacher,
         related_name='courses_created',
@@ -91,19 +66,55 @@ class Course(models.Model):
 
     class Meta:
         ordering = ['-created']
-        permissions = (
-            ('course_done', 'Course done'),
-        )
+
 
     def __str__(self):
         return self.title
 
 
 class Module(models.Model):
+    """Describe courses_module table in db.
+
+    Note: чтобы проставить атрибут 'module_done',
+    если пользователь закончил курс
+    можно прописать:
+
+        class Meta:
+            permissions = (
+                ('module_done', 'Module done')
+            )
+
+    и отдельно для каждого пользователя можно делать:
+
+        from guardian.shortcuts import assign_perm
+        assign_perm('module_done', student.user, module)
+
+        student.user.has_perm('module_done', module)
+        True
+    
+    Это значит для конкретного 'student' и 'module'
+    значение 'module_done' будет свое
+
+    чтобы удалить атрибут:
+
+        from guardian.shortcuts import remove_perm
+        remove_perm('module_done', student.user, module)
+
+        student.user.has_perm('module_done', module)
+        False
+
+    Arguments:
+        models {[type]} -- [description]
+
+    Returns:
+        [type] -- [description]
+    """
+
     class Meta:
         ordering = ['order']
         permissions = (
             ('view_current_module', 'Can view current module'),
+            ('module_done', 'Module done')
         )
 
     course = models.ForeignKey(
