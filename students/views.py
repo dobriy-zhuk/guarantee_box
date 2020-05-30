@@ -262,7 +262,6 @@ def get_profile(request):
     available_courses = courses.exclude(students__in=[student])
     
     done_modules = get_objects_for_user(student.user, 'courses.module_done')
-    # student_modules = student_courses.modules.all()
     # работает только для одного курса student_course.modules.all()
     # нужно взять модули одного круса из них модули,
     # которые закончил пользователь, а дальше по формуле ниже
@@ -270,9 +269,24 @@ def get_profile(request):
     # 8 - пусть общее количество всех модулей в курсе
     # 5 - пусть кол-во пройденных модулей в курсе
     # 8 / 5 = 100 / x => 8 * x = 100 * 5 => x = (100 * 5) / 8   
-    # courses_with_done_modules = student_courses.intersection()
 
-    done_percent = 'answer'
+    # courses_with_done_modules (queryset): courses which have a done modules
+    # by student
+    courses_with_done_modules = student_courses.filter(
+        modules__in=[*done_modules]
+    ).distinct()
+
+    course_done_percent_with_id = []
+    for course in courses_with_done_modules:
+        course_done_percent = (100 * (course.modules.intersection(
+            done_modules)).count()) / course.modules.all().count()
+        course_done_percent_with_id.append(
+            {'id': course.id, 'percent': '{0}%'.format(course_done_percent)}
+        )
+
+    # print(course_done_percent_with_id)
+
+
     return render(
         request=request,
         template_name='students/student/profile.html',
@@ -281,7 +295,8 @@ def get_profile(request):
             'courses': courses,
             'student_courses': student_courses,
             'available_courses': available_courses,
-            'done_modules': done_modules,
+            'courses_with_done_modules': courses_with_done_modules,
+            'course_done_percent_with_id': course_done_percent_with_id,
         },
     )
 
