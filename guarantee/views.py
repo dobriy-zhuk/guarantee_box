@@ -276,3 +276,24 @@ class CalendarView(View):
 @login_required
 def teacher(request):
     return render(request, 'teacher/profile.html', {})
+
+
+def get_lead_list_json(request, api_version):
+    """Return a lead list in json.
+
+    Arguments:
+        request {[type]} -- [description]
+        api_version {[type]} -- [description]
+    """
+    if api_version == 0:
+        try:
+            lead_list = list(Student.objects.filter(
+                    status__name='lead',
+                ).values()
+            )
+        except DatabaseError:
+            lead_list = []
+
+        return JsonResponse(lead_list, safe=False)
+
+    return JsonResponse({'error': 'wrong api version'})

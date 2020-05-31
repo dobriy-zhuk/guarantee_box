@@ -14,7 +14,7 @@ let otCore;
 
 
 //get data from server!
-    fetch('http://127.0.0.1:8000/api/live_video/')
+    fetch('http://127.0.0.1:8000/api/0/live_video/')
     .then((response) => response.json())
     .then((responseJson) => {
 

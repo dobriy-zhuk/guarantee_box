@@ -63,6 +63,13 @@ Please do like this:
 ```
 It's string in string and jinja lets you to do that
 
+## Live video
+For starting React project you need to be in live_video directory.
+And you need to install yarn on your machine as well.
+```
+yarn start
+```
+
 #### Best regards, Ian.
 
 If you have some good info about project please share with us below.

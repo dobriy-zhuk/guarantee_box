@@ -44,9 +44,7 @@ INSTALLED_APPS = [
     'guardian',
     'managers',
     'embed_video',
-    "rest_framework",
     'corsheaders',
-    'api.apps.ApiConfig'
 ]
 
 STATIC_URL = '/static/'
