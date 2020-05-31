@@ -308,6 +308,18 @@ def get_payment(request):
     )
 
 
+@login_required(login_url='/accounts/login/')
+def get_lesson(request):
+    #Вернуть в качестве страницы localhost:3000 c токеном и session_id из базы!
+    student = Student.objects.get(user=request.user)
+    #student = get_object_or_404(Student, user=request.user)
+    return render(
+        request=request,
+        template_name='students/student/lesson.html',
+        context={'student': student},
+    )
+
+
 class StudentEnrollCourseView(LoginRequiredMixin, FormView):
     course = None
     form_class = CourseEnrollForm

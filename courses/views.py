@@ -12,6 +12,8 @@ from .forms import ModuleFormSet
 from django.forms.models import modelform_factory
 from django.db.models import Count
 from students.forms import CourseEnrollForm
+from opentok import OpenTok
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -234,3 +236,21 @@ class CourseDetailView(DetailView):
                 )
 
         return context
+
+
+@login_required(login_url='/accounts/login/')
+def get_lesson(request):
+
+    #Записать в БД. Вернуть localhost:3000 в качестве страницы!!!
+
+    opentok = OpenTok("46769324", "0a5d254d5d11b7e1ef22004df51b6e28f9279823")
+    session = opentok.create_session()
+
+    session_id = session.session_id
+    token = opentok.generate_token(session_id)
+
+    return render(
+        request=request,
+        template_name='courses/course/lesson.html',
+        context={"session_id": session_id, "token": token, "api_key": "46769324"}
+    )

@@ -74,7 +74,11 @@
                                 <a href="https://garantylearning.com"><img src="{% static 'images/logo-rus.png' %}" alt="" height="75px"></a>
                             </div>
                         </div>
+                        {% if request.user.is_authenticated %}
+                        <div class="col-xl-10 col-lg-10 col-md-10">
+                        {% else %}
                         <div class="col-xl-8 col-lg-8 col-md-8">
+                         {% endif %}
                             <div class="main-menu f-right d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">

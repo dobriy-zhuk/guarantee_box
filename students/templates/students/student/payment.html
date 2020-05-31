@@ -1,5 +1,6 @@
 {% extends 'base/base_profile.html' %}
 {% block title %}ГАРАНТИЯ ЗНАНИЙ - Оплата занятий{% endblock title %}
+{% load static %}
 
 {% block tags %}
     <meta name="description" content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ" />
@@ -10,6 +11,13 @@
 	<meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg"/>
 	<meta property="og:type" content="website"/>
 	<meta property="og:url" content= "https://garantylearning.com/index.html" />
+    <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+    <script type="text/javascript">
+        var apiKey = '{{ api_key }}';
+        var sessionId = '{{ session_id }}';
+        var token = '{{ token }}';
+    </script>
+    <script src="{% static 'js/opentok.js' %}"></script>
 {% endblock %}
 
 {% block content %}

@@ -1,0 +1,45 @@
+{
+  "name": "live_video",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "babel-polyfill": "^6.23.0",
+    "classnames": "^2.2.5",
+    "opentok-accelerator-core": ">=2.0.0",
+    "opentok-annotation": "*",
+    "opentok-archiving": "*",
+    "opentok-screen-sharing": ">=1.0.28",
+    "opentok-solutions-css": "*",
+    "opentok-text-chat": "*",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "react-spinner": "^0.2.7"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "main": "index.js",
+  "license": "MIT"
+}

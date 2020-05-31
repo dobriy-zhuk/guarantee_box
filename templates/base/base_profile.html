@@ -35,8 +35,6 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
-
-
     <script type="text/javascript" src="{% static 'blockly/blockly_compressed.js' %}"></script>
     <script type="text/javascript" src="{% static 'blockly/blocks_compressed.js' %}"></script>
     <script type="text/javascript" src="{% static 'blockly/javascript_compressed.js' %}"></script>
@@ -81,7 +79,8 @@
                                         <li><a href="{% url 'index' %}">Главная</a></li>
                                         {% if request.user.is_authenticated %}
                                         <li><a href="{% url 'student_course_list' %}">Курсы</a></li>
-                                        <li><a href="#">Урок</a></li>
+                                        <li><a href="{% url 'student_lesson' %}">Урок</a></li>
+                                        <li><a href="http://localhost:3000/" target="_blank">ВИДЕО</a></li>
                                         <li><a href="{% url 'payment' %}">Оплата</a></li>
                                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                                         <li><a href="{% url 'logout' %}">Выйти</a></li>
@@ -243,6 +242,7 @@
     <!-- Jquery Plugins, main Jquery -->
     <script src="{% static 'js/plugins.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+
 
 </body>
 
