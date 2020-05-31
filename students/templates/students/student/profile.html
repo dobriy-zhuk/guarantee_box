@@ -269,8 +269,8 @@
             {% for course in courses_with_done_modules %}
                 Курс: {{ course.title }} <br>
                 Изображение курса: {{ course.course_image }} <br>
-                <!--  Тут нужно выполнять проверку !!! Я пока думаю как -->
-                Процент прохождения: {{ course_done_percent_with_id }} <br>
+                Пользователь: {{ student.user }} <br>
+                Процент прохождения: {{ course.course_done_percent }} <br>
                 Описание курса: {{ course.overview }} <br>
             {% endfor %}
             <br>

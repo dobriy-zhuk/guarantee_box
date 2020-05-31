@@ -65,12 +65,29 @@ class Course(models.Model):
     )
     course_image = models.ImageField(blank=True, default='')
 
+
     class Meta:
         ordering = ['-created']
 
-
     def __str__(self):
         return self.title
+
+    # def get_user_course_completion_rate(self, user) -> str:
+    #     """Returns course completion rate by user.
+
+    #     Arguments:
+    #         user {[type]} -- [description]
+
+    #     Returns:
+    #         [type] -- [description]
+    #     """
+    #     for module in self.modules.all():
+    #         if user.has_perm('done_module', module):
+    #             counter += 1
+        
+    #     percent = (100 * (counter)) / self.modules.count()
+        
+    #     return '{0}% {1}'.format(percent, counter)            
 
 
 class Module(models.Model):
