@@ -257,7 +257,8 @@ class StudentRegistrationView(View):
 @login_required(login_url='/accounts/login/')
 def get_profile(request):
     """
-    работает только для одного курса student_course.modules.all()
+    Выбор модулей работает только для
+    одного курса student_course.modules.all()
     нужно взять модули одного круса из них модули,
     которые закончил пользователь, а дальше по формуле ниже
     чтобы узнать процент завершенности курса
@@ -327,15 +328,12 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         self.course = form.cleaned_data.get('course')
         self.course.students.add(self.request.user.student)
-        return super(
-            StudentEnrollCourseView,
-            self,
-        ).form_valid(form)
+        return super(StudentEnrollCourseView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy(
             'student_course_detail',
-            args=[self.course.id]
+            args=[self.course.id],
         )
 
 
@@ -381,7 +379,12 @@ class StudentCourseDetailView(DetailView):
 
         context['user_permission'] = []
         for cur_module in course.modules.all():
-            context['user_permission'].append(self.request.user.has_perm('view_current_module', cur_module))
+            context['user_permission'].append(
+                self.request.user.has_perm(
+                    'view_current_module',
+                    cur_module,
+                ),
+            )
 
         if 'module_id' in self.kwargs:
         # get current module
@@ -398,31 +401,3 @@ class StudentCourseDetailView(DetailView):
                 context['module'] = course.modules.none()
             assign_perm('view_current_module', context['user'], context['module'])
         return context
-
-
-# def get_json_student_profile(request, api_version, student_id):
-#     """Returns json-file with student profile.
-
-#     Arguments:
-#         request: client request
-
-#     Returns:
-#         JsonResponse (json):
-#         {
-#             'profile': [
-#                 {
-                    
-#                 }
-#             ]
-#         }
-
-#     """
-#     if api_version == 0:
-#         try:
-#             profile = list(Student.objects.values().get(id=student_id))
-#         except DatabaseError:
-#             profile = []
-
-#         return JsonResponse({'profile': profile})
-
-#     return JsonResponse({})

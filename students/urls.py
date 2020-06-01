@@ -41,9 +41,4 @@ urlpatterns = [
          views.get_available_lessons,
          name='available_lessons',
      ),
-#      path(
-#          'api/<int:api_version>/<int:student_id>/get-student-profile/',
-#          views.get_json_student_profile,
-#          name='get_json_student_profile'
-#     ),
 ]
