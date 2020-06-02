@@ -1,6 +1,6 @@
 """Module where described the logic for user response."""
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group, User
 from django.contrib.sites.shortcuts import get_current_site
@@ -257,9 +257,17 @@ class StudentRegistrationView(View):
         )
 
 
+def check_user_group(user):
+    group = user.groups.filter(user=user)[0]
+    return group.name == 'Students' 
+
+
 @login_required(login_url='/accounts/login/')
+@user_passes_test(check_user_group, login_url='/accounts/login/')
 def get_profile(request):
     """
+    TODO: оформить документацию нормально!!!
+
     Выбор модулей работает только для
     одного курса student_course.modules.all()
     нужно взять модули одного круса из них модули,
@@ -271,7 +279,7 @@ def get_profile(request):
 
     courses_with_done_modules (queryset): courses which have a done modules
     by student
-    """   
+    """
     student = Student.objects.get(user=request.user)
     courses = Course.objects.all()
     student_courses = courses.filter(students__in=[student])
