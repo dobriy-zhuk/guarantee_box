@@ -237,28 +237,21 @@ class Video(ItemBase):
     url = models.URLField()
 
 
-class ZoomModuleRoom(models.Model):
-    """Describe courses_zoommoduleroom table in database.
+class LessonRoom(models.Model):
+    """Describe courses_lessonroom table in database.
 
     ForeignKey because one teacher for many module rooms.
     ManyToMany because many students for many module rooms.
-
-    FIXME: когда я в админке и пытаюсь зайти в таблицу,
-    вместо пустотых строк выдется эта ошибка:
-
-    ProgrammingError at /admin/courses/zoommoduleroom/
-    relation "courses_zoommoduleroom" does not exist
-    LINE 1: SELECT COUNT(*) AS "__count" FROM "courses_zoommoduleroom"
 
     Arguments:
         models.Model: superclass which describes fields for database
     """
 
-    module_name = models.CharField(max_length=200)
+    lesson_name = models.CharField(max_length=200)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     students = models.ManyToManyField(Student, blank=True)
-    room_id = models.CharField(max_length=200, default='')
-    room_password = models.CharField(max_length=200, default='')
+    session_id = models.CharField(max_length=100, default='')
+    token = models.CharField(max_length=400, default='')
 
     def __str__(self):
         """Override the str() behavior, for instance of class.
