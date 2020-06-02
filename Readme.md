@@ -70,6 +70,21 @@ And you need to install yarn on your machine as well.
 yarn start
 ```
 
+## Do not use numbers in function names
+Wrong:
+```python
+def get_some_or_404(*args):
+    pass
+```
+Good:
+```python
+def get_some_or_not_found_error(*args):
+    pass
+```
+
+## If you have a problem with makemigrations
+Look at this [article](https://devman.org/encyclopedia/django_orm/migrations_mastering/)
+
 #### Best regards, Ian.
 
 If you have some good info about project please share with us below.

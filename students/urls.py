@@ -41,4 +41,9 @@ urlpatterns = [
          views.get_available_lessons,
          name='available_lessons',
      ),
+    path(
+         'api/<int:api_version>/<int:student_id>/<module_id>/<int:attempt>/',
+         views.set_student_reward_card,
+         name='set_student_reward_card',
+    )
 ]

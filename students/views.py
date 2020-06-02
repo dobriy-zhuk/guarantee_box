@@ -4,19 +4,22 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group, User
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
+from django.views.decorators.http import require_GET
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from guardian.shortcuts import assign_perm, get_objects_for_user
 
 from courses.models import Course, Module
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
-from students.models import Student, Teacher
+from students.models import Student, StudentRewardCard, Teacher
 from students.tokens import account_activation_token
 
 
@@ -311,14 +314,15 @@ def get_payment(request):
 
 @login_required(login_url='/accounts/login/')
 def get_lesson(request):
-    #Вернуть в качестве страницы localhost:3000 c токеном и session_id из базы!
+    # TODO: Вернуть в качестве страницы localhost:3000 c токеном и session_id из базы!
     student = Student.objects.get(user=request.user)
     #student = get_object_or_404(Student, user=request.user)
-    return render(
-        request=request,
-        template_name='students/student/lesson.html',
-        context={'student': student},
-    )
+    return redirect(to='localhost:3000', )
+    # return render(
+    #     request=request,
+    #     template_name='students/student/lesson.html',
+    #     context={'student': student},
+    # )
 
 
 class StudentEnrollCourseView(LoginRequiredMixin, FormView):
@@ -399,5 +403,126 @@ class StudentCourseDetailView(DetailView):
                 # TODO: добавить тут или в шаблон вывод текста, что
                 #  не были добавлены уроки
                 context['module'] = course.modules.none()
-            assign_perm('view_current_module', context['user'], context['module'])
+            assign_perm(
+                'view_current_module', context['user'], context['module'],
+            )
         return context
+
+
+@login_required(login_url='/accounts/login/')
+@require_GET
+def set_student_reward_card(
+    request,
+    api_version: int,
+    student_id: int,
+    module_id: int,
+    attempt: int,
+):
+    """Set student reward card.
+
+    Arguments:
+        request: client request
+        api_version (int): api version
+        student_id (int): student id who is awarded a reward card
+        module_id (int): module id for which the student got reward card
+        attempt (int): if attemp < 2(it starts on frontend from 0)
+
+    Returns:
+        JsonResponse (json):
+        if all is ok:
+        {
+
+            'attempt': 1,
+
+        }
+        if user doesn't exist:
+        {
+
+            'error': 'no user with {0} id'.format(student_id),
+            'attempt': attempt,
+
+        }
+        if module doesn't exist:
+        {
+
+            'error': 'no module with {0} id'.format(module_id),
+            'attempt': attempt,
+
+        }
+        if wrong api version:
+        {
+
+            'error': 'wrong api version',
+            'attempt': attempt,
+
+        }
+    """
+    bad_request_error_code = 400
+
+    if api_version == 0:
+        if attempt > 1:
+            return JsonResponse({
+                'error': 'You can give only 2 reward cards per lesson',
+                'attempt': attempt,
+            })
+
+        student = get_object_or_none(Student, object_id=student_id)
+
+        if student is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'no user with {0} id'.format(student_id),
+                    'attempt': attempt,
+                },
+            )
+
+        module = get_object_or_none(Module, object_id=module_id)
+
+        if module is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'no module with {0} id'.format(module_id),
+                    'attempt': attempt,
+                },
+            )
+
+        student_reward_card = StudentRewardCard.objects.create(
+            student=student,
+            module=module,
+            comment='{0} set card'.format(request.user.teacher),
+        )
+
+        student_reward_card.save()
+        attempt += 1
+
+        return JsonResponse({'attempt': attempt})
+
+    return JsonResponse(
+        status=bad_request_error_code,
+        data={
+            'error': 'wrong api version',
+            'attempt': attempt,
+        },
+    )
+
+
+def get_object_or_none(klass, object_id: int):
+    """Return istanse or None.
+
+    Arguments:
+        klass: class from models.py
+        object_id (int): id of instanse in db
+
+    Returns:
+        instanse: if instanse exists in db then instanse,
+        or if it isn't then None
+    """
+    try:
+        return klass.objects.get(id=object_id)
+    except ObjectDoesNotExist:
+        return None
+
+
+# TODO: def del_student_reward_card

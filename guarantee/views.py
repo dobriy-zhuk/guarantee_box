@@ -283,7 +283,7 @@ def get_lead_list_json(request, api_version):
 
     Arguments:
         request {[type]} -- [description]
-        api_version {[type]} -- [description]
+        api_version (int): api version
     """
     if api_version == 0:
         try:
