@@ -491,6 +491,7 @@ def set_student_reward_card(
         student_reward_card = StudentRewardCard.objects.create(
             student=student,
             module=module,
+            teacher=request.user.teacher,
             comment='{0} set card'.format(request.user.teacher),
         )
 

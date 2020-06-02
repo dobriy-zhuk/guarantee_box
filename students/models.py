@@ -165,6 +165,11 @@ class StudentRewardCard(models.Model):
         related_name='reward_cards',
         on_delete=models.CASCADE,
     )
+    teacher = models.ForeignKey(
+        Teacher,
+        related_name='set_reward_cards',
+        on_delete=models.CASCADE,
+    )
     comment = models.CharField(max_length=200, blank=True)
     deleted = models.BooleanField(default=False)
 
