@@ -1,10 +1,10 @@
 from django.contrib import admin
-from courses.models import Subject, Course, Module, ZoomModuleRoom
+from courses.models import Subject, Course, Module, LessonRoom
 
 
-@admin.register(ZoomModuleRoom)
+@admin.register(LessonRoom)
 class ZoomModuleRoom(admin.ModelAdmin):
-    list_display = ['module_name', 'teacher', 'room_id']
+    list_display = ['lesson_name', 'teacher', 'session_id']
 
 
 @admin.register(Subject)

@@ -1,19 +1,21 @@
-from django.urls import reverse_lazy
-from django.shortcuts import render
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.detail import DetailView
-from .models import Course, Module, Content, Subject
 from django.apps import apps
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import redirect, get_object_or_404
-from django.views.generic.base import TemplateResponseMixin, View
-from .forms import ModuleFormSet
-from django.forms.models import modelform_factory
-from django.db.models import Count
-from students.forms import CourseEnrollForm
-from opentok import OpenTok
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
+from django.db.models import Count
+from django.forms.models import modelform_factory
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views.generic.base import TemplateResponseMixin, View
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.list import ListView
+from opentok import OpenTok
+
+from students.forms import CourseEnrollForm
+
+from courses.forms import ModuleFormSet
+from courses.models import Content, Course, Module, Subject, LessonRoom
 
 
 # Create your views here.
@@ -240,7 +242,21 @@ class CourseDetailView(DetailView):
 
 @login_required(login_url='/accounts/login/')
 def get_lesson(request):
+    """[summary]
 
+    Note:
+        session_id (str): len(session_id) = 73
+        token (str): len(token) = 340
+
+    TODO: group.name should be 'Teachers'
+    TODO: request should be POST because we need receive list of students
+
+    Arguments:
+        request {[type]} -- [description]
+
+    Returns:
+        [type] -- [description]
+    """
     #Записать в БД. Вернуть localhost:3000 в качестве страницы!!!
 
     opentok = OpenTok("46769324", "0a5d254d5d11b7e1ef22004df51b6e28f9279823")
@@ -248,6 +264,15 @@ def get_lesson(request):
 
     session_id = session.session_id
     token = opentok.generate_token(session_id)
+
+    lesson_room = LessonRoom.objects.create(
+        lesson_name='',
+        teacher=request.user.teacher,
+        session_id=session_id,
+        token=token,
+    )
+    lesson_room.save()
+    # TODO: lesson_room.students.add(1, 2) <- students ids
 
     return render(
         request=request,

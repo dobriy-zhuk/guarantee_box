@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User 
 
 
 class StudentStatus(models.Model):
@@ -143,7 +143,40 @@ class Schedule(models.Model):
         """Override the str() behavior, for instance of class.
 
         Returns:
-            self.parent_name: Instance parent_name
             self.student_name: Instance student_name
         """
         return '{0} schedule'.format(self.user)
+
+
+class StudentRewardCard(models.Model):
+    """Describe students_studentrewardcard table in db.
+
+    Arguments:
+        models {[type]} -- [description]
+    """
+
+    student = models.ForeignKey(
+        Student,
+        related_name='reward_cards',
+        on_delete=models.CASCADE,    
+    )
+    module = models.ForeignKey(
+        'courses.Module',
+        related_name='reward_cards',
+        on_delete=models.CASCADE,
+    )
+    teacher = models.ForeignKey(
+        Teacher,
+        related_name='set_reward_cards',
+        on_delete=models.CASCADE,
+    )
+    comment = models.CharField(max_length=200, blank=True)
+    deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        """Override the str() behavior, for instance of class.
+
+        Returns:
+            self.student: Instance student
+        """
+        return '{0} reward card'.format(self.student)
