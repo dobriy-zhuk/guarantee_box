@@ -41,23 +41,38 @@
                                 <h4>Мой профиль</h4>
                                 <form action="#">
                                     <div class="mt-10">
-                                        <input type="text" name="first_name" placeholder="First Name"
+                                        <input type="text" name="first_name" placeholder="Ребенок: {{ student.name }}"
                                             onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'" required
                                             class="single-input">
 							        </div>
                                     <div class="mt-10">
-								<input type="text" name="last_name" placeholder="Last Name"
+								<input type="text" name="last_name" placeholder="Родитель: {{ student.parent_name }}"
 									onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" required
 									class="single-input">
 							</div>
                                     <div class="mt-10">
-								<input type="text" name="age_kids" placeholder="Child age
-									onfocus=" onblur="this.placeholder = 'Child age'"
+								<input type="text" name="age_kids" placeholder="{{ student.age }}"
+									onfocus="" onblur="this.placeholder = '{{ student.age }}'"
 									required class="single-input">
 							</div>
                                     <div class="mt-10">
-                                        <input type="email" name="EMAIL" placeholder="Email address"
-                                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email address'" required
+                                        <input type="email" name="EMAIL" placeholder="{{ student.email }}"
+                                            onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.email }}'" required
+                                            class="single-input">
+                                    </div>
+                                     <div class="mt-10">
+                                        <input type="email" name="EMAIL" placeholder="{{ student.parent_email }}"
+                                            onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.parent_email }}'" required
+                                            class="single-input">
+                                    </div>
+                                    <div class="mt-10">
+                                        <input type="email" name="Parent Phone" placeholder="{{ student.parent_phone }}"
+                                            onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.parent_phone }}'" required
+                                            class="single-input">
+                                    </div>
+                                     <div class="mt-10">
+                                        <input type="email" name="Phone" placeholder="{{ student.phone }}"
+                                            onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.phone }}'" required
                                             class="single-input">
                                     </div>
                                     <div class="input-group-icon mt-10">
@@ -123,6 +138,17 @@
                                     <span_time class="border border-primary rounded">5 часов</span_time>
                                     <span_time class="border border-primary rounded">8 минут</span_time>
                                     <p><br><a href="{% url 'send_email_stats' %}" class="genric-btn info-border">Подключиться</a> <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее задание</a></p>
+                                </div>
+                            </div>
+                             <div class="single-generating d-flex mb-30">
+                                <div class="generating-icon">
+                                    <span class="flaticon-award"></span>
+                                </div>
+                                <div class="generating-cap text-center center">
+                                    <h4>Денежные средства</h4>
+                                    <p style="font-size: 30px; color: #c02323">{{ student.amount }} рублей</p>
+                                    <p class=" text-center center"><br><a href="{% url 'payment' %}" class="genric-btn info-border">Оплатить</a></p>
+
                                 </div>
                             </div>
                                 <div class="single-generating d-flex mb-30">
@@ -312,13 +338,6 @@
             Время начала следующего занятия: <br>
             id + password из базы<br>
             Расписание занятий ученика
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Оплата</h3>
-            Остаток денежных средств в базе: {{ student.amount }}<br>
-            <button class="btn btn-success "> Оплатить</button>
         </div>
     </div>
     <div class="row">

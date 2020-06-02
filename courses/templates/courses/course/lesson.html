@@ -17,16 +17,6 @@
 <meta property="og:url" content="https://garantylearning.com/index.html" />
 {% endblock %}
 
-{% block css %}
-<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-    <script type="text/javascript">
-        var apiKey = '{{ api_key }}';
-        var sessionId = '{{ session_id }}';
-        var token = '{{ token }}';
-    </script>
-    <script src="{% static 'js/opentok.js' %}"></script>
-    {% endblock %}
-
 {% block content %}
 
 
@@ -36,15 +26,17 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
                         <div class="section-tittle text-center">
-                            <h2>Мой урок</h2>
+                            <h2>Мои уроки</h2>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 text-center">
-                        <p>ses id: {{ session_id }}</p>
-                        <p>token: {{ token }}</p>
-                        <div id="publisher"></div>
+                        <h4>Школьники и группы педагога</h4>
+                        <p>Школьник 1 (ФИО) / группа</p>
+                        <p>время занятия + день</p>
+                        <p><a href="#" class="genric-btn info-border">Новая сессия</a><a href="#" class="genric-btn info-border">Подключиться</a> id сессии</p>
+
                     </div>
                 </div>
             </div>
