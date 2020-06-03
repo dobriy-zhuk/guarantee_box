@@ -14,18 +14,29 @@ let otCore;
 
 
 //get data from server!
-    fetch('http://127.0.0.1:8000/api/0/live_video/')
-    .then((response) => response.json())
-    .then((responseJson) => {
+fetch('http://127.0.0.1:8000/students/api/0/get-lesson-info/lesson_id/')
+.then((response) => response.json())
+.then((responseJson) => {
 
-         console.log(responseJson[0].id)
+      console.log(responseJson[0].id)
 
-    });
+});
 
 
 //let apiKey = responseJson[0].apiKey;
 //let sessionId = responseJson[0].sessionId;
 //let token = responseJson[0].token;
+
+// get-request set student reward card 
+let request_url = 'http://127.0.0.1:8000/students/api/0/student_id/lesson_id/attempt/';
+
+fetch(request_url)
+.then((response) => response.json())
+.then((responseJson) => {
+
+     console.log(responseJson[0].id)
+
+});
 
 
 const otCoreOptions = {

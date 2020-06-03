@@ -17,6 +17,7 @@ from django.views.decorators.http import require_GET
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from guardian.shortcuts import assign_perm, get_objects_for_user
+from django.forms.models import model_to_dict
 
 from courses.models import Course, LessonRoom, Module
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
@@ -24,8 +25,31 @@ from students.models import Student, StudentRewardCard, Teacher
 from students.tokens import account_activation_token
 
 
+def check_user_group(user):
+    group = user.groups.filter(user=user)[0]
+    return group.name == 'Students'
+
+
+def get_object_or_none(klass, object_id: int):
+    """Return istanse or None.
+
+    Arguments:
+        klass: class from models.py
+        object_id (int): id of instanse in db
+
+    Returns:
+        instanse: if instanse exists in db then instanse,
+        or if it isn't then None
+    """
+    try:
+        return klass.objects.get(id=object_id)
+    except ObjectDoesNotExist:
+        return None
+
+
 def get_available_lessons(request):
     """Render available lessons list html.
+    TODO: Удалить или сделать нормально
 
     Arguments:
         request: 
@@ -258,11 +282,6 @@ class StudentRegistrationView(View):
         )
 
 
-def check_user_group(user):
-    group = user.groups.filter(user=user)[0]
-    return group.name == 'Students' 
-
-
 @login_required(login_url='/accounts/login/')
 @user_passes_test(check_user_group, login_url='/accounts/login/')
 def get_profile(request):
@@ -490,7 +509,7 @@ def set_student_reward_card(
             return JsonResponse(
                 status=bad_request_error_code,
                 data={
-                    'error': 'no user with {0} id'.format(student_id),
+                    'error': 'no student with {0} id'.format(student_id),
                     'attempt': attempt,
                 },
             )
@@ -526,22 +545,36 @@ def set_student_reward_card(
         },
     )
 
+# TODO: def del_student_reward_card
 
-def get_object_or_none(klass, object_id: int):
-    """Return istanse or None.
+@login_required(login_url='/accounts/login/')
+@require_GET
+def get_lesson_room_info(request, api_version: int, lesson_id: int):
+    """Get lesson room info 
 
     Arguments:
-        klass: class from models.py
-        object_id (int): id of instanse in db
+        request {[type]} -- [description]
 
     Returns:
-        instanse: if instanse exists in db then instanse,
-        or if it isn't then None
+        [type] -- [description]
     """
-    try:
-        return klass.objects.get(id=object_id)
-    except ObjectDoesNotExist:
-        return None
+    bad_request_error_code = 400
 
+    if api_version == 0:
 
-# TODO: def del_student_reward_card
+        lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
+
+        if lesson_room is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'no lesson_room with {0} id'.format(lesson_id),
+                },
+            )
+
+        return JsonResponse(model_to_dict(lesson_room))
+
+    return JsonResponse(
+        status=bad_request_error_code,
+        data={'error': 'wrong api version'},
+    )
