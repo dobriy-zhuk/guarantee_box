@@ -283,9 +283,9 @@ def get_profile(request):
     """
     student = Student.objects.get(user=request.user)
     upcoming_lesson = LessonRoom.objects.filter(
-        student__in=[student],
+        students__in=[student],
         schedule__start_timestamp__gte=timezone.now()
-    )[0]
+    )
     courses = Course.objects.all()
     student_courses = courses.filter(students__in=[student])
     available_courses = courses.exclude(students__in=[student])
@@ -433,7 +433,7 @@ def set_student_reward_card(
     request,
     api_version: int,
     student_id: int,
-    module_id: int,
+    lesson_id: int,
     attempt: int,
 ):
     """Set student reward card.
@@ -442,7 +442,7 @@ def set_student_reward_card(
         request: client request
         api_version (int): api version
         student_id (int): student id who is awarded a reward card
-        module_id (int): module id for which the student got reward card
+        lesson_id (int): lesson_room id for which the student got reward card
         attempt (int): if attemp < 2(it starts on frontend from 0)
 
     Returns:
@@ -460,10 +460,10 @@ def set_student_reward_card(
             'attempt': attempt,
 
         }
-        if module doesn't exist:
+        if lesson_room doesn't exist:
         {
 
-            'error': 'no module with {0} id'.format(module_id),
+            'error': 'no lesson_room with {0} id'.format(lesson_id),
             'attempt': attempt,
 
         }
@@ -495,20 +495,20 @@ def set_student_reward_card(
                 },
             )
 
-        module = get_object_or_none(Module, object_id=module_id)
+        lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
 
-        if module is None:
+        if lesson_room is None:
             return JsonResponse(
                 status=bad_request_error_code,
                 data={
-                    'error': 'no module with {0} id'.format(module_id),
+                    'error': 'no lesson_room with {0} id'.format(lesson_id),
                     'attempt': attempt,
                 },
             )
 
         student_reward_card = StudentRewardCard.objects.create(
             student=student,
-            module=module,
+            lesson_room=lesson_room,
             teacher=request.user.teacher,
             comment='{0} set card'.format(request.user.teacher),
         )

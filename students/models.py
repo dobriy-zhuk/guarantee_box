@@ -160,8 +160,8 @@ class StudentRewardCard(models.Model):
         related_name='reward_cards',
         on_delete=models.CASCADE,    
     )
-    module = models.ForeignKey(
-        'courses.Module',
+    lesson_room = models.ForeignKey(
+        'courses.LessonRoom',
         related_name='reward_cards',
         on_delete=models.CASCADE,
     )

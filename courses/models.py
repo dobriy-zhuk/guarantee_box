@@ -242,6 +242,7 @@ class LessonRoom(models.Model):
 
     ForeignKey because one teacher for many module rooms.
     ManyToMany because many students for many module rooms.
+    TODO: TextField homework 
 
     Arguments:
         models.Model: superclass which describes fields for database

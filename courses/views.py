@@ -250,6 +250,8 @@ def check_user_group(user):
 def get_lesson(request):
     """[summary]
 
+    TODO: class-based view get, post requests
+
     Note:
         session_id (str): len(session_id) = 73
         token (str): len(token) = 340
