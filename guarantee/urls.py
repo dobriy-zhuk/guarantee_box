@@ -69,7 +69,7 @@ urlpatterns = [
          name='api_get_schedule'
     ),
     path(
-         'api/<int:api_version>/live_video/',
+         'api/<int:api_version>/get-lead-list/',
          views.get_lead_list_json,
          name='api_get_lead_list'
     ),

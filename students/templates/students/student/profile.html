@@ -137,7 +137,8 @@
                                     <span_time class="border border-primary rounded">10 дней</span_time>
                                     <span_time class="border border-primary rounded">5 часов</span_time>
                                     <span_time class="border border-primary rounded">8 минут</span_time>
-                                    <p><br><a href="{% url 'send_email_stats' %}" class="genric-btn info-border">Подключиться</a> <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее задание</a></p>
+                                    <p><br><a href="{% url 'send_email_stats' %}" class="genric-btn info-border">Подключиться</a>
+                                        <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее задание</a></p>
                                 </div>
                             </div>
                              <div class="single-generating d-flex mb-30">
@@ -335,6 +336,12 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Уроки</h3>
+            Время начала следующего занятия <br>
+            {{ upcoming_lesson.schedule.start_timestamp }} <br>
+            {{ upcoming_lesson.session_id }} <br>
+            {{ upcoming_lesson.token }} <br>
+
+            <!-- Задание -->
             Время начала следующего занятия: <br>
             id + password из базы<br>
             Расписание занятий ученика
@@ -358,19 +365,5 @@
 <div class="col-md-9">
 
 </div>
-
-<!-- <script type="text/javascript">
-    $(document).ready(function () {
-        $.ajax({
-            type: 'GET',
-            dataType: "json",
-            url: '/api/0/student_id/get-student-profile/',
-            success: function (response) {
-                profileJson = JSON.stringify(response);
-                $("#profileAjax").prepend(profileJson);
-            }
-        });
-    });
-</script> -->
 
 {% endblock %}

@@ -3,8 +3,8 @@ from courses.models import Subject, Course, Module, LessonRoom
 
 
 @admin.register(LessonRoom)
-class ZoomModuleRoom(admin.ModelAdmin):
-    list_display = ['lesson_name', 'teacher', 'session_id']
+class LessonRoom(admin.ModelAdmin):
+    list_display = ['lesson_name', 'teacher', 'session_id', 'schedule']
 
 
 @admin.register(Subject)

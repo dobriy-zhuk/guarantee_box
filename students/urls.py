@@ -1,5 +1,6 @@
 from django.urls import path
-from . import views
+
+from students import views
 
 urlpatterns = [
     path('', views.get_profile, name='student'),
@@ -42,8 +43,13 @@ urlpatterns = [
          name='available_lessons',
      ),
     path(
-         'api/<int:api_version>/<int:student_id>/<module_id>/<int:attempt>/',
+         'api/<int:api_version>/<int:student_id>/<lesson_id>/<int:attempt>/',
          views.set_student_reward_card,
          name='set_student_reward_card',
+     ),
+    path(
+         'api/<int:api_version>/get-lesson-info/<int:lesson_id>/',
+         views.get_lesson_room_info,
+         name='get_lesson_room_info',
     )
 ]
