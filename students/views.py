@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
@@ -17,7 +18,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from guardian.shortcuts import assign_perm, get_objects_for_user
 
-from courses.models import Course, Module
+from courses.models import Course, LessonRoom, Module
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
 from students.models import Student, StudentRewardCard, Teacher
 from students.tokens import account_activation_token
@@ -281,6 +282,10 @@ def get_profile(request):
     by student
     """
     student = Student.objects.get(user=request.user)
+    upcoming_lesson = LessonRoom.objects.filter(
+        student__in=[student],
+        schedule__start_timestamp__gte=timezone.now()
+    )[0]
     courses = Course.objects.all()
     student_courses = courses.filter(students__in=[student])
     available_courses = courses.exclude(students__in=[student])
@@ -305,6 +310,7 @@ def get_profile(request):
             'student_courses': student_courses,
             'available_courses': available_courses,
             'courses_with_done_modules': courses_with_done_modules,
+            'upcoming_lesson':upcoming_lesson,
         },
     )
 
@@ -324,7 +330,11 @@ def get_payment(request):
 def get_lesson(request):
     # TODO: Вернуть в качестве страницы localhost:3000 c токеном и session_id из базы!
     student = Student.objects.get(user=request.user)
-    #student = get_object_or_404(Student, user=request.user)
+    upcoming_lesson_room = LessonRoom.objects.filter(
+        student__in=[student],
+        schedule__start_timestamp__gte=timezone.now(),
+    )[0]
+
     return redirect(to='localhost:3000', )
     # return render(
     #     request=request,

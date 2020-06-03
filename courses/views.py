@@ -1,5 +1,5 @@
 from django.apps import apps
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 from django.db.models import Count
@@ -240,7 +240,13 @@ class CourseDetailView(DetailView):
         return context
 
 
+def check_user_group(user):
+    group = user.groups.filter(user=user)[0]
+    return group.name == 'Teachers' 
+
+
 @login_required(login_url='/accounts/login/')
+@user_passes_test(check_user_group, login_url='/accounts/login/')
 def get_lesson(request):
     """[summary]
 
@@ -248,7 +254,6 @@ def get_lesson(request):
         session_id (str): len(session_id) = 73
         token (str): len(token) = 340
 
-    TODO: group.name should be 'Teachers'
     TODO: request should be POST because we need receive list of students
 
     Arguments:

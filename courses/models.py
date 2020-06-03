@@ -6,7 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from courses.fields import OrderField
 from django.template.loader import render_to_string
-from students.models import Student, Teacher
+from students.models import Student, Teacher, Schedule
 
 
 class Subject(models.Model):
@@ -252,6 +252,12 @@ class LessonRoom(models.Model):
     students = models.ManyToManyField(Student, blank=True)
     session_id = models.CharField(max_length=100, default='')
     token = models.CharField(max_length=400, default='')
+    schedule = models.OneToOneField(
+        Schedule,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         """Override the str() behavior, for instance of class.
@@ -259,4 +265,4 @@ class LessonRoom(models.Model):
         Returns:
             self.module_name: Instance module_name
         """
-        return self.module_name
+        return self.lesson_name

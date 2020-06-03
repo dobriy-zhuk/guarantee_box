@@ -85,6 +85,21 @@ def get_some_or_not_found_error(*args):
 ## If you have a problem with makemigrations
 Look at this [article](https://devman.org/encyclopedia/django_orm/migrations_mastering/)
 
+## What is the differense between null and blank in Django ORM and where should I user it?
+Look [here](https://stackoverflow.com/questions/8609192/differentiate-null-true-blank-true-in-django/8609425) for more info
+Summary from url:
+Good:
+```python
+models.ForeignKey(null=True)
+models.DateTimeField(null=True) #it must be filled out in a form
+models.CharField(blank=True) #stored in db as ''
+```
+Bad:
+```python
+models.DateTimeField(blank=True) # raises IntegrityError if blank
+models.CharField(null=True) # NULL allowed, but will never be set as NULL
+```
+
 #### Best regards, Ian.
 
 If you have some good info about project please share with us below.
