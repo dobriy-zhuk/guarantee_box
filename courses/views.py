@@ -18,6 +18,11 @@ from courses.forms import ModuleFormSet
 from courses.models import Content, Course, Module, Subject, LessonRoom
 
 
+def check_user_group(user):
+    group = user.groups.filter(user=user)[0]
+    return group.name == 'Teachers' 
+
+
 # Create your views here.
 def post_coding(request):
     return render(request, 'index.html', {})
@@ -238,11 +243,6 @@ class CourseDetailView(DetailView):
                 )
 
         return context
-
-
-def check_user_group(user):
-    group = user.groups.filter(user=user)[0]
-    return group.name == 'Teachers' 
 
 
 @login_required(login_url='/accounts/login/')
