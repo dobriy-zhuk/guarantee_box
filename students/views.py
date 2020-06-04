@@ -301,7 +301,7 @@ def get_profile(request):
     by student
     """
     student = Student.objects.get(user=request.user)
-    upcoming_lesson = LessonRoom.objects.filter(
+    upcoming_lessons = LessonRoom.objects.filter(
         students__in=[student],
         schedule__start_timestamp__gte=timezone.now()
     )
@@ -329,7 +329,7 @@ def get_profile(request):
             'student_courses': student_courses,
             'available_courses': available_courses,
             'courses_with_done_modules': courses_with_done_modules,
-            'upcoming_lesson':upcoming_lesson,
+            'upcoming_lessons':upcoming_lessons,
         },
     )
 

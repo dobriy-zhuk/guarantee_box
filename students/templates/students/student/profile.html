@@ -311,9 +311,11 @@
         <div class="col-md-12">
             <h3>Уроки</h3>
             Время начала следующего занятия <br>
-            {{ upcoming_lesson.schedule.start_timestamp }} <br>
-            {{ upcoming_lesson.session_id }} <br>
-            {{ upcoming_lesson.token }} <br>
+            {% for lesson in upcoming_lessons %}
+                {{ lesson.schedule.start_timestamp }} <br>
+                {{ lesson.session_id }} <br>
+                {{ lesson.token }} <br>
+            {% endfor %}
 
             <!-- Задание -->
             Время начала следующего занятия: <br>

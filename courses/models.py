@@ -8,6 +8,8 @@ from courses.fields import OrderField
 from django.template.loader import render_to_string
 from students.models import Student, Teacher, Schedule
 
+from opentok import OpenTok
+
 
 class Subject(models.Model):
     """Describe the courses_subject table in database.
@@ -237,6 +239,13 @@ class Video(ItemBase):
     url = models.URLField()
 
 
+opentok = OpenTok("46769324", "0a5d254d5d11b7e1ef22004df51b6e28f9279823")
+session = opentok.create_session()
+
+session_id = session.session_id
+token = opentok.generate_token(session_id)
+
+
 class LessonRoom(models.Model):
     """Describe courses_lessonroom table in database.
 
@@ -251,8 +260,8 @@ class LessonRoom(models.Model):
     lesson_name = models.CharField(max_length=200)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     students = models.ManyToManyField(Student, blank=True)
-    session_id = models.CharField(max_length=100, default='')
-    token = models.CharField(max_length=400, default='')
+    session_id = models.CharField(max_length=100, default=session_id)
+    token = models.CharField(max_length=400, default=token)
     schedule = models.OneToOneField(
         Schedule,
         on_delete=models.CASCADE,
