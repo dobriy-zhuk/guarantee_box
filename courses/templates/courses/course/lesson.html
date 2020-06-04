@@ -19,34 +19,49 @@
 
 {% block css %}
 <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-    <script type="text/javascript">
-        var apiKey = '{{ api_key }}';
-        var sessionId = '{{ session_id }}';
-        var token = '{{ token }}';
-    </script>
-    <script src="{% static 'js/opentok.js' %}"></script>
-    {% endblock %}
+<script type="text/javascript">
+    var apiKey = '{{ api_key }}';
+    var sessionId = '{{ session_id }}';
+    var token = '{{ token }}';
+</script>
+<script src="{% static 'js/opentok.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 
-
-            <!-- Generating Start -->
-        <div class="generating-area" style="margin-top: 150px">
-            <div class="container">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="section-tittle text-center">
-                            <h2>Мой урок</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 text-center">
-                        <p>ses id: {{ session_id }}</p>
-                        <p>token: {{ token }}</p>
-                        <div id="publisher"></div>
-                    </div>
+<!-- Generating Start -->
+<div class="generating-area" style="margin-top: 150px">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-tittle text-center">
+                    <h2>Мои уроки</h2>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                {% for lesson_room in lesson_rooms %}
+                    <p>{{ lesson_room.session_id }}</p>
+                    <p>{{ lesson_room.token }}</p>
+                    {% for student in lesson_room.students.all %}
+                        <p>{{ student}}</p>
+                    {% endfor %}
+                {% endfor %}
+                <div id="publisher"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="input">
+    {% for student in user.teacher.students.all %}
+        {{ student }}
+    {% endfor %}
+    <label for="students">Студенты</label>
+    <!-- Тут выпадающее меню для выбора учеников -->
+    <input type="text" id="students" name="students_ids">
+    <input type="submit" value="Назначить занятие">
+</div>
 
 {% endblock %}

@@ -116,6 +116,10 @@ models.CharField(null=True) # NULL allowed, but will never be set as NULL
 
 TODO: Написать примеры использования
 
+## How to show ManyToMany field in Django template?
+
+Look [here](https://stackoverflow.com/questions/4270330/django-show-a-manytomanyfield-in-a-template)
+
 #### Best regards, Ian.
 
 If you have some good info about project please share with us below.

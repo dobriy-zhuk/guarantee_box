@@ -1,21 +1,25 @@
 from django.apps import apps
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        PermissionRequiredMixin)
+                                        PermissionRequiredMixin,
+                                        UserPassesTestMixin)
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from opentok import OpenTok
-
-from students.forms import CourseEnrollForm
+from django.views import View as ClassicView
 
 from courses.forms import ModuleFormSet
-from courses.models import Content, Course, Module, Subject, LessonRoom
+from courses.models import Content, Course, LessonRoom, Module, Subject
+from students.forms import CourseEnrollForm
 
 
 def check_user_group(user):
@@ -202,9 +206,11 @@ class ModuleContentListView(TemplateResponseMixin, View):
     template_name = 'courses/manage/module/content_list.html'
 
     def get(self, request, module_id):
-        module = get_object_or_404(Module,
-                                   id=module_id,
-                                   course__owner=request.user.teacher)
+        module = get_object_or_404(
+            Module,
+            id=module_id,
+            course__owner=request.user.teacher,
+        )
         return self.render_to_response({'module': module})
 
 
@@ -235,54 +241,75 @@ class CourseDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(
-            CourseDetailView,
-            self,
-            ).get_context_data(**kwargs)
+            CourseDetailView, self,
+        ).get_context_data(**kwargs)
+
         context['enroll_form'] = CourseEnrollForm(
             initial={'course': self.object},
-                )
-
+        )
         return context
 
 
-@login_required(login_url='/accounts/login/')
-@user_passes_test(check_user_group, login_url='/accounts/login/')
-def get_lesson(request):
-    """[summary]
-
-    TODO: class-based view get, post requests
+class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, ClassicView):
+    """Class-based view for work with LessonRoom.
 
     Note:
         session_id (str): len(session_id) = 73
         token (str): len(token) = 340
 
-    TODO: request should be POST because we need receive list of students
-
-    Arguments:
-        request {[type]} -- [description]
+    TODO: add ability to set time of start and end of lesson, in that time it
+    is possible only in admin panel
+    TODO: check post-request
 
     Returns:
-        [type] -- [description]
+        TODO: DOCS!
     """
-    #Записать в БД. Вернуть localhost:3000 в качестве страницы!!!
 
-    opentok = OpenTok("46769324", "0a5d254d5d11b7e1ef22004df51b6e28f9279823")
-    session = opentok.create_session()
+    login_url = '/accounts/login/'
+    template_name = 'courses/course/lesson.html'
 
-    session_id = session.session_id
-    token = opentok.generate_token(session_id)
+    def test_func(self):
+        return self.request.user.groups.filter(name='Teachers').exists()
 
-    lesson_room = LessonRoom.objects.create(
-        lesson_name='',
-        teacher=request.user.teacher,
-        session_id=session_id,
-        token=token,
-    )
-    lesson_room.save()
-    # TODO: lesson_room.students.add(1, 2) <- students ids
+    def get(self, request):
+        lesson_rooms = LessonRoom.objects.filter(
+            teacher=request.user.teacher,
+            schedule__start_timestamp__gte=timezone.now(),
+        )
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={'lesson_rooms': lesson_rooms},
+        )
 
-    return render(
-        request=request,
-        template_name='courses/course/lesson.html',
-        context={"session_id": session_id, "token": token, "api_key": "46769324"}
-    )
+    def post(self, request):
+        students_ids = request.POST.get('students_ids')
+        students_ids = students_ids.split(',')
+        students_ids = list(map(int, students_ids))
+
+        opentok = OpenTok(
+            '46769324', '0a5d254d5d11b7e1ef22004df51b6e28f9279823',
+        )
+        session = opentok.create_session()
+
+        session_id = session.session_id
+        token = opentok.generate_token(session_id)
+
+        lesson_room = LessonRoom.objects.create(
+            lesson_name='',
+            teacher=request.user.teacher,
+            session_id=session_id,
+            token=token,
+        )
+        lesson_room.save()
+        lesson_room.students.add(*students_ids)
+
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={
+                'api_key': '46769324',
+                'session_id': session_id,
+                'token': token,
+            }
+        )
