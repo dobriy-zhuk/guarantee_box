@@ -100,6 +100,8 @@ models.DateTimeField(blank=True) # raises IntegrityError if blank
 models.CharField(null=True) # NULL allowed, but will never be set as NULL
 ```
 
+TODO: Шпаргалка для Django ORM
+
 #### Best regards, Ian.
 
 If you have some good info about project please share with us below.
