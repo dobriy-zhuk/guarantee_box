@@ -21,7 +21,6 @@ from courses.models import Content, Course, LessonRoom, Module, Subject
 from students.forms import CourseEnrollForm
 
 
-# Create your views here.
 def post_coding(request):
     return render(request, 'index.html', {})
 

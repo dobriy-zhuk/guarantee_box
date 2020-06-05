@@ -51,5 +51,10 @@ urlpatterns = [
          'api/<int:api_version>/get-lesson-info/<int:lesson_id>/',
          views.get_lesson_room_info,
          name='get_lesson_room_info',
-    )
+    ),   
+    path(
+         'api/<int:api_version>/decrease-reward-card-amount/<int:student_id>/<int:amount>/',
+         views.decrease_student_reward_card_amount,
+         name='decrease_student_reward_card_amount',
+    ),
 ]

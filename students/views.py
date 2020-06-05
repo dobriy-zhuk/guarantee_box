@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group, User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -412,7 +413,9 @@ class StudentCourseDetailView(DetailView):
         return query_set.filter(students__in=[self.request.user.student])
 
     def get_context_data(self, **kwargs):
-        context = super(StudentCourseDetailView, self).get_context_data(**kwargs)
+        context = super(
+            StudentCourseDetailView, self,
+        ).get_context_data(**kwargs)
 
         context['user'] = self.request.user
         # get course object
@@ -446,7 +449,6 @@ class StudentCourseDetailView(DetailView):
         return context
 
 
-@login_required(login_url='/accounts/login/')
 @require_GET
 def set_student_reward_card(
     request,
@@ -549,7 +551,6 @@ def set_student_reward_card(
 
 # TODO: def del_student_reward_card
 
-@login_required(login_url='/accounts/login/')
 @require_GET
 def get_lesson_room_info(request, api_version: int, lesson_id: int):
     """Get lesson room info 
@@ -597,6 +598,59 @@ def get_lesson_room_info(request, api_version: int, lesson_id: int):
                 },
             )
         return JsonResponse(lesson_room)
+
+    return JsonResponse(
+        status=bad_request_error_code,
+        data={'error': 'wrong api version'},
+    )
+
+
+@require_GET
+def decrease_student_reward_card_amount(
+    request,
+    api_version: int,
+    student_id: int,
+    amount: int,
+):
+    """Descrease student reward card amount.
+
+    Args:
+        request ([type]): [description]
+        api_version (int): [description]
+        student_id (int): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    bad_request_error_code = 400
+
+    if api_version == 0:
+
+        student = get_object_or_none(Student, object_id=student_id)
+
+        if student is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'no student with {0} id'.format(student_id)
+                }
+            )
+        
+        if student.reward_card_amount == 0:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'student does not have reward cards yet',
+                    'student_reward_amount': student.reward_card_amount,
+                }
+            )
+
+        student.reward_card_amount -= amount
+        student.save()
+
+        return JsonResponse({
+            'student_reward_card_amount': student.reward_card_amount,
+        })
 
     return JsonResponse(
         status=bad_request_error_code,
