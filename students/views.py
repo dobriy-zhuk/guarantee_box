@@ -412,7 +412,9 @@ class StudentCourseDetailView(DetailView):
         return query_set.filter(students__in=[self.request.user.student])
 
     def get_context_data(self, **kwargs):
-        context = super(StudentCourseDetailView, self).get_context_data(**kwargs)
+        context = super(
+            StudentCourseDetailView, self,
+        ).get_context_data(**kwargs)
 
         context['user'] = self.request.user
         # get course object
@@ -446,7 +448,6 @@ class StudentCourseDetailView(DetailView):
         return context
 
 
-@login_required(login_url='/accounts/login/')
 @require_GET
 def set_student_reward_card(
     request,
@@ -549,7 +550,6 @@ def set_student_reward_card(
 
 # TODO: def del_student_reward_card
 
-@login_required(login_url='/accounts/login/')
 @require_GET
 def get_lesson_room_info(request, api_version: int, lesson_id: int):
     """Get lesson room info 
