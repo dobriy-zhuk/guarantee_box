@@ -273,6 +273,6 @@ class LessonRoom(models.Model):
         """Override the str() behavior, for instance of class.
 
         Returns:
-            self.id self.lesson_name: Instance id and lesson_name
+            self.id : Instance id
         """
-        return '{0} {1}'.format(self.id, self.lesson_name)
+        return '{0}'.format(self.id)

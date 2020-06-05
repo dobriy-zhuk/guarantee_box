@@ -43,7 +43,7 @@ urlpatterns = [
          name='available_lessons',
      ),
     path(
-         'api/<int:api_version>/<int:student_id>/<lesson_id>/<int:attempt>/',
+         'api/<int:api_version>/set-reward-card/<int:student_id>/<int:lesson_id>/<int:attempt>/',
          views.set_student_reward_card,
          name='set_student_reward_card',
      ),

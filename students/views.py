@@ -524,6 +524,8 @@ def set_student_reward_card(
                     'attempt': attempt,
                 },
             )
+        student.reward_card_amount += 1
+        student.save()
 
         student_reward_card = StudentRewardCard.objects.create(
             student=student,
@@ -552,6 +554,22 @@ def set_student_reward_card(
 def get_lesson_room_info(request, api_version: int, lesson_id: int):
     """Get lesson room info 
 
+    Error handling:
+        If you try just model_to_dict(lesson_room), you will response this
+        TypeError: Object of type 'Students' is not JSON serializable
+        That's happening because students is many2many field and Json
+        serialiser doesn't request database for getting values of students.
+        I override students in this chung of code:
+
+            lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
+            list_of_students = list(
+                lesson_room.students.values(
+                    'id', 'name', 'reward_card_amount',
+                )
+            )
+            lesson_room = model_to_dict(lesson_room)
+            lesson_room['students'] = list_of_students
+
     Arguments:
         request {[type]} -- [description]
 
@@ -563,6 +581,13 @@ def get_lesson_room_info(request, api_version: int, lesson_id: int):
     if api_version == 0:
 
         lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
+        list_of_students = list(
+            lesson_room.students.values(
+                'id', 'name', 'reward_card_amount',
+            )
+        )
+        lesson_room = model_to_dict(lesson_room)
+        lesson_room['students'] = list_of_students
 
         if lesson_room is None:
             return JsonResponse(
@@ -571,8 +596,7 @@ def get_lesson_room_info(request, api_version: int, lesson_id: int):
                     'error': 'no lesson_room with {0} id'.format(lesson_id),
                 },
             )
-        # FIXME: error with students serializers
-        return JsonResponse(model_to_dict(lesson_room))
+        return JsonResponse(lesson_room)
 
     return JsonResponse(
         status=bad_request_error_code,
