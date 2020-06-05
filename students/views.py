@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Group, User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
@@ -17,7 +18,6 @@ from django.views.decorators.http import require_GET
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from guardian.shortcuts import assign_perm, get_objects_for_user
-from django.forms.models import model_to_dict
 
 from courses.models import Course, LessonRoom, Module
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
@@ -301,7 +301,7 @@ def get_profile(request):
     by student
     """
     student = Student.objects.get(user=request.user)
-    upcoming_lesson = LessonRoom.objects.filter(
+    upcoming_lessons = LessonRoom.objects.filter(
         students__in=[student],
         schedule__start_timestamp__gte=timezone.now()
     )
@@ -329,7 +329,7 @@ def get_profile(request):
             'student_courses': student_courses,
             'available_courses': available_courses,
             'courses_with_done_modules': courses_with_done_modules,
-            'upcoming_lesson':upcoming_lesson,
+            'upcoming_lessons':upcoming_lessons,
         },
     )
 

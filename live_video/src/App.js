@@ -1,4 +1,5 @@
 /* Let CRA handle linting for sample app */
+
 import React, { Component } from 'react';
 import Spinner from 'react-spinner';
 import classNames from 'classnames';
@@ -14,7 +15,7 @@ let otCore;
 
 
 //get data from server!
-fetch('http://127.0.0.1:8000/students/api/0/get-lesson-info/lesson_id/')
+fetch('http://127.0.0.1:8000/students/api/0/get-lesson-info/4')
 .then((response) => response.json())
 .then((responseJson) => {
 

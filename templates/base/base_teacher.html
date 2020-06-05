@@ -52,9 +52,9 @@
 </head>
 
 <body>
-<!-- Preloader Start -->
-<!--div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center" >
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
                 <div class="preloader-circle"></div>
                 <div class="preloader-img pere-text">
@@ -78,7 +78,7 @@
                             <div class="main-menu f-right d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a href="{% url 'manage_course_list' %}">Редактор</a></li>
+                                        <li><a href="{% url 'manage_course_list' %}">Курсы</a></li>
                                         {% if request.user.is_authenticated %}
                                         <li><a href="{% url 'teacher_lesson' %}">Уроки</a></li>
                                         <li><a href="{% url 'payment' %}">Расписание</a></li>

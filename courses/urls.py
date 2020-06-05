@@ -5,7 +5,7 @@ from courses.views import CourseListView
 
 urlpatterns = [
     path('', CourseListView.as_view(), name='course_list'),
-    path('lesson/', views.get_lesson, name='teacher_lesson'),
+    path('lesson/', views.TeacherLessons.as_view(), name='teacher_lessons'),
     path('mine/',
          views.ManageCourseListView.as_view(),
          name='manage_course_list'),

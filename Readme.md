@@ -99,6 +99,26 @@ Bad:
 models.DateTimeField(blank=True) # raises IntegrityError if blank
 models.CharField(null=True) # NULL allowed, but will never be set as NULL
 ```
+Шпаргалка Django ORM
+Аналогия между SQL и ORM операторами
+
+| Название         | Оператор SQL | Оператор ORM |
+| ---------------- | :----------: | -----------: |
+| Больше чем       | >            | `__gt`       |
+| Больше или равно | =>           | `__gte`      |
+| Меньше чем       | <            | `__lt`       |
+| Меньше или равно | =<           | `__lte`      |
+| Равно            | =            | `=`          |
+| Не равно         | NOT          | `exclude`    |
+| Логическое И     | AND          | `,`          |
+| Ноль (ничего)    | {null}       | `None`       |
+| None             |              |              |
+
+TODO: Написать примеры использования
+
+## How to show ManyToMany field in Django template?
+
+Look [here](https://stackoverflow.com/questions/4270330/django-show-a-manytomanyfield-in-a-template)
 
 #### Best regards, Ian.
 
