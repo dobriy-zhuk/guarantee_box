@@ -52,6 +52,7 @@ class Student(models.Model):
     parent_email = models.EmailField(max_length=254, default='')
     city = models.CharField(max_length=60, default='')
     amount = models.IntegerField(default=0)
+    reward_card_amount = models.PositiveIntegerField(default=0)
     status = models.ForeignKey(
         StudentStatus, default=1, on_delete=models.CASCADE
     )
