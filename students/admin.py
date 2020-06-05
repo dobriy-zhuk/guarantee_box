@@ -7,6 +7,10 @@ from students.models import (
 admin.site.register(StudentStatus)
 admin.site.register(Student)
 admin.site.register(TeacherStatus)
-admin.site.register(Teacher)
 admin.site.register(Schedule)
 admin.site.register(StudentRewardCard)
+
+
+@admin.register(Teacher)
+class TeacherAdmin(admin.ModelAdmin):
+    filter_horizontal = ['students']
