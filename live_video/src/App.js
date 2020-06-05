@@ -10,18 +10,10 @@ import 'opentok-solutions-css';
 import logo from './logo.svg';
 import config from './config.json';
 import './App.css';
+import axios from 'axios';
 
 let otCore;
 
-
-//get data from server!
-fetch('http://127.0.0.1:8000/students/api/0/get-lesson-info/4')
-.then((response) => response.json())
-.then((responseJson) => {
-
-      console.log(responseJson[0].id)
-
-});
 
 
 //let apiKey = responseJson[0].apiKey;
@@ -31,13 +23,13 @@ fetch('http://127.0.0.1:8000/students/api/0/get-lesson-info/4')
 // get-request set student reward card 
 let request_url = 'http://127.0.0.1:8000/students/api/0/student_id/lesson_id/attempt/';
 
-fetch(request_url)
-.then((response) => response.json())
-.then((responseJson) => {
+//fetch(request_url)
+//.then((response) => response.json())
+//.then((responseJson) => {
 
-     console.log(responseJson[0].id)
+  //   console.log(responseJson[0].id)
 
-});
+//});
 
 
 const otCoreOptions = {
@@ -145,6 +137,10 @@ class App extends Component {
       meta: null,
       localAudioEnabled: true,
       localVideoEnabled: true,
+      token: 0,
+      session_id: 0,
+      students: [],
+      lesson_id: 0,
     };
     this.startCall = this.startCall.bind(this);
     this.endCall = this.endCall.bind(this);
@@ -153,6 +149,15 @@ class App extends Component {
   }
 
   componentDidMount() {
+
+  axios.get('http://127.0.0.1:8000/students/api/0/get-lesson-info/6/')
+  .then((response) => {
+    console.log(response.data);
+    this.setState({ token: response.data.token });
+    this.setState({ session_id: response.data.session_id });
+    this.setState({ students: response.data.students });
+    this.setState({ lesson_id: response.data.id });
+  });
 
     otCore = new AccCore(otCoreOptions);
     otCore.connect().then(() => this.setState({ connected: true }));
@@ -192,8 +197,22 @@ class App extends Component {
     this.setState({ localVideoEnabled: !this.state.localVideoEnabled });
   }
 
+  add_card(student_id, lesson_id) {
+
+    let url = "http://127.0.0.1:8000/students/api/0/set-reward-card/" + student_id + '/' + lesson_id + '/0/';
+    axios.get(url)
+          .then((response) => {
+              console.log(response.data);
+              //this.setState({token: response.data.token});
+          })
+          .catch((err) => {
+              //this.setState({ data: err, isLoading: false });
+          });
+  }
+
+
   render() {
-    const { connected, active } = this.state;
+    const { connected, active, session_id, token, students, lesson_id } = this.state;
     const {
       localAudioClass,
       localVideoClass,
@@ -212,6 +231,16 @@ class App extends Component {
           <h1>Гарантия Знаний</h1>
         </div>
         <div className="App-main">
+            {this.state.students.map((obj) => {
+              let student_id = obj.id;
+                return (
+                    <div>
+                      <p>Ученик: {obj.name} / количество бонусов: {obj.reward_card_amount}</p>
+                      <button onClick={() => this.add_card(student_id, lesson_id)} disabled={this.state.isLoading}> + бонус </button>
+                    </div>
+                )
+              })
+            }
           <div className="App-video-container">
             { !connected && connectingMask() }
             { connected && !active && startCallMask(this.startCall)}
