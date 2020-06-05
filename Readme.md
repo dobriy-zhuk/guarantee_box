@@ -120,6 +120,13 @@ TODO: Написать примеры использования
 
 Look [here](https://stackoverflow.com/questions/4270330/django-show-a-manytomanyfield-in-a-template)
 
+## Something about corsheaders
+
+Look [here](https://stackoverflow.com/questions/28046422/django-cors-headers-not-work)
+
+You just need put 'corsheaders.middleware.CorsMiddleware' above all
+middlewares in MIDDLEWARE variable.
+
 #### Best regards, Ian.
 
 If you have some good info about project please share with us below.
