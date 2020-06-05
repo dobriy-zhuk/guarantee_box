@@ -571,7 +571,7 @@ def get_lesson_room_info(request, api_version: int, lesson_id: int):
                     'error': 'no lesson_room with {0} id'.format(lesson_id),
                 },
             )
-
+        # FIXME: error with students serializers
         return JsonResponse(model_to_dict(lesson_room))
 
     return JsonResponse(
