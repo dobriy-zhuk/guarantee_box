@@ -524,6 +524,8 @@ def set_student_reward_card(
                     'attempt': attempt,
                 },
             )
+        student.reward_card_amount += 1
+        student.save()
 
         student_reward_card = StudentRewardCard.objects.create(
             student=student,
