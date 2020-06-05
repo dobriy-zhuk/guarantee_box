@@ -2,7 +2,16 @@ from django.contrib import admin
 from courses.models import Subject, Course, Module, LessonRoom
 
 
-admin.site.register(LessonRoom)
+@admin.register(LessonRoom)
+class LessonRoomAdmin(admin.ModelAdmin):
+    list_display = ['id', 'lesson_name', 'display_students']
+    filter_horizontal = ['students']
+
+    def display_students(self, obj):
+        return ', '.join([
+            student.name for student in obj.students.all()
+        ])
+    display_students.short_description = 'Students'
 
 
 @admin.register(Subject)
