@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from managers.models import CurrencyExchange, Manager
+
+admin.site.register(Manager)
+admin.site.register(CurrencyExchange)

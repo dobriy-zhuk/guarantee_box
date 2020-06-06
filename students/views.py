@@ -1,4 +1,6 @@
 """Module where described the logic for user response."""
+import decimal
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -12,15 +14,18 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from guardian.shortcuts import assign_perm, get_objects_for_user
 
 from courses.models import Course, LessonRoom, Module
+from managers.models import CurrencyExchange
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
 from students.models import Student, StudentRewardCard, Teacher
 from students.tokens import account_activation_token
@@ -657,3 +662,91 @@ def decrease_student_reward_card_amount(
         status=bad_request_error_code,
         data={'error': 'wrong api version'},
     )
+
+
+def get_currency_exchange(
+    student_currency,
+    currency,
+):
+    currency_exchange_today = CurrencyExchange.objects.get(id=1)
+
+    if student_currency == currency:
+        return decimal.Decimal(1.00)
+
+    if student_currency == 'RUB' and currency == 'USD':
+        return currency_exchange_today.dollar
+        
+    elif student_currency == 'RUB' and currency == 'EUR':
+        return currency_exchange_today.euro
+
+    elif student_currency == 'USD' and currency == 'RUB':
+        return (decimal.Decimal(1) / currency_exchange_today.dollar)
+
+    elif student_currency == 'EUR' and currency == 'RUB':
+        return (decimal.Decimal(1) / currency_exchange_today.euro)
+
+
+@method_decorator(require_GET, name='dispatch')
+@method_decorator(csrf_exempt, name='dispatch')
+class StudentPaymentAPI(View):
+    """[summary]
+
+    TODO: docs!!!
+    student_id (int): student id
+    action (str): action what you want to do, it can be 'withdraw' or 'deposit'
+    'withdraw' means 'снять (деньги)' and 'deposti' means 'внести (деньги)'.
+    currency (str): RUB, USD or EUR
+    amount (int): money amount
+
+    Args:
+        View ([type]): [description]
+    """
+
+    bad_request_error_code = 400
+    currency_exchange = 0.00
+
+    def get(self, request, api_version):
+        if api_version == 0:
+            student_id = request.GET.get('student_id')
+            action = request.GET.get('action')
+            currency = request.GET.get('currency')
+            amount = request.GET.get('amount')
+            amount = decimal.Decimal(amount)
+
+            student = get_object_or_none(Student, object_id=student_id)
+            
+            if student is None:
+                return JsonResponse(
+                status=self.bad_request_error_code,
+                    data={
+                        'error': 'no student with {0} id'.format(student_id)
+                    },
+                )
+            
+            self.currency_exchange = get_currency_exchange(
+                student_currency=student.currency,
+                currency=currency,
+            )
+
+            if action == 'deposit':
+                student.amount += (amount*self.currency_exchange)
+            elif action == 'withdraw':
+                student.amount -= (amount*self.currency_exchange)
+            else:
+                return JsonResponse(
+                    status=self.bad_request_error_code,
+                    data={
+                        'error': 'wrong action',
+                    }
+                )
+
+            student.save()
+
+            return JsonResponse({'message': 'операция прошла успешно'})
+
+        return JsonResponse(
+            status=self.bad_request_error_code,
+            data={
+                'error': 'wrong api version',
+            },
+        )

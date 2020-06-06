@@ -57,4 +57,9 @@ urlpatterns = [
          views.decrease_student_reward_card_amount,
          name='decrease_student_reward_card_amount',
     ),
+    path(
+         'api/<int:api_version>/student-payment/',
+         views.StudentPaymentAPI.as_view(),
+         name='student_payment',
+    ),
 ]

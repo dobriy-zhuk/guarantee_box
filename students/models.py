@@ -32,6 +32,9 @@ class Student(models.Model):
     amount: account balance, how much money does the student have
     currency: RUB, USD or EUR
 
+    amount:
+    Max number is 99999.99
+
     Student phone is writed in comment
 
     Arguments:
@@ -51,7 +54,7 @@ class Student(models.Model):
     email = models.EmailField(max_length=254, default='')
     parent_email = models.EmailField(max_length=254, default='')
     city = models.CharField(max_length=60, default='')
-    amount = models.IntegerField(default=0)
+    amount = models.DecimalField(default=0.00, max_digits=7, decimal_places=2)
     reward_card_amount = models.PositiveIntegerField(default=0)
     status = models.ForeignKey(
         StudentStatus, default=1, on_delete=models.CASCADE

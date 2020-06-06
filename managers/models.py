@@ -18,3 +18,19 @@ class Manager(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class CurrencyExchange(models.Model):
+    """Describe managers_currensyexchange table in db.
+
+    euro: how much rubles costs 1 euro
+    dollar: how much rubles costs 1 dollar
+
+    Max number is 999.99 for each field.
+
+    """
+    euro = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
+    dollar = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return 'Обмен валюты'
