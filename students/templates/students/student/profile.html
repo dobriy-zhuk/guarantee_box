@@ -287,7 +287,6 @@
                 Описание курса: {{ course.overview }} <br>
             {% endfor %}
             <br>
-            <!-- Вопрос про количество карточек что это и как есть -->
             <!-- Задание -->
             Статистика по пройденным занятиям: курс + процент прохождения + изображение курса + описание курса <br>
             Количество карточек <br>
@@ -322,11 +321,10 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Уроки</h3>
-            Время начала следующего занятия <br>
             {% for lesson in upcoming_lessons %}
-                {{ lesson.schedule.start_timestamp|timeuntil }} <br>
-                {{ lesson.session_id|truncatechars:15 }} <br>
-                {{ lesson.token|truncatechars:15 }} <br>
+                Время до начала следующего занятия: {{ lesson.schedule.start_timestamp|timeuntil }} <br>
+                Session_id: {{ lesson.session_id|truncatechars:15 }} <br>
+                Token: {{ lesson.token|truncatechars:15 }} <br>
             {% endfor %}
 
             <!-- Задание -->
