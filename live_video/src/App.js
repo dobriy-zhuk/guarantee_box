@@ -66,16 +66,16 @@ const studentInfo = students =>
                       <div>
                           <p>Ученик: {obj.name} / количество бонусов: {obj.reward_card_amount}</p>
                         <button onClick={() => {
-                        let url = "http://127.0.0.1:8000/students/api/0/set-reward-card/" + obj.id + '/6/0/';
-                        axios.get(url)
-                              .then((response) => {
-                                  console.log(response.data);
-                              })
-                              .catch((err) => {
-                                  console.log(err);
-                                  this.setState({ data: err, isLoading: false });
-                              });
-                      }}> +
+                                let url = "http://127.0.0.1:8000/students/api/0/set-reward-card/" + obj.id + '/6/0/';
+                                axios.get(url)
+                                      .then((response) => {
+                                          console.log(response.data);
+                                      })
+                                      .catch((err) => {
+                                          console.log(err);
+                                          //this.setState({ data: err, isLoading: false });
+                                      });
+                              }}> +
                               бонус
                           </button>
                       </div>
@@ -84,7 +84,40 @@ const studentInfo = students =>
           }
 </div>;
 
-//
+
+function Cards(props) {
+    console.log(props.students);
+
+      return (
+          <div>
+              {props.students.map((obj, key) => {
+                  let student_id = obj.id;
+                  return (
+                      <div>
+                          <p>Ученик: {obj.name} / количество бонусов: {obj.reward_card_amount}</p>
+                          <button onClick={() => {
+                              let url = "http://127.0.0.1:8000/students/api/0/set-reward-card/" + obj.id + '/6/0/';
+                              axios.get(url)
+                                  .then((response) => {
+                                      console.log(response.data);
+                                  })
+                                  .catch((err) => {
+                                      console.log(err);
+                                      //this.setState({ data: err, isLoading: false });
+                                  });
+                          }}> +
+                              бонус
+                          </button>
+                      </div>
+                  )
+              })
+              }
+          </div>
+      )
+
+}
+
+
 
 class App extends Component {
 
@@ -102,7 +135,7 @@ class App extends Component {
       session_id: 0,
       students: [],
       lesson_id: 0,
-      student: 0,
+      student: false,
     };
     this.startCall = this.startCall.bind(this);
     this.endCall = this.endCall.bind(this);
@@ -114,13 +147,15 @@ class App extends Component {
 
       let query = queryString.parse(window.location.search);
       let request_url = 'http://127.0.0.1:8000/students/api/0/get-lesson-info/' + query.lesson_id + '/';
-      this.state.student = true;
 
       axios.get(request_url)
           .then((response) => {
               this.setState({token: response.data.token});
               this.setState({sessionId: response.data.session_id});
-              this.setState({students: response.data.students});
+              this.setState({student: query.student});
+              if(this.state.student === 'false'){
+                    this.setState({students: response.data.students});
+              }
               this.setState({lesson_id: response.data.id});
 
               const otCoreOptions = {
@@ -236,7 +271,7 @@ class App extends Component {
           <h1>Гарантия Знаний</h1>
         </div>
         <div className="App-main">
-          { studentInfo(students) }
+          <Cards students={students}/>
           <div className="App-video-container">
             { !connected && connectingMask() }
             { connected && !active && startCallMask(this.startCall)}

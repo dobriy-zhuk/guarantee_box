@@ -17,16 +17,6 @@
 <meta property="og:url" content="https://garantylearning.com/index.html" />
 {% endblock %}
 
-{% block css %}
-<script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-    <script type="text/javascript">
-        var apiKey = '{{ api_key }}';
-        var sessionId = '{{ session_id }}';
-        var token = '{{ token }}';
-    </script>
-    <script src="{% static 'js/opentok.js' %}"></script>
-    {% endblock %}
-
 {% block content %}
 
 <!-- Generating Start -->
@@ -42,13 +32,11 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 text-center">
                 {% for lesson_room in lesson_rooms %}
-                    <p>{{ lesson_room.session_id }}</p>
-                    <p>{{ lesson_room.token }}</p>
+                    <p><br><a href="http://localhost:3000/?lesson_id={{ lesson_room.id }}&student=false" class="genric-btn info-border" target="_blank">Подключиться</a>
                     {% for student in lesson_room.students.all %}
                         <p>{{ student}}</p>
                     {% endfor %}
                 {% endfor %}
-                <div id="publisher"></div>
             </div>
         </div>
     </div>
