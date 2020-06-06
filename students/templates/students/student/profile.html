@@ -324,9 +324,9 @@
             <h3>Уроки</h3>
             Время начала следующего занятия <br>
             {% for lesson in upcoming_lessons %}
-                {{ lesson.schedule.start_timestamp }} <br>
-                {{ lesson.session_id }} <br>
-                {{ lesson.token }} <br>
+                {{ lesson.schedule.start_timestamp|timeuntil }} <br>
+                {{ lesson.session_id|truncatechars:15 }} <br>
+                {{ lesson.token|truncatechars:15 }} <br>
             {% endfor %}
 
             <!-- Задание -->
