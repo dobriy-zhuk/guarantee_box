@@ -2,59 +2,96 @@
 {% load static %}
 {% block title %}ГАРАНТИЯ ЗНАНИЙ - список курсов ученика{% endblock title %}
 {% block tags %}
-    <meta name="description"
-        content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ" />
-    <meta name="keywords"
-        content="гарантия знаний, программирование, курсы, робототехника, занятия, химия, английский, физика, математика, русский, французский, предпринимательство, финансы, моделирование, обществознание, егэ, огэ, экзамены, лагерь, детский" />
-    <meta name="author" content="dobriy_zhuk" />
-    <meta property="og:title"
-        content="ГАРАНТИЯ ЗНАНИЙ - Робототехника, Программирование, Химия, а также курсы ЕГЭ и ОГЭ для детей" />
-    <meta property="og:description"
-        content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ для детей" />
-    <meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://garantylearning.com/index.html" />
+<meta name="description"
+    content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ" />
+<meta name="keywords"
+    content="гарантия знаний, программирование, курсы, робототехника, занятия, химия, английский, физика, математика, русский, французский, предпринимательство, финансы, моделирование, обществознание, егэ, огэ, экзамены, лагерь, детский" />
+<meta name="author" content="dobriy_zhuk" />
+<meta property="og:title"
+    content="ГАРАНТИЯ ЗНАНИЙ - Робототехника, Программирование, Химия, а также курсы ЕГЭ и ОГЭ для детей" />
+<meta property="og:description"
+    content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ для детей" />
+<meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://garantylearning.com/index.html" />
 {% endblock %}
 
 
 {% block content %}
 
-        <!-- have-project End -->
-            <!-- Generating Start -->
-        <div class="generating-area" style="margin-top: 150px">
-            <div class="container">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="section-tittle text-center">
-                            <h2>Мои курсы</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    {% if object_list %}
-                    {% for course in object_list %}
-                    <div class="col-lg-6 col-md-6">
-                        <div class="single-generating d-flex mb-30">
-                            <div class="generating-icon">
-                                <span class="flaticon-chart"></span>
-                            </div>
-                            <div class="generating-cap">
-                                <h4>{{ course.title }}</h4>
-                                <p>{{ course.overview }}<br>
-                                    <a href="{% url 'student_course_detail' course.id %}" class="genric-btn info-border radius">Перейти</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                <p>
-                    You are not enrolled in any courses yet.
-                    <a href="{% url 'course_list' %}">Browse courses</a> to enroll in a course.
-                </p>
-                {% endif %}
+<!-- have-project End -->
+<!-- Generating Start -->
+<div class="generating-area" style="margin-top: 150px">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-tittle text-center">
+                    <h2>Мои курсы</h2>
                 </div>
             </div>
         </div>
+        <div class="row">
+            {% if student_courses %}
+            {% for course in student_courses %}
+            <div class="col-lg-6 col-md-6">
+                <div class="single-generating d-flex mb-30">
+                    <div class="generating-icon">
+                        <span class="flaticon-chart"></span>
+                    </div>
+                    <div class="generating-cap">
+                        <h4>{{ course.title }}</h4>
+                        <p>{{ course.overview }}<br>
+                            <a href="{% url 'student_course_detail' course.id %}"
+                                class="genric-btn info-border radius">Перейти</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>
+                You are not enrolled in any courses yet.
+                <a href="{% url 'course_list' %}">Browse courses</a> to enroll in a course.
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="generating-area" style="margin-top: 150px">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-tittle text-center">
+                    <h2>Доступные курсы</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {% if available_courses %}
+            {% for course in available_courses %}
+            <div class="col-lg-6 col-md-6">
+                <div class="single-generating d-flex mb-30">
+                    <div class="generating-icon">
+                        <span class="flaticon-chart"></span>
+                    </div>
+                    <div class="generating-cap">
+                        <h4>{{ course.title }}</h4>
+                        <p>{{ course.overview }}<br>
+                            <a href="{% url 'student_course_detail' course.id %}"
+                                class="genric-btn info-border radius">Перейти</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>
+                You are not enrolled in any courses yet.
+                <a href="{% url 'course_list' %}">Browse courses</a> to enroll in a course.
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

@@ -380,12 +380,9 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
 
 
 @login_required(login_url='/accounts/login/')
+@user_passes_test(check_user_group, login_url='/accounts/login/')
 def get_courses_list(request):
     """Returns courses list.
-
-    TODO: Это для студентов или для преподавателей?
-     потому что оно перенаправляет на страницу, где можно 
-     редактировать курс.
 
     Arguments:
         request: client request
@@ -394,13 +391,17 @@ def get_courses_list(request):
         render(): render list.html with courses list which
         contains user.student
     """
-    courses = Course.objects.filter(
-        students__in=[request.user.student],
-    )
+    courses = Course.objects.all()
+    student_courses = courses.filter(students__in=[request.user.student])
+    available_courses = courses.exclude(students__in=[request.user.student])
+
     return render(
         request=request,
         template_name='students/course/list.html',
-        context={'object_list': courses},
+        context={
+            'student_courses': student_courses,
+            'available_courses': available_courses,
+        },
     )
 
 
