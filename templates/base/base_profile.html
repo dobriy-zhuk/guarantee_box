@@ -78,7 +78,6 @@
                                     <ul id="navigation">
                                         {% if request.user.is_authenticated %}
                                         <li><a href="{% url 'student_course_list' %}">Курсы</a></li>
-                                        <li><a href="http://localhost:3000/" target="_blank">Урок</a></li>
                                         <li><a href="{% url 'payment' %}">Оплата</a></li>
                                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                                         <li><a href="{% url 'logout' %}">Выйти</a></li>

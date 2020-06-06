@@ -1,53 +1,61 @@
 {% extends "base/base_courses.html" %}
-{% block title %}Личный кабинет Гарантия Знаний{% endblock %}
+{% block title %}Вход в личный кабинет Гарантия Знаний{% endblock %}
 {% block content %}
-<div class="container">
-    <div class="row text-center">
-        <h1>Личный кабинет</h1>
-        {% if form.errors %}
-        <p id='message'></p>
-        {% else %}
-        <p>Введите данные для входа:</p>
-        {% endif %}
-        <form action="{% url 'login' %}" method="post" id='input_form'>
-            {{ form.as_p }}
-            {% csrf_token %}
-            <input type="hidden" name="next" value="{{ next }}" />
-            <p><input type="submit" class="btn btn-success" value="Войти"></p>
-        </form>
-        <p>Нет профиля?<br>
-            <a href="{% url 'student_registration' %}">Зарегистрируйтесь</a> 
-            <!-- TODO:  добавить ссылку на форму регистрации а оттуда на выбор дня пробного урока-->
-        или <a href='#'>пройдите пробный урок</a>.</p>
-        {% if next > 0 %}
-        <p id="reset-password"><a href="{% url "password_reset" %}">Забыли пароль?</a></p>
 
-        {% elif next > 4 %}
-
-        <div id="countdown"></div>
-
-        <script>
-            function declOfNum(n, titles) {
-                return titles[n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2];
-            }
-            var timeleft = 30;
-            var downloadTimer = setInterval(function () {
-                if (timeleft <= 0) {
-                    clearInterval(downloadTimer);
-                    document.getElementById('input_form').hidden = false;
-                    document.getElementById('message').textContent = 'Данные некорректны. Попробуйте еще раз.'
-                    document.getElementById('countdown').hidden = true;
-                } else {
-                    document.getElementById('input_form').hidden = true;
-                    document.getElementById('message').textContent = 'Данные некорректны. Попробуйте еще раз через:'
-                    secondsTitle = declOfNum(timeleft, ['секунду', 'секунды', 'секунд'])
-                    document.getElementById('countdown').innerHTML = timeleft + " " + secondsTitle;
-                }
-                timeleft -= 1;
-            }, 1000);
-        </script>
-
-        {% endif %}
+    <div class="generating-area" style="margin-top: 150px">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-tittle text-center">
+                    <h2>Вход в личный кабинет</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                 {% if form.errors %}
+                <p id='message'></p>
+                {% else %}
+                <p>Введите данные для входа:</p>
+                {% endif %}
+                <form action="{% url 'login' %}" method="post" id='input_form'>
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    <p><input type="submit" class="btn btn-success" value="Войти"></p>
+                </form>
+                <p>Нет профиля?<br>
+                    <a href="{% url 'student_registration' %}" style="color: black">Зарегистрируйтесь</a>
+                    <!-- TODO:  добавить ссылку на форму регистрации а оттуда на выбор дня пробного урока-->
+                или <a href='{% url 'student_calendar' %}' style="color: black">пройдите пробный урок</a>.</p>
+                {% if next > 0 %}
+                <p id="reset-password"><a href="{% url "password_reset" %}" style="color: black">Забыли пароль?</a></p>
+                {% elif next > 4 %}
+                <div id="countdown"></div>
+                <script>
+                    function declOfNum(n, titles) {
+                        return titles[n % 10 == 1 && n % 100 != 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2];
+                    }
+                    var timeleft = 30;
+                    var downloadTimer = setInterval(function () {
+                        if (timeleft <= 0) {
+                            clearInterval(downloadTimer);
+                            document.getElementById('input_form').hidden = false;
+                            document.getElementById('message').textContent = 'Данные некорректны. Попробуйте еще раз.'
+                            document.getElementById('countdown').hidden = true;
+                        } else {
+                            document.getElementById('input_form').hidden = true;
+                            document.getElementById('message').textContent = 'Данные некорректны. Попробуйте еще раз через:'
+                            secondsTitle = declOfNum(timeleft, ['секунду', 'секунды', 'секунд'])
+                            document.getElementById('countdown').innerHTML = timeleft + " " + secondsTitle;
+                        }
+                        timeleft -= 1;
+                    }, 1000);
+                </script>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
+
 {% endblock %}

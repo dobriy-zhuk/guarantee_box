@@ -12,79 +12,11 @@ import config from './config.json';
 import './App.css';
 import axios from 'axios';
 
+import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
+
 let otCore;
 
-
-
-//let apiKey = responseJson[0].apiKey;
-//let sessionId = responseJson[0].sessionId;
-//let token = responseJson[0].token;
-
-// get-request set student reward card 
-let request_url = 'http://127.0.0.1:8000/students/api/0/student_id/lesson_id/attempt/';
-
-//fetch(request_url)
-//.then((response) => response.json())
-//.then((responseJson) => {
-
-  //   console.log(responseJson[0].id)
-
-//});
-
-
-const otCoreOptions = {
-  credentials: {
-    apiKey: config.apiKey,
-    sessionId: config.sessionId,
-    token: config.token,
-  },
-  // A container can either be a query selector or an HTML Element
-  streamContainers(pubSub, type, data, stream) {
-    return {
-      publisher: {
-        camera: '#cameraPublisherContainer',
-        screen: '#screenPublisherContainer',
-      },
-      subscriber: {
-        camera: '#cameraSubscriberContainer',
-        screen: '#screenSubscriberContainer',
-      },
-    }[pubSub][type];
-  },
-  controlsContainer: '#controls',
-  packages: ['textChat', 'screenSharing', 'annotation'],
-  communication: {
-    callProperties: null, // Using default
-  },
-  textChat: {
-    name: ['David', 'Paul', 'Emma', 'George', 'Amanda'][Math.random() * 5 | 0], // eslint-disable-line no-bitwise
-    waitingMessage: 'Messages will be delivered when other users arrive',
-    container: '#chat',
-  },
-  screenSharing: {
-    extensionID: 'plocfffmbcclpdifaikiikgplfnepkpo',
-    annotation: true,
-    externalWindow: false,
-    dev: true,
-    screenProperties: {
-      insertMode: 'append',
-      width: '100%',
-      height: '100%',
-      showControls: false,
-      style: {
-        buttonDisplayMode: 'off',
-      },
-      videoSource: 'window',
-      fitMode: 'contain' // Using default
-    },
-  },
-  annotation: {
-    absoluteParent: {
-      publisher: '.App-video-container',
-      subscriber: '.App-video-container'
-    }
-  },
-};
 
 /**
  * Build classes for container elements based on state
@@ -114,6 +46,7 @@ const containerClasses = (state) => {
   };
 };
 
+
 const connectingMask = () =>
   <div className="App-mask">
     <Spinner />
@@ -124,6 +57,34 @@ const startCallMask = start =>
   <div className="App-mask">
     <button className="message button clickable" onClick={start}>Click to Start </button>
   </div>;
+
+const studentInfo = students =>
+<div>
+    {students.map((obj, key) => {
+                  let student_id = obj.id;
+                  return (
+                      <div>
+                          <p>Ученик: {obj.name} / количество бонусов: {obj.reward_card_amount}</p>
+                        <button onClick={() => {
+                        let url = "http://127.0.0.1:8000/students/api/0/set-reward-card/" + obj.id + '/6/0/';
+                        axios.get(url)
+                              .then((response) => {
+                                  console.log(response.data);
+                              })
+                              .catch((err) => {
+                                  console.log(err);
+                                  this.setState({ data: err, isLoading: false });
+                              });
+                      }}> +
+                              бонус
+                          </button>
+                      </div>
+                  )
+              })
+          }
+</div>;
+
+//
 
 class App extends Component {
 
@@ -141,6 +102,7 @@ class App extends Component {
       session_id: 0,
       students: [],
       lesson_id: 0,
+      student: 0,
     };
     this.startCall = this.startCall.bind(this);
     this.endCall = this.endCall.bind(this);
@@ -150,31 +112,88 @@ class App extends Component {
 
   componentDidMount() {
 
-  axios.get('http://127.0.0.1:8000/students/api/0/get-lesson-info/6/')
-  .then((response) => {
-    console.log(response.data);
-    this.setState({ token: response.data.token });
-    this.setState({ session_id: response.data.session_id });
-    this.setState({ students: response.data.students });
-    this.setState({ lesson_id: response.data.id });
-  });
+      let query = queryString.parse(window.location.search);
+      let request_url = 'http://127.0.0.1:8000/students/api/0/get-lesson-info/' + query.lesson_id + '/';
+      this.state.student = true;
 
-    otCore = new AccCore(otCoreOptions);
-    otCore.connect().then(() => this.setState({ connected: true }));
-    const events = [
-      'subscribeToCamera',
-      'unsubscribeFromCamera',
-      'subscribeToScreen',
-      'unsubscribeFromScreen',
-      'startScreenShare',
-      'endScreenShare',
-    ];
+      axios.get(request_url)
+          .then((response) => {
+              this.setState({token: response.data.token});
+              this.setState({sessionId: response.data.session_id});
+              this.setState({students: response.data.students});
+              this.setState({lesson_id: response.data.id});
 
-    events.forEach(event => otCore.on(event, ({ publishers, subscribers, meta }) => {
-      this.setState({ publishers, subscribers, meta });
-    }));
+              const otCoreOptions = {
+                  credentials: {
+                      apiKey: config.apiKey,
+                      sessionId: this.state.sessionId,
+                      token: this.state.token,
+                  },
+                  // A container can either be a query selector or an HTML Element
+                  streamContainers(pubSub, type, data, stream) {
+                      return {
+                          publisher: {
+                              camera: '#cameraPublisherContainer',
+                              screen: '#screenPublisherContainer',
+                          },
+                          subscriber: {
+                              camera: '#cameraSubscriberContainer',
+                              screen: '#screenSubscriberContainer',
+                          },
+                      }[pubSub][type];
+                  },
+                  controlsContainer: '#controls',
+                  packages: ['textChat', 'screenSharing', 'annotation'],
+                  communication: {
+                      callProperties: null, // Using default
+                  },
+                  textChat: {
+                      name: ['David', 'Paul', 'Emma', 'George', 'Amanda'][Math.random() * 5 | 0], // eslint-disable-line no-bitwise
+                      waitingMessage: 'Messages will be delivered when other users arrive',
+                      container: '#chat',
+                  },
+                  screenSharing: {
+                      extensionID: 'plocfffmbcclpdifaikiikgplfnepkpo',
+                      annotation: true,
+                      externalWindow: false,
+                      dev: true,
+                      screenProperties: {
+                          insertMode: 'append',
+                          width: '100%',
+                          height: '100%',
+                          showControls: false,
+                          style: {
+                              buttonDisplayMode: 'off',
+                          },
+                          videoSource: 'window',
+                          fitMode: 'contain' // Using default
+                      },
+                  },
+                  annotation: {
+                      absoluteParent: {
+                          publisher: '.App-video-container',
+                          subscriber: '.App-video-container'
+                      }
+                  },
+              };
+
+              otCore = new AccCore(otCoreOptions);
+              otCore.connect().then(() => this.setState({connected: true}));
+              const events = [
+                  'subscribeToCamera',
+                  'unsubscribeFromCamera',
+                  'subscribeToScreen',
+                  'unsubscribeFromScreen',
+                  'startScreenShare',
+                  'endScreenShare',
+              ];
+
+              events.forEach(event => otCore.on(event, ({publishers, subscribers, meta}) => {
+                  this.setState({publishers, subscribers, meta});
+              }));
+
+          });
   }
-
   startCall() {
     otCore.startCall()
       .then(({ publishers, subscribers, meta }) => {
@@ -197,22 +216,8 @@ class App extends Component {
     this.setState({ localVideoEnabled: !this.state.localVideoEnabled });
   }
 
-  add_card(student_id, lesson_id) {
-
-    let url = "http://127.0.0.1:8000/students/api/0/set-reward-card/" + student_id + '/' + lesson_id + '/0/';
-    axios.get(url)
-          .then((response) => {
-              console.log(response.data);
-              //this.setState({token: response.data.token});
-          })
-          .catch((err) => {
-              //this.setState({ data: err, isLoading: false });
-          });
-  }
-
-
   render() {
-    const { connected, active, session_id, token, students, lesson_id } = this.state;
+    const { connected, active, session_id, token, students, lesson_id, student } = this.state;
     const {
       localAudioClass,
       localVideoClass,
@@ -224,23 +229,14 @@ class App extends Component {
       screenSubscriberClass,
     } = containerClasses(this.state);
 
-    return (
+      return (
       <div className="App">
         <div className="App-header">
           <img src="http://127.0.0.1:8000/static/images/logo-rus.png" className="App-logo" alt="logo" />
           <h1>Гарантия Знаний</h1>
         </div>
         <div className="App-main">
-            {this.state.students.map((obj) => {
-              let student_id = obj.id;
-                return (
-                    <div>
-                      <p>Ученик: {obj.name} / количество бонусов: {obj.reward_card_amount}</p>
-                      <button onClick={() => this.add_card(student_id, lesson_id)} disabled={this.state.isLoading}> + бонус </button>
-                    </div>
-                )
-              })
-            }
+          { studentInfo(students) }
           <div className="App-video-container">
             { !connected && connectingMask() }
             { connected && !active && startCallMask(this.startCall)}

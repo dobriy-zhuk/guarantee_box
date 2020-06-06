@@ -14,8 +14,10 @@
     "opentok-screen-sharing": ">=1.0.28",
     "opentok-solutions-css": "*",
     "opentok-text-chat": "*",
+    "query-string": "5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-spinner": "^0.2.7"
   },
