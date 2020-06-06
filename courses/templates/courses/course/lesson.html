@@ -19,13 +19,13 @@
 
 {% block css %}
 <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-<script type="text/javascript">
-    var apiKey = '{{ api_key }}';
-    var sessionId = '{{ session_id }}';
-    var token = '{{ token }}';
-</script>
-<script src="{% static 'js/opentok.js' %}"></script>
-{% endblock %}
+    <script type="text/javascript">
+        var apiKey = '{{ api_key }}';
+        var sessionId = '{{ session_id }}';
+        var token = '{{ token }}';
+    </script>
+    <script src="{% static 'js/opentok.js' %}"></script>
+    {% endblock %}
 
 {% block content %}
 
@@ -54,14 +54,18 @@
     </div>
 </div>
 
-<div class="input">
-    {% for student in user.teacher.students.all %}
-        {{ student }}
-    {% endfor %}
-    <label for="students">Студенты</label>
-    <!-- Тут выпадающее меню для выбора учеников -->
-    <input type="text" id="students" name="students_ids">
-    <input type="submit" value="Назначить занятие">
-</div>
+<!-- <script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            dataType: "json",
+            url: '/api/0/student_id/get-student-profile/',
+            success: function (response) {
+                profileJson = JSON.stringify(response);
+                $("#profileAjax").prepend(profileJson);
+            }
+        });
+    });
+</script> -->
 
 {% endblock %}

@@ -2,7 +2,7 @@
 var session = OT.initSession(apiKey, sessionId);
 
 // Initialize a Publisher, and place it into the element with id="publisher"
-//var publisher = OT.initPublisher('publisher');
+var publisher = OT.initPublisher('publisher');
 
 
 

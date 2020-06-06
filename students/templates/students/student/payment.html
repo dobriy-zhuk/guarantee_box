@@ -11,13 +11,6 @@
 	<meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg"/>
 	<meta property="og:type" content="website"/>
 	<meta property="og:url" content= "https://garantylearning.com/index.html" />
-    <script src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-    <script type="text/javascript">
-        var apiKey = '{{ api_key }}';
-        var sessionId = '{{ session_id }}';
-        var token = '{{ token }}';
-    </script>
-    <script src="{% static 'js/opentok.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -34,11 +27,11 @@
                     </div>
                 </div>
                 <!-- Modal window with payment form-->
-                <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <h5 class="modal-title" id="paymentModalLabel">Modal title</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -98,7 +91,7 @@
                                 <ul>
                                     <li>32 занятия</li>
                                     <li>700 руб/урок</li>
-                                    <a href="#" class="genric-btn info-border radius" data-toggle="modal" data-target="#paymentModal">Перейти к оплате</a>
+                                    <button type="button" class="genric-btn info-border radius" data-toggle="modal" data-target="#paymentModal">Перейти к оплате</button>
                                 </ul>
                             </div>
                         </div>
