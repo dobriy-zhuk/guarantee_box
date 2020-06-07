@@ -685,6 +685,12 @@ def get_currency_exchange(
     elif student_currency == 'EUR' and currency == 'RUB':
         return (decimal.Decimal(1) / currency_exchange_today.euro)
 
+    elif student_currency == 'EUR' and currency == 'USD':
+        return (currency_exchange_today.dollar / currency_exchange_today.euro)
+    
+    elif student_currency == 'USD' and currency == 'EUR':
+        return (currency_exchange_today.euro / currency_exchange_today.dollar)
+
 
 @method_decorator(require_GET, name='dispatch')
 @method_decorator(csrf_exempt, name='dispatch')
