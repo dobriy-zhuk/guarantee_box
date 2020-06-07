@@ -770,13 +770,13 @@ class StudentPaymentAPI(View):
         )
 
 
-@require_GET
+@require_POST
 @csrf_exempt
 def set_student_module_done(request, api_version: int):
     bad_request_error_code = 400
 
     if api_version == 0:
-        student_id = request.GET.get('student_id')
+        student_id = request.POST.get('student_id')
         
         student = get_object_or_none(Student, object_id=student_id)
 
@@ -788,7 +788,7 @@ def set_student_module_done(request, api_version: int):
                 },
             )
 
-        module_id = request.GET.get('module_id')
+        module_id = request.POST.get('module_id')
 
         module = get_object_or_none(Module, object_id=module_id)
 
