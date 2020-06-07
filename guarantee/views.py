@@ -38,8 +38,8 @@ def profile(request):
 
     Returns:
         HttpResponseRedirect: if
-        request.user.groups.filter(user=request.user)[0] = Administrator
-        then redirect to administrator/profile page TODO: test it
+        request.user.groups.filter(user=request.user)[0] = Managers
+        then redirect to administrator/profile page
 
         HttpResponseRedirect: if
         request.user.groups.filter(user=request.user)[0] = Teachers
@@ -51,8 +51,8 @@ def profile(request):
     """
     group = request.user.groups.filter(user=request.user)[0]
 
-    if group.name == 'Administrator':
-        return HttpResponseRedirect(reverse('administrator'))
+    if group.name == 'Managers':
+        return HttpResponseRedirect(reverse('manager'))
     elif group.name == 'Teachers':
         return HttpResponseRedirect(reverse('teacher'))
     elif group.name == 'Students':
