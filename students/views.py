@@ -74,7 +74,7 @@ def get_available_lessons(request):
 def send_stats_to_email(request):
     """Send student's stats to email.
 
-    TODO: Отправка информации о прохождении курсов(course_done),
+    TODO: Отправка информации о прохождении курсов(course_done_percent),
     выполнении дз и полной статистики на емайл
 
     Как это пока работает:
@@ -90,14 +90,15 @@ def send_stats_to_email(request):
     from guardian.shortcuts import get_objects_for_user
     student = Student.objects.get(name='testuser')
 
-    'courses.course_done'
+    'courses.module_done'
         ^         ^
     app name | permission for model
 
-    done_student_courses = get_objects_for_user(
-        student.user, 'courses.course_done'
+    done_modules = get_objects_for_user(
+        student.user, 'courses.module_done'
     )
-    done_student_courses
+    courses_with_done_modules (queryset): courses which have a done modules
+    by student
     <QuerySet [<Course: Программирование 1-4 класс>]>
 
     Arguments:
@@ -107,18 +108,28 @@ def send_stats_to_email(request):
         redirect: after sending a message redirect to 
         stats_email_sent
     
-    FIXME: BELOW IS WRONG
     """
-    done_student_courses = get_objects_for_user(
-        request.user,
-        'courses.course_done',
-    )
+    courses = Course.objects.all()
+    student_courses = courses.filter(students__in=[request.user.student])
+    available_courses = courses.exclude(students__in=[request.user.student])
+    
+    done_modules = get_objects_for_user(request.user, 'courses.module_done')
+    
+    courses_with_done_modules = student_courses.filter(
+        modules__in=[*done_modules]
+    ).distinct()
+
+    for course in courses_with_done_modules:
+        percent = (100 * (course.modules.intersection(
+            done_modules)).count()) / course.modules.all().count()
+        course.course_done_percent = '{0}%'.format(percent)
+
     email_subject = 'Please Activate Your Account'
     email_message = render_to_string(
         template_name='students/student/student_stats_to_email.html',
         context={
             'user': request.user,
-            'courses': done_student_courses,
+            'courses': courses_with_done_modules,
         },
     )
     request.user.email_user(email_subject, email_message)
