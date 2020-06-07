@@ -773,6 +773,15 @@ class StudentPaymentAPI(View):
 @require_POST
 @csrf_exempt
 def set_student_module_done(request, api_version: int):
+    """Set student module done.
+
+    required POST arguments:   
+        student_id (int): student id
+        module_id (int): module id
+
+    Args:
+        api_version (int): [description]
+    """
     bad_request_error_code = 400
 
     if api_version == 0:
