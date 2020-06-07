@@ -88,7 +88,7 @@ def send_stats_to_email(request):
     from students.models import Student
     from courses.models import Course
     from guardian.shortcuts import get_objects_for_user
-    student = Student.objects.get(name='testuser testuser')
+    student = Student.objects.get(name='testuser')
 
     'courses.course_done'
         ^         ^
@@ -106,7 +106,8 @@ def send_stats_to_email(request):
     Returns:
         redirect: after sending a message redirect to 
         stats_email_sent
-        
+    
+    FIXME: BELOW IS WRONG
     """
     done_student_courses = get_objects_for_user(
         request.user,
@@ -118,8 +119,8 @@ def send_stats_to_email(request):
         context={
             'user': request.user,
             'courses': done_student_courses,
-            },
-        )
+        },
+    )
     request.user.email_user(email_subject, email_message)
     return redirect(to='stats_email_sent')
 
@@ -748,7 +749,7 @@ class StudentPaymentAPI(View):
 
             student.save()
 
-            return JsonResponse({'message': 'операция прошла успешно'})
+            return JsonResponse({'message': 'success'})
 
         return JsonResponse(
             status=self.bad_request_error_code,
@@ -756,3 +757,63 @@ class StudentPaymentAPI(View):
                 'error': 'wrong api version',
             },
         )
+
+
+@require_GET
+@csrf_exempt
+def set_student_module_done(request, api_version: int):
+    bad_request_error_code = 400
+
+    if api_version == 0:
+        student_id = request.GET.get('student_id')
+        
+        student = get_object_or_none(Student, object_id=student_id)
+
+        if student is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'no student with {0} id'.format(student_id)
+                },
+            )
+
+        module_id = request.GET.get('module_id')
+
+        module = get_object_or_none(Module, object_id=module_id)
+
+        if module is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'no module with {0} id'.format(module.id)
+                },
+            )
+        if not (module.course in student.courses_joined.all()):
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'student {0} did not joined {1} course'.format(
+                        student.id, module.course.id
+                    )
+                }
+            ) 
+
+        if student.user.has_perm('courses.module_done', module):
+            return JsonResponse(
+                {
+                    'message': 'user has done {0} module yet'.format(
+                        module.id,
+                    )
+                }
+            )
+
+        assign_perm('module_done', student.user, module)
+
+        return JsonResponse({'message': 'success'})
+
+    return JsonResponse(
+        status=bad_request_error_code,
+        data={
+            'error': 'wrong api version',
+        },
+    )
