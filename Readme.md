@@ -160,6 +160,24 @@ Look [here](https://stackoverflow.com/questions/28046422/django-cors-headers-not
 You just need put 'corsheaders.middleware.CorsMiddleware' above all
 middlewares in MIDDLEWARE variable.
 
+## How work with datetime in jinja
+
+Look [here](https://ourcodeworld.com/articles/read/555/how-to-format-datetime-objects-in-the-view-and-template-in-django)
+
+```jinja
+<!-- Выводит тип str -->
+Месяц: {{ lesson.schedule.start_timestamp|date:'m'}}
+<!-- 06 -->
+День: {{ lesson.schedule.start_timestamp|date:'d' }}
+<!-- 12 -->
+Часы: {{ lesson.schedule.start_timestamp|date:'H' }}
+<!-- 06 -->
+Минуты: {{ lesson.schedule.start_timestamp|date:'i' }}
+<!-- 00 -->
+Все вместе: {{ lesson.schedule.start_timestamp|date:'Y-m-d H:i' }}
+<!-- 2020-06-12 06:00 -->
+```
+
 `Best regards, Ian`
 
 *If you have some good info about project please share with us below.*

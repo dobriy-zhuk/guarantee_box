@@ -322,7 +322,13 @@
         <div class="col-md-12">
             <h3>Уроки</h3>
             {% for lesson in upcoming_lessons %}
-                Время до начала следующего занятия: {{ lesson.schedule.start_timestamp|timeuntil }} <br>
+            <!-- Выводит текстовый формат!!! -->
+            <!-- Время в 24-часовом формате -->
+                Месяц: {{ lesson.schedule.start_timestamp|date:'m' }} <br>
+                День: {{ lesson.schedule.start_timestamp|date:'d' }} <br>
+                Часы: {{ lesson.schedule.start_timestamp|date:'H' }} <br>
+                Минуты: {{ lesson.schedule.start_timestamp|date:'i' }} <br>
+
                 Session_id: {{ lesson.session_id|truncatechars:15 }} <br>
                 Token: {{ lesson.token|truncatechars:15 }} <br>
             {% endfor %}

@@ -347,7 +347,7 @@ def get_profile(request):
             'student_courses': student_courses,
             'available_courses': available_courses,
             'courses_with_done_modules': courses_with_done_modules,
-            'upcoming_lessons':upcoming_lessons,
+            'upcoming_lessons': upcoming_lessons,
         },
     )
 
