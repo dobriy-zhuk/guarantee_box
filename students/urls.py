@@ -3,7 +3,11 @@ from django.urls import path
 from students import views
 
 urlpatterns = [
-    path('', views.get_profile, name='student'),
+    path('student/', views.get_profile, name='student'),
+    path(
+         'edit-profile/', views.StudentProfileEditView.as_view(),
+         name='edit_student_profile',
+     ),
     path('payment/', views.get_payment, name='payment'),
     path('lesson/', views.get_lesson, name='student_lesson'),
     path(

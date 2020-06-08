@@ -18,178 +18,193 @@
 {% endblock %}
 
 {% block content %}
-        <div class="generating-area" style="margin-top: 150px">
-            <div class="container">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="section-tittle text-center">
-                            <h2>Личный кабинет</h2>
-                        </div>
-                    </div>
+<div class="generating-area" style="margin-top: 150px">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-tittle text-center">
+                    <h2>Личный кабинет</h2>
                 </div>
-                <div class="row">
-                    <div class="col-lg-5 col-md-5">
-                        <div class="single-element-widget">
-                            <div class="single-generating d-flex mb-30">
-                            <div class="generating-icon">
-                                <span class="flaticon-social-media-marketing"></span>
-                            </div>
-                            <div class="generating-cap">
-                                <h4>Мой профиль</h4>
-                                <form action="#">
-                                    <div class="mt-10">
-                                        <input type="text" name="first_name" placeholder="Ребенок: {{ student.name }}"
-                                            onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'" required
-                                            class="single-input">
-							        </div>
-                                    <div class="mt-10">
-								<input type="text" name="last_name" placeholder="Родитель: {{ student.parent_name }}"
-									onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" required
-									class="single-input">
-							</div>
-                                    <div class="mt-10">
-								<input type="text" name="age_kids" placeholder="{{ student.age }} лет"
-									onfocus="" onblur="this.placeholder = '{{ student.age }} лет'"
-									required class="single-input">
-							</div>
-                                    <div class="mt-10">
-                                        <input type="email" name="EMAIL" placeholder="{{ student.email }}"
-                                            onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.email }}'" required
-                                            class="single-input">
-                                    </div>
-                                     <div class="mt-10">
-                                        <input type="email" name="EMAIL" placeholder="{{ student.parent_email }}"
-                                            onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.parent_email }}'" required
-                                            class="single-input">
-                                    </div>
-                                    <div class="mt-10">
-                                        <input type="email" name="Parent Phone" placeholder="{{ student.parent_phone }}"
-                                            onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.parent_phone }}'" required
-                                            class="single-input">
-                                    </div>
-                                     <div class="mt-10">
-                                        <input type="email" name="Phone" placeholder="{{ student.phone }}"
-                                            onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.phone }}'" required
-                                            class="single-input">
-                                    </div>
-                                    <div class="input-group-icon mt-10">
-								<div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
-								<div class="form-select" id="default-select">
-									<select>
-                                        <option value=" 1">Country</option>
-                                        <option value="1">Bangladesh</option>
-                                        <option value="1">India</option>
-                                        <option value="1">England</option>
-                                        <option value="1">Srilanka</option>
-									</select>
-								</div>
-                                        </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 col-md-5">
+                <div class="single-element-widget">
+                    <div class="single-generating d-flex mb-30">
+                        <div class="generating-icon">
+                            <span class="flaticon-social-media-marketing"></span>
+                        </div>
+                        <div class="generating-cap">
+                            <h4>Мой профиль</h4>
+                            <form action="#">
                                 <div class="mt-10">
-                                    <input type="text" name="address" placeholder="Address" onfocus="this.placeholder = ''"
-                                        onblur="this.placeholder = 'Address'" required class="single-input">
+                                    <input type="text" name="first_name" placeholder="Ребенок: {{ student.name }}"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"
+                                        required class="single-input">
                                 </div>
-                                   <br><a href="#" class="genric-btn info-border">Редактировать</a>
-                                </form>
-                            </div>
-                        </div>
-
-                        </div>
-                        <div class="single-generating d-flex mb-30">
-                                <div class="generating-icon">
-                                    <span class="flaticon-award"></span>
+                                <div class="mt-10">
+                                    <input type="text" name="last_name"
+                                        placeholder="Родитель: {{ student.parent_name }}"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'" required
+                                        class="single-input">
                                 </div>
-                                <div class="generating-cap text-center center">
-                                    <h4>Мои награды</h4>
-                                    <p style="font-size: 30px; color: #c02323">{{ student.reward_card_amount }} бонусов</p>
-                                    <p class=" text-center center"><br><a href="{% url 'send_email_stats' %}" class="genric-btn info-border">Обменять</a></p>
-
+                                <div class="mt-10">
+                                    <input type="text" name="age_kids" placeholder="{{ student.age }} лет" onfocus=""
+                                        onblur="this.placeholder = '{{ student.age }} лет'" required
+                                        class="single-input">
                                 </div>
-                            </div>
-                    </div>
-                    <div class="col-lg-7 col-md-7">
-                         <div class="single-element-widget">
-                                <div class="single-generating d-flex mb-30">
-                                <div class="generating-cap">
-                                    <h4>Ближайшие уроки</h4>
-                                    <style>
-                                        /* CSS style for Boxes */
-                                        span_time {
-                                            display: inline-flex;
-                                            width: 70px;
-                                            height: 70px;
-                                            background-color: white;
-                                            justify-content: center;
-                                            align-items: center;
-                                        }
-                                         span_big {
-                                            display: inline-flex;
-                                            width: 120px;
-                                            height: 120px;
-                                            background-color: white;
-                                            justify-content: center;
-                                            align-items: center;
-                                        }
-                                    </style>
-                                    {% for lesson in upcoming_lessons %}
-                                        <h5>{{ lesson.lesson_name }}</h5>
-                                        <span_time class="border border-primary rounded" id="days">10 дней</span_time>
-                                        <span_time class="border border-primary rounded" id="hours">5 часов</span_time>
-                                        <span_time class="border border-primary rounded" id="minutes">8 минут</span_time>
-                                        <p><br><a href="http://localhost:3000/?lesson_id={{ lesson.id }}&student=true" class="genric-btn info-border" target="_blank">Подключиться</a>
-                                        <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее задание</a></p>
-                                        {{ lesson.schedule.start_timestamp }} <br>
-                                         <br>
-                                    {% endfor %}
+                                <div class="mt-10">
+                                    <input type="email" name="EMAIL" placeholder="{{ student.email }}"
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = '{{ student.email }}'" required class="single-input">
                                 </div>
-                            </div>
-                             <div class="single-generating d-flex mb-30">
-                                <div class="generating-icon">
-                                    <span class="flaticon-award"></span>
+                                <div class="mt-10">
+                                    <input type="email" name="EMAIL" placeholder="{{ student.parent_email }}"
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = '{{ student.parent_email }}'" required
+                                        class="single-input">
                                 </div>
-                                <div class="generating-cap text-center center">
-                                    <h4>Денежные средства</h4>
-                                    <p style="font-size: 30px; color: #c02323">{{ student.amount }} рублей</p>
-                                    <p class=" text-center center"><br><a href="{% url 'payment' %}" class="genric-btn info-border">Оплатить</a></p>
-
+                                <div class="mt-10">
+                                    <input type="email" name="Parent Phone" placeholder="{{ student.parent_phone }}"
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = '{{ student.parent_phone }}'" required
+                                        class="single-input">
                                 </div>
-                            </div>
-                                <div class="single-generating d-flex mb-30">
-                                <div class="generating-cap">
-                                    <h4>Статистика</h4>
-                                    <div class="table-responsive">
-                                      <table class="table">
-                                      <caption><a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Отправить статистику на почту</a>
-                                </caption>
-                                      <thead>
-                                        <tr>
-                                          <th scope="col">#</th>
-                                          <th scope="col">Наименование</th>
-                                          <th scope="col">Описание</th>
-                                          <th scope="col">Прогресс</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                       {% for course in courses_with_done_modules %}
-                                           <tr>
-                                              <th scope="row">{{ course.course_image }}{{ forloop.counter }}</th>
-                                              <td>{{ course.title }}</td>
-                                              <td>{{ course.overview }}</td>
-                                              <td><div class="progress">
-                                                    <div class="progress-bar color-1" role="progressbar" style="width: '{{ course.course_done_percent }}'"
-                                                        aria-valuenow="{{ course.course_done_percent }}" aria-valuemin="0" aria-valuemax="{{ course.course_done_percent }}"></div>
-                                                </div>
-                                              </td>
-                                            </tr>
-                                        {% endfor %}
-                                      </tbody>
-                                    </table>
+                                <div class="mt-10">
+                                    <input type="email" name="Phone" placeholder="{{ student.phone }}"
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = '{{ student.phone }}'" required class="single-input">
+                                </div>
+                                <div class="input-group-icon mt-10">
+                                    <div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+                                    <div class="form-select" id="default-select">
+                                        <select>
+                                            <option value=" 1">Country</option>
+                                            <option value="1">Bangladesh</option>
+                                            <option value="1">India</option>
+                                            <option value="1">England</option>
+                                            <option value="1">Srilanka</option>
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
-                         </div>
+                                <div class="mt-10">
+                                    <input type="text" name="address" placeholder="Address"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Address'" required
+                                        class="single-input">
+                                </div>
+                                <br><a href="{% url 'edit_student_profile' %}"
+                                    class="genric-btn info-border">Редактировать</a>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="single-generating d-flex mb-30">
+                    <div class="generating-icon">
+                        <span class="flaticon-award"></span>
+                    </div>
+                    <div class="generating-cap text-center center">
+                        <h4>Мои награды</h4>
+                        <p style="font-size: 30px; color: #c02323">{{ student.reward_card_amount }} бонусов</p>
+                        <p class=" text-center center"><br><a href="{% url 'send_email_stats' %}"
+                                class="genric-btn info-border">Обменять</a></p>
+
                     </div>
                 </div>
-                <div class="visit-area fix visite-padding">
+            </div>
+            <div class="col-lg-7 col-md-7">
+                <div class="single-element-widget">
+                    <div class="single-generating d-flex mb-30">
+                        <div class="generating-cap">
+                            <h4>Ближайшие уроки</h4>
+                            <style>
+                                /* CSS style for Boxes */
+                                span_time {
+                                    display: inline-flex;
+                                    width: 70px;
+                                    height: 70px;
+                                    background-color: white;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+
+                                span_big {
+                                    display: inline-flex;
+                                    width: 120px;
+                                    height: 120px;
+                                    background-color: white;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+                            </style>
+                            {% for lesson in upcoming_lessons %}
+                            <h5>{{ lesson.lesson_name }}</h5>
+                            <span_time class="border border-primary rounded" id="days">10 дней</span_time>
+                            <span_time class="border border-primary rounded" id="hours">5 часов</span_time>
+                            <span_time class="border border-primary rounded" id="minutes">8 минут</span_time>
+                            <p><br><a href="http://localhost:3000/?lesson_id={{ lesson.id }}&student=true"
+                                    class="genric-btn info-border" target="_blank">Подключиться</a>
+                                <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее
+                                    задание</a></p>
+                            {{ lesson.schedule.start_timestamp }} <br>
+                            <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="single-generating d-flex mb-30">
+                        <div class="generating-icon">
+                            <span class="flaticon-award"></span>
+                        </div>
+                        <div class="generating-cap text-center center">
+                            <h4>Денежные средства</h4>
+                            <p style="font-size: 30px; color: #c02323">{{ student.amount }} рублей</p>
+                            <p class=" text-center center"><br><a href="{% url 'payment' %}"
+                                    class="genric-btn info-border">Оплатить</a></p>
+
+                        </div>
+                    </div>
+                    <div class="single-generating d-flex mb-30">
+                        <div class="generating-cap">
+                            <h4>Статистика</h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <caption><a href="{% url 'send_email_stats' %}"
+                                            class="genric-btn danger-border">Отправить статистику на почту</a>
+                                    </caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Наименование</th>
+                                            <th scope="col">Описание</th>
+                                            <th scope="col">Прогресс</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for course in courses_with_done_modules %}
+                                        <tr>
+                                            <th scope="row">{{ course.course_image }}{{ forloop.counter }}</th>
+                                            <td>{{ course.title }}</td>
+                                            <td>{{ course.overview }}</td>
+                                            <td>
+                                                <div class="progress">
+                                                    <div class="progress-bar color-1" role="progressbar"
+                                                        style="width: '{{ course.course_done_percent }}'"
+                                                        aria-valuenow="{{ course.course_done_percent }}"
+                                                        aria-valuemin="0"
+                                                        aria-valuemax="{{ course.course_done_percent }}"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="visit-area fix visite-padding">
             <h4>Другие проекты Гарантии Знаний</h4>
             <div class="container-fluid p-0">
                 <div class="row ">
@@ -204,7 +219,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="col-lg-3 col-md-4">
+                    <div class="col-lg-3 col-md-4">
                         <div class="single-visited mb-30">
                             <div class="visited-img">
                                 <img src="assets/img/visit/visit_2.jpg" alt="">
@@ -240,12 +255,12 @@
                 </div>
             </div>
         </div>
-            </div>
-        </div>
+    </div>
+</div>
 
 
 
-        <!-- Generating End -->
+<!-- Generating End -->
 <div class="col-md-3">
     <h3>Личный кабинет</h3>
     <div class="list-group">
@@ -275,16 +290,16 @@
             <h4 class="list-group-item-heading">Доступные занятия</h4>
         </a> -->
     </div>
-<!-- Передать данные из бека -->
+    <!-- Передать данные из бека -->
     <div class="row">
         <div class="col-md-12">
             <h3>Главная</h3>
             {% for course in courses_with_done_modules %}
-                Курс: {{ course.title }} <br>
-                Изображение курса: {{ course.course_image }} <br>
-                Пользователь: {{ student.user }} <br>
-                Процент прохождения: {{ course.course_done_percent }} <br>
-                Описание курса: {{ course.overview }} <br>
+            Курс: {{ course.title }} <br>
+            Изображение курса: {{ course.course_image }} <br>
+            Пользователь: {{ student.user }} <br>
+            Процент прохождения: {{ course.course_done_percent }} <br>
+            Описание курса: {{ course.overview }} <br>
             {% endfor %}
             <br>
             <!-- Задание -->
@@ -297,20 +312,20 @@
             <h3>Курсы</h3>
             Все курсы: <br>
             {% for course in courses %}
-                Название курса: {{ course.title }} <br>
-                Описание курса: {{ course.slug }} <br>
+            Название курса: {{ course.title }} <br>
+            Описание курса: {{ course.slug }} <br>
             {% endfor %} <br>
 
             Курсы на которые зарегистрирован ученик: <br>
             {% for student_course in student_courses %}
-                Название курса: {{ student_course.title }} <br>
-                Описание курса: {{ student_course.slug }} <br>
+            Название курса: {{ student_course.title }} <br>
+            Описание курса: {{ student_course.slug }} <br>
             {% endfor %} <br>
 
             Курсы доступные для ученика: <br>
             {% for available_course in available_courses %}
-                Название курса: {{ available_course.title }} <br>
-                Описание курса: {{ available_course.slug }} <br>
+            Название курса: {{ available_course.title }} <br>
+            Описание курса: {{ available_course.slug }} <br>
             {% endfor %} <br>
 
             <!-- Задание -->
@@ -324,13 +339,13 @@
             {% for lesson in upcoming_lessons %}
             <!-- Выводит текстовый формат!!! -->
             <!-- Время в 24-часовом формате -->
-                Месяц: {{ lesson.schedule.start_timestamp|date:'m' }} <br>
-                День: {{ lesson.schedule.start_timestamp|date:'d' }} <br>
-                Часы: {{ lesson.schedule.start_timestamp|date:'H' }} <br>
-                Минуты: {{ lesson.schedule.start_timestamp|date:'i' }} <br>
+            Месяц: {{ lesson.schedule.start_timestamp|date:'m' }} <br>
+            День: {{ lesson.schedule.start_timestamp|date:'d' }} <br>
+            Часы: {{ lesson.schedule.start_timestamp|date:'H' }} <br>
+            Минуты: {{ lesson.schedule.start_timestamp|date:'i' }} <br>
 
-                Session_id: {{ lesson.session_id|truncatechars:15 }} <br>
-                Token: {{ lesson.token|truncatechars:15 }} <br>
+            Session_id: {{ lesson.session_id|truncatechars:15 }} <br>
+            Token: {{ lesson.token|truncatechars:15 }} <br>
             {% endfor %}
 
             <!-- Задание -->

@@ -3,7 +3,7 @@ import decimal
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import Group, User
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
@@ -211,6 +211,53 @@ def activate(request, uidb64, token):
             request=request,
             template_name='students/student/activation_invalid.html',
         )
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class StudentProfileEditView(LoginRequiredMixin, UserPassesTestMixin , View):
+    """Class-based view for student profile edit.
+    FIXME: Без отпуск csrf-токена отказывается работать ругается
+    на то, что токен не правильный
+
+    TODO: do docs!
+    TODO: сделать проверку на пустые поля
+    """
+    login_url = '/accounts/login/'
+    template_name ='students/student/edit_profile.html'
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='Students').exists()
+
+    def get(self, request):
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={'student': request.user.student},
+        )
+
+    def post(self, request):
+        student = get_object_or_404(Student, id=request.user.student.id)
+
+        student_name = request.POST.get('student_name')
+        parent_name = request.POST.get('parent_name')
+        student_age = request.POST.get('student_age')
+        student_email = request.POST.get('student_email')
+        parent_email = request.POST.get('parent_email')
+        parent_phone = request.POST.get('parent_phone')
+        student_phone = request.POST.get('student_phone')
+        student_city = request.POST.get('address')
+
+        student.name = student_name
+        student.parent_name = parent_name
+        student.age = student_age
+        student.email = student_email
+        student.parent_email = parent_email
+        student.parent_phone = parent_phone
+        student.phone = student_phone
+        student.city = student_city
+
+        student.save()
+        return redirect(to='student')
 
 
 class StudentRegistrationView(View):

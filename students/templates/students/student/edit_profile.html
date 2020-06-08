@@ -1,0 +1,106 @@
+{% extends 'base/base_profile.html' %}
+{% load static %}
+{% block title %}ГАРАНТИЯ ЗНАНИЙ - Профиль ученика{% endblock title %}
+
+{% block tags %}
+<meta name="description"
+    content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ" />
+<meta name="keywords"
+    content="гарантия знаний, программирование, курсы, робототехника, занятия, химия, английский, физика, математика, русский, французский, предпринимательство, финансы, моделирование, обществознание, егэ, огэ, экзамены, лагерь, детский" />
+<meta name="author" content="dobriy_zhuk" />
+<meta property="og:title"
+    content="ГАРАНТИЯ ЗНАНИЙ - Робототехника, Программирование, Химия, а также курсы ЕГЭ и ОГЭ для детей" />
+<meta property="og:description"
+    content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ для детей" />
+<meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://garantylearning.com/index.html" />
+{% endblock %}
+
+{% block content %}
+<div class="generating-area" style="margin-top: 150px">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-tittle text-center">
+                    <h2>Личный кабинет</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-5 col-md-5">
+                <div class="single-element-widget">
+                    <div class="single-generating d-flex mb-30">
+                        <div class="generating-icon">
+                            <span class="flaticon-social-media-marketing"></span>
+                        </div>
+                        <div class="generating-cap">
+                            <h4>Мой профиль</h4>
+                            <form action="#" method="POST">
+                                <div class="mt-10">
+                                    <input type="text" name="student_name" placeholder="Ребенок: {{ student.name }}"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.name }}'"
+                                        required class="single-input" value="{{ student.name }}">
+                                </div>
+                                <div class="mt-10">
+                                    <input type="text" name="parent_name"
+                                        placeholder="Родитель: {{ student.parent_name }}"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = '{{ student.parent_name }}'" required
+                                        class="single-input" value="{{ student.parent_name }}">
+                                </div>
+                                <div class="mt-10">
+                                    <input type="text" name="student_age" placeholder="{{ student.age }} лет" onfocus=""
+                                        onblur="this.placeholder = '{{ student.age }} лет'" required
+                                        class="single-input" value="{{ student.age }}">
+                                </div>
+                                <div class="mt-10">
+                                    <input type="email" name="student_email" placeholder="{{ student.email }}"
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = '{{ student.email }}'" required class="single-input"
+                                        value="{{ student.email }}">
+                                </div>
+                                <div class="mt-10">
+                                    <input type="email" name="parent_email" placeholder="{{ student.parent_email }}"
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = '{{ student.parent_email }}'" required
+                                        class="single-input" value="{{ student.parent_email }}">
+                                </div>
+                                <div class="mt-10">
+                                    <input type="phone" name="parent_phone" placeholder="{{ student.parent_phone }}"
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = '{{ student.parent_phone }}'" required
+                                        class="single-input" value="{{ student.parent_phone }}">
+                                </div>
+                                <div class="mt-10">
+                                    <input type="phone" name="student_phone" placeholder="{{ student.phone }}"
+                                        onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = '{{ student.phone }}'" required class="single-input"
+                                        value="{{ student.phone }}">
+                                </div>
+                                <div class="input-group-icon mt-10">
+                                    <div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+                                    <div class="form-select" id="default-select">
+                                        <select>
+                                            <option value="1">Country</option>
+                                            <option value="1">Bangladesh</option>
+                                            <option value="1">India</option>
+                                            <option value="1">England</option>
+                                            <option value="1">Srilanka</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mt-10">
+                                    <input type="text" name="address" placeholder="Address"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Address'" required
+                                        class="single-input">
+                                </div>
+                                <input type="submit" value="submit">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
