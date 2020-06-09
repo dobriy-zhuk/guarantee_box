@@ -113,7 +113,7 @@ class Module(models.Model):
         student.user.has_perm('module_done')
         False
         
-        You need to specifi the instanse for permission
+        You need to specify the instanse for permission
         student.user.has_perm('module_done', module)
         True
 
