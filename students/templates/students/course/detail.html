@@ -6,58 +6,60 @@
 {% load index %}
 
 {% block content %}
-   <section class="blog_area single-post-area section-padding" style="margin-top: 150px">
-      <div class="container">
+<section class="blog_area single-post-area section-padding" style="margin-top: 150px">
+   <div class="container">
       <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="section-tittle text-center">
-                            <h2>{{ object.title }}</h2>
-                        </div>
-                    </div>
-                </div>
-         <div class="row">
-             <div class="col-lg-4">
-               <div class="blog_right_sidebar">
-                  <aside class="single_sidebar_widget post_category_widget">
-                     <h4 class="widget_title">Теория и практика</h4>
-                     <ul class="list cat-list">
-                         {% for m in object.modules.all %}
-                            <li>
-                               <a data-id="{{ m.id }}" {% if m == module and user_permission|index:forloop.counter0 == True %}
-                                    class="d-flex active" href="{% url 'student_course_detail_module' object.id m.id %}"
-                                    {% elif m != module and user_permission|index:forloop.counter0 == True %} class="d-flex"
-                                    href="{% url 'student_course_detail_module' object.id m.id %}"
-                                    {% elif user_permission|index:forloop.counter0 == False %} class="d-flex disabled"
-                                    {% endif %}>
-                                  Занятие {{ m.order|add:1 }}. {{ m.title }}
-                               </a>
-                            </li>
-                        {% empty %}
-                        <li>No modules yet.</li>
-                    {% endfor %}
-                     </ul>
-                  </aside>
-               </div>
-            </div>
-            <div class="col-lg-8 posts-list">
-               <div class="single-post">
-                  {% for content in module.contents.all %}
-                  <div class="blog_details">
-                     {% with item=content.item %}
-                     <h2>{{ module.title }}
-                     </h2>
-                     <p>
-                       {{ item.render }}
-                     </p>
-                      {% endwith %}
-                  </div>
-                    {% endfor %}
-               </div>
+         <div class="col-lg-8">
+            <div class="section-tittle text-center">
+               <h2>{{ object.title }}</h2>
             </div>
          </div>
       </div>
-   </section>
+      <div class="row">
+         <div class="col-lg-4">
+            <div class="blog_right_sidebar">
+               <aside class="single_sidebar_widget post_category_widget">
+                  <h4 class="widget_title">Теория и практика</h4>
+                  <ul class="list cat-list">
+                     {% for m in object.modules.all %}
+                     <li>
+                        <a data-id="{{ m.id }}" {% if m == module and user_permission|index:forloop.counter0 == True %}
+                           class="d-flex active" href="{% url 'student_course_detail_module' object.id m.id %}"
+                           {% elif m != module and user_permission|index:forloop.counter0 == True %} class="d-flex"
+                           href="{% url 'student_course_detail_module' object.id m.id %}"
+                           {% elif user_permission|index:forloop.counter0 == False %} class="d-flex disabled"
+                           {% endif %}>
+                           {% get_obj_perms request.user for m as "done_module_perms" %}
+
+                           Занятие {{ m.order|add:1 }}. {{ m.title }}
+                           {% if 'module_done' in done_module_perms %}
+                              <div style="color: greenyellow; margin-left: 1em;">Завершен</div>
+                           {% endif%}
+                        </a>
+                     </li>
+                     {% empty %}
+                     <li>No modules yet.</li>
+                     {% endfor %}
+                  </ul>
+               </aside>
+            </div>
+         </div>
+         <div class="col-lg-8 posts-list">
+            <div class="single-post">
+               {% for content in module.contents.all %}
+               <div class="blog_details">
+                  {% with item=content.item %}
+                  <h2>{{ module.title }}
+                  </h2>
+                  <p>
+                     {{ item.render }}
+                  </p>
+                  {% endwith %}
+               </div>
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
 {% endblock %}
-
-
-
