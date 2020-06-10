@@ -106,14 +106,20 @@
                             </style>
                             {% for lesson in upcoming_lessons %}
                             <h5>{{ lesson.lesson_name }}</h5>
-                            <span_time class="border border-primary rounded" id="days">10 дней</span_time>
-                            <span_time class="border border-primary rounded" id="hours">5 часов</span_time>
-                            <span_time class="border border-primary rounded" id="minutes">8 минут</span_time>
+                            <!-- Выводит текстовый формат!!! -->
+                            <!-- Время в 24-часовом формате -->
+                            <span_time class="border border-primary rounded" id="month">
+                                Месяц: {{ lesson.schedule.start_timestamp|date:'m'}}</span_time>
+                            <span_time class="border border-primary rounded" id="days">
+                                День: {{ lesson.schedule.start_timestamp|date:'d'}}</span_time>
+                            <span_time class="border border-primary rounded" id="hours">
+                                Часы: {{ lesson.schedule.start_timestamp|date:'H'}}</span_time>
+                            <span_time class="border border-primary rounded" id="minutes">
+                                Минуты: {{ lesson.schedule.start_timestamp|date:'i' }}</span_time>
                             <p><br><a href="http://localhost:3000/?lesson_id={{ lesson.id }}&student=true"
                                     class="genric-btn info-border" target="_blank">Подключиться</a>
                                 <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее
                                     задание</a></p>
-                            {{ lesson.schedule.start_timestamp|timeuntil }} <br>
                             <br>
                             {% endfor %}
                         </div>
