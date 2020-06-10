@@ -25,6 +25,11 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('teacher/', views.teacher, name='teacher'),
     path(
+        'teacher/edit-profile',
+        views.TeacherUpdateView.as_view(),
+        name='teacher_edit_profile',
+    ),
+    path(
         'accounts/login/',
         views.CustomLoginView.as_view(),
         name='login'

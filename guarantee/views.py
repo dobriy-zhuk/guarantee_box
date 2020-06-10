@@ -1,20 +1,20 @@
 """Module for client requests handling."""
+import datetime
+
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, JsonResponse
 from django.db import DatabaseError
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
+from django.views.generic.edit import UpdateView
 
-import datetime
-
-from students.models import Teacher, Schedule, Student
-
+from students.models import Schedule, Student, Teacher
 
 
 def index(request):
@@ -274,7 +274,12 @@ class CalendarView(View):
 
 @login_required
 def teacher(request):
-    return render(request, 'teacher/profile.html', {})
+    template_name = 'teacher/profile.html'
+    return render(
+        request=request,
+        template_name=template_name,
+        context={'teacher': request.user.teacher}
+    )
 
 
 def get_lead_list_json(request, api_version):
@@ -296,3 +301,27 @@ def get_lead_list_json(request, api_version):
         return JsonResponse(lead_list, safe=False)
 
     return JsonResponse({'error': 'wrong api version'})
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class TeacherUpdateView(View):
+    template_name = 'teacher/edit_profile.html'
+
+    def get(self, request):
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={'teacher': request.user.teacher},
+        )
+
+    def post(self, request):
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+
+        request.user.teacher.name = name
+        request.user.teacher.email = email
+        request.user.teacher.address = address
+
+        request.user.teacher.save()
+        return redirect(to='teacher')

@@ -9,12 +9,12 @@ from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views import View as ClassicView
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 from opentok import OpenTok
-from django.views import View as ClassicView
 
 from courses.forms import ModuleFormSet
 from courses.models import Content, Course, LessonRoom, Module, Subject
@@ -57,7 +57,7 @@ class CourseCreateView(PermissionRequiredMixin, OwnerCourseEditMixin, CreateView
     permission_required = 'courses.add_course'
 
 
-class CourseUpdateView(PermissionRequiredMixin,OwnerCourseEditMixin, UpdateView):
+class CourseUpdateView(PermissionRequiredMixin, OwnerCourseEditMixin, UpdateView):
     permission_required = 'courses.change_course'
 
 
@@ -259,7 +259,6 @@ class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, ClassicView):
 
     TODO: add ability to set time of start and end of lesson, in that time it
     is possible only in admin panel
-    TODO: check post-request
 
     Returns:
         TODO: DOCS!
