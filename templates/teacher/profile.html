@@ -71,11 +71,11 @@
                                         onfocus="this.placeholder = ''" onblur="this.placeholder = 'Реквизиты банка'"
                                         required class="single-input">
                                 </div>
-                                <br><a href="{% url 'teacher_edit_profile' %}" class="genric-btn info-border">Редактировать</a>
+                                <br><a href="{% url 'teacher_edit_profile' %}"
+                                    class="genric-btn info-border">Редактировать</a>
                             </form>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="col-lg-7 col-md-7">
@@ -104,13 +104,18 @@
                                     align-items: center;
                                 }
                             </style>
-                            <span_time class="border border-primary rounded">10 дней</span_time>
-                            <span_time class="border border-primary rounded">5 часов</span_time>
-                            <span_time class="border border-primary rounded">8 минут</span_time>
-                            <p><br><a href="{% url 'send_email_stats' %}"
-                                    class="genric-btn info-border">Подключиться</a> <a
-                                    href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее
+                            {% for lesson in upcoming_lessons %}
+                            <h5>{{ lesson.lesson_name }}</h5>
+                            <span_time class="border border-primary rounded" id="days">10 дней</span_time>
+                            <span_time class="border border-primary rounded" id="hours">5 часов</span_time>
+                            <span_time class="border border-primary rounded" id="minutes">8 минут</span_time>
+                            <p><br><a href="http://localhost:3000/?lesson_id={{ lesson.id }}&student=true"
+                                    class="genric-btn info-border" target="_blank">Подключиться</a>
+                                <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее
                                     задание</a></p>
+                            {{ lesson.schedule.start_timestamp|timeuntil }} <br>
+                            <br>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="single-generating d-flex mb-30">

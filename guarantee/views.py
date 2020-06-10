@@ -9,11 +9,13 @@ from django.db import DatabaseError
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import UpdateView
 
+from courses.models import LessonRoom
 from students.models import Schedule, Student, Teacher
 
 
@@ -275,10 +277,19 @@ class CalendarView(View):
 @login_required
 def teacher(request):
     template_name = 'teacher/profile.html'
+
+    upcoming_lessons = LessonRoom.objects.filter(
+        teacher=request.user.teacher,
+        schedule__start_timestamp__gte=timezone.now(),
+    )
+
     return render(
         request=request,
         template_name=template_name,
-        context={'teacher': request.user.teacher}
+        context={
+            'teacher': request.user.teacher,
+            'upcoming_lessons': upcoming_lessons,
+        },
     )
 
 
