@@ -1,14 +1,14 @@
 """File with classes which describe tables in database."""
 from django.conf import settings
-from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from courses.fields import OrderField
+from django.contrib.contenttypes.models import ContentType
+from django.db import models
 from django.template.loader import render_to_string
-from students.models import Student, Teacher, Schedule
-
 from opentok import OpenTok
+
+from courses.fields import OrderField
+from students.models import Schedule, Student, Teacher
 
 
 class Subject(models.Model):
@@ -121,12 +121,6 @@ class Module(models.Model):
                                               ^
                                     name of app required
         <QuerySet [<Module: 0. Переменные>]>
-
-    Arguments:
-        models {[type]} -- [description]
-
-    Returns:
-        [type] -- [description]
     """
 
     class Meta:
