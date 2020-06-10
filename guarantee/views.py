@@ -304,7 +304,7 @@ def get_lead_list_json(request, api_version):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class TeacherUpdateView(View):
+class TeacherProfileEditView(View):
     template_name = 'teacher/edit_profile.html'
 
     def get(self, request):

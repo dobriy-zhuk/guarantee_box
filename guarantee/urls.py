@@ -26,7 +26,7 @@ urlpatterns = [
     path('teacher/', views.teacher, name='teacher'),
     path(
         'teacher/edit-profile',
-        views.TeacherUpdateView.as_view(),
+        views.TeacherProfileEditView.as_view(),
         name='teacher_edit_profile',
     ),
     path(

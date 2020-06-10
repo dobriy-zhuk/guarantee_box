@@ -236,7 +236,6 @@ class StudentProfileEditView(LoginRequiredMixin, UserPassesTestMixin , View):
         )
 
     def post(self, request):
-        student = get_object_or_404(Student, id=request.user.student.id)
 
         student_name = request.POST.get('student_name')
         parent_name = request.POST.get('parent_name')
@@ -247,16 +246,16 @@ class StudentProfileEditView(LoginRequiredMixin, UserPassesTestMixin , View):
         student_phone = request.POST.get('student_phone')
         student_city = request.POST.get('address')
 
-        student.name = student_name
-        student.parent_name = parent_name
-        student.age = student_age
-        student.email = student_email
-        student.parent_email = parent_email
-        student.parent_phone = parent_phone
-        student.phone = student_phone
-        student.city = student_city
+        request.user.student.name = student_name
+        request.user.student.parent_name = parent_name
+        request.user.student.age = student_age
+        request.user.student.email = student_email
+        request.user.student.parent_email = parent_email
+        request.user.student.parent_phone = parent_phone
+        request.user.student.phone = student_phone
+        request.user.student.city = student_city
 
-        student.save()
+        request.user.student.save()
         return redirect(to='student')
 
 
