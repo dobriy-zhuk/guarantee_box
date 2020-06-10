@@ -245,7 +245,6 @@ class LessonRoom(models.Model):
 
     ForeignKey because one teacher for many module rooms.
     ManyToMany because many students for many module rooms.
-    TODO: TextField homework 
 
     Arguments:
         models.Model: superclass which describes fields for database
@@ -262,6 +261,7 @@ class LessonRoom(models.Model):
         null=True,
         blank=True,
     )
+    homework = models.TextField(default='')
 
     def __str__(self):
         """Override the str() behavior, for instance of class.
