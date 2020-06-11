@@ -6,10 +6,12 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.forms.models import modelform_factory
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views import View as ClassicView
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -19,6 +21,7 @@ from opentok import OpenTok
 from courses.forms import ModuleFormSet
 from courses.models import Content, Course, LessonRoom, Module, Subject
 from students.forms import CourseEnrollForm
+from students.views import get_object_or_none
 
 
 def post_coding(request):
@@ -250,7 +253,7 @@ class CourseDetailView(DetailView):
         return context
 
 
-class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, ClassicView):
+class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, View):
     """Class-based view for work with LessonRoom.
 
     Note:
@@ -312,3 +315,31 @@ class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, ClassicView):
                 'token': token,
             }
         )
+
+
+@csrf_exempt
+@require_GET
+def set_lesson_completed_api(request, api_version: int):
+    bad_request_error_code = 400
+
+    if api_version == 0:
+
+        lesson_id = request.GET.get('lesson_id')
+
+        lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
+
+        if lesson_room is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={'error': 'no lesson room with {0} id'.format(lesson_id)},
+            )
+
+        lesson_room.completed = True
+        lesson_room.save()
+
+        return JsonResponse({'message': 'success'})
+
+    return JsonResponse(
+        status=bad_request_error_code,
+        data={'error': 'wrong api version'}
+    )
