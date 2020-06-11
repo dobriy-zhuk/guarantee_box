@@ -44,4 +44,9 @@ urlpatterns = [
           views.set_lesson_completed_api,
           name='set_lesson_completed_api',
      ),
+     path(
+          'api/<int:api_version>/set-lesson-homework/',
+          views.set_lesson_homework_api,
+          name='set_lesson_homework_api',
+     ),
 ]

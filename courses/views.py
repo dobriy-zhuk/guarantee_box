@@ -1,3 +1,5 @@
+import json
+
 from django.apps import apps
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import (LoginRequiredMixin,
@@ -11,7 +13,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -335,6 +337,35 @@ def set_lesson_completed_api(request, api_version: int):
             )
 
         lesson_room.completed = True
+        lesson_room.save()
+
+        return JsonResponse({'message': 'success'})
+
+    return JsonResponse(
+        status=bad_request_error_code,
+        data={'error': 'wrong api version'}
+    )
+
+
+@csrf_exempt
+@require_POST
+def set_lesson_homework_api(request, api_version: int):
+    bad_request_error_code = 400
+
+    if api_version == 0:
+        
+        json_data = json.loads(request.body.decode())
+        lesson_id = json_data.get('lesson_id')
+
+        lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
+
+        if lesson_room is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={'error': 'no lesson room with {0} id'.format(lesson_id)},
+            )
+
+        lesson_room.homework = json_data.get('homework')
         lesson_room.save()
 
         return JsonResponse({'message': 'success'})
