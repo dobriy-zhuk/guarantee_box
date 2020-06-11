@@ -261,7 +261,8 @@ class LessonRoom(models.Model):
         null=True,
         blank=True,
     )
-    homework = models.TextField(default='')
+    homework = models.TextField(blank=True, default='')
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         """Override the str() behavior, for instance of class.
