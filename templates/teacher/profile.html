@@ -83,7 +83,6 @@
                     <div class="single-generating d-flex mb-30">
                         <div class="generating-cap">
                             <h4>Ближайшие уроки</h4>
-                            <h5>Математика</h5>
                             <style>
                                 /* CSS style for Boxes */
                                 span_time {
@@ -118,8 +117,7 @@
                                 Минуты: {{ lesson.schedule.start_timestamp|date:'i' }}</span_time>
                             <p><br><a href="http://localhost:3000/?lesson_id={{ lesson.id }}&student=true"
                                     class="genric-btn info-border" target="_blank">Подключиться</a>
-                                <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее
-                                    задание</a></p>
+                            </p>
                             <br>
                             {% endfor %}
                         </div>
