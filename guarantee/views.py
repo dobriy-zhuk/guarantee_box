@@ -17,6 +17,7 @@ from django.views.generic.edit import UpdateView
 
 from courses.models import LessonRoom
 from students.models import Schedule, Student, Teacher
+from students.forms import TeacherEditForm
 
 
 def index(request):
@@ -326,13 +327,10 @@ class TeacherProfileEditView(View):
         )
 
     def post(self, request):
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        address = request.POST.get('address')
-
-        request.user.teacher.name = name
-        request.user.teacher.email = email
-        request.user.teacher.address = address
-
-        request.user.teacher.save()
+        form = TeacherEditForm(
+            data=request.POST, instance=request.user.teacher,
+        )
+        if form.is_valid():
+            teacher = form.save()
+            teacher.save()
         return redirect(to='teacher')

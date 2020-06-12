@@ -1,6 +1,6 @@
 from django import forms
 from courses.models import Course
-from students.models import Student
+from students.models import Student, Teacher
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -47,3 +47,13 @@ class UserSignupForm(UserCreationForm):
             'username', 'email',
             'password1', 'password2',
             )
+
+
+class TeacherEditForm(forms.ModelForm):
+    name = forms.CharField(max_length=200)
+    email = forms.EmailField(max_length=254)
+    city = forms.CharField(max_length=60)
+
+    class Meta:
+        model = Teacher
+        fields = ('name', 'email', 'city')
