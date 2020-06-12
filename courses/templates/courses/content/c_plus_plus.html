@@ -3,6 +3,8 @@
 <div id="result_id"></div>
 <br>
 <input value="Компиляция" class="btn btn-danger" type="button" onclick="Compile('result_id');">
+<p style="color: black">Вывод: <span id="compilation-result"></span></p>
+<div id="answer" data-value="{{ item.answer }}" hidden></div>
 <script>
     function Compile(result_id) {
                 myVar = JSON.stringify({compiler: "gcc-head", "code":$('textarea#my_code').val(),"options": "warning,gnu++1y", "compiler-option-raw": "-Dx=hogefuga\n-O3" });
@@ -13,7 +15,14 @@
                     data: myVar,
                     compiler:"gcc-head",
                     success: function(response) { //Если все нормально
-                        alert(response.program_message);
+                        $('#compilation-result').html(response.program_message);
+                        var answer = document.getElementById("answer").getAttribute("data-value");
+                        if (response.program_message === answer){
+                            alert("Correct");
+                        }
+                        else {
+                            alert("Incorrect");
+                        }
                     },
                     error: function(response) { //Если ошибка
                         alert("Error");

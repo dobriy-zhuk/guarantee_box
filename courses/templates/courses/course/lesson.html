@@ -19,7 +19,6 @@
 
 {% block content %}
 
-<!-- Generating Start -->
 <div class="generating-area" style="margin-top: 150px">
     <div class="container">
         <div class="row d-flex justify-content-center">
@@ -31,31 +30,143 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12 text-center">
-                {% for lesson_room in lesson_rooms %}
-                    <h4>{{ lesson_room.lesson_name }}</h4>
-                    <p>{{ lesson_room.schedule.start_timestamp }}</p>
-                    <p><br><a href="http://localhost:3000/?lesson_id={{ lesson_room.id }}&student=false" class="genric-btn info-border" target="_blank">Подключиться</a>
-                    {% for student in lesson_room.students.all %}
-                        <p>{{ student}}</p>
-                    {% endfor %}
-                {% endfor %}
+            <h3 class="text-left">Предстоящие уроки</h3>
+            <table class="table" style="text-align: left">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Дата/время</th>
+                  <th scope="col">Наименование</th>
+                  <th scope="col">Тема урока</th>
+                  <th scope="col">Студенты</th>
+                  <th scope="col">Домашнее задание</th>
+                  <th scope="col"></th>
+                  <th scope="col">Завершение урока</th>
+                </tr>
+              </thead>
+              <tbody>
+               {% for lesson_room in lesson_rooms %}
+                <tr>
+                  <th scope="row">{{ lesson_room.schedule.start_timestamp }}</th>
+                  <td>{{ lesson_room.lesson_name }}</td>
+                    <td></td>
+                    <td style="text-align: left">{% for student in lesson_room.students.all %}
+                        {{ forloop.counter }}. {{ student}}<br>
+                    {% endfor %}</td>
+                    <td style="text-align: right">
+                        <form method="POST" id="homework_form_{{ lesson_room.id }}">
+                            {% csrf_token %}
+                            <input name="lesson_id" value="{{ lesson_room.id }}" hidden>
+                            <textarea name="homework" class="form-control" rows="2">{{ lesson_room.homework }}</textarea>
+                            <input type="submit" value="Сохранить"/>
+                        </form>
+                    </td>
+                    <td><a class="genric-btn danger-border radius" href="http://video.garantylearning.com/?lesson_id={{ lesson_room.id }}&student=false" target="_blank">Подключиться</a></td>
+                    <td><a class="genric-btn primary-border radius" href="http://video.garantylearning.com/?lesson_id={{ lesson_room.id }}&student=false" target="_blank" data-toggle="modal" data-target="#completeLesson{{ lesson_room.id }}">Проведен</a></td>
+                 <!-- модальное окно завершения урока -->
+                    <div class="modal fade" id="completeLesson{{ lesson_room.id }}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel{{ lesson_room.id }}" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="ModalLabel{{ lesson_room.id }}">Завершение урока</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        <form id="complete_lesson_form">
+                            {% csrf_token %}
+                          <div class="modal-body">
+                                <h4>Присутствующие</h4>
+                                {% for student in lesson_room.students.all %}
+                                    <div class="form-check" style="text-align: left">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck{{ forloop.counter }}">
+                                          <label class="form-check-label" for="defaultCheck{{ forloop.counter }}">
+                                            {{ student}}
+                                          </label>
+                                    </div>
+                                    <textarea placeholder="Комментарий" name="student_{{ forloop.counter }}"></textarea>
+                                {% endfor %}
+                                <hr>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-primary">Подтвердить</button>
+                          </div>
+                         </form>
+                        </div>
+                      </div>
+                    </div>
+                </tr>
+               {% endfor %}
+              </tbody>
+            </table>
+
+            <h3 class="text-left">Завершенные уроки</h3>
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Дата/время</th>
+                  <th scope="col">Наименование</th>
+                  <th scope="col">Присутствующие</th>
+                  <th scope="col">Начислено</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tbody>
+               {% for lesson_room in lesson_rooms %}
+                   {% if lesson_room.completed %}
+                <tr>
+                  <th scope="row">{{ lesson_room.schedule.start_timestamp }}</th>
+                  <td>{{ lesson_room.lesson_name }}</td>
+                    <td style="text-align: left">{% for student in lesson_room.students.all %}
+                        {{ forloop.counter }}. {{ student}}<br>
+                    {% endfor %}</td>
+                    <td><a style="color: red; text-decoration: underline;" href="http://video.garantylearning.com/?lesson_id={{ lesson_room.id }}&student=false" target="_blank">Подключиться</a></td>
+                </tr>
+                   {% endif %}
+               {% endfor %}
+              </tbody>
+            </table>
+
             </div>
         </div>
     </div>
 </div>
 
-<!-- <script type="text/javascript">
-    $(document).ready(function () {
-        $.ajax({
-            type: 'GET',
-            dataType: "json",
-            url: '/api/0/student_id/get-student-profile/',
-            success: function (response) {
-                profileJson = JSON.stringify(response);
-                $("#profileAjax").prepend(profileJson);
-            }
-        });
-    });
-</script> -->
 
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+   $('form').submit(function () {
+        event.preventDefault();
+
+          $.ajax({
+            type: "POST",
+            url: 'http://127.0.0.1:8000/courses/api/0/set-lesson-homework/',
+            data: $(this).serialize(),
+            success: function (data) {
+                alert("Домашнее задание сохранено");
+            },
+            error: function(e, x, r) {
+                alert(e);
+            }
+          });
+          return false;
+
+    });
+
+    $('#complete_lesson_form').submit(function() {
+     $.ajax({
+            url: 'http://127.0.0.1:8000/courses/api/0/set-lesson-completed/',
+            data: $(this).serialize(),
+            success: function (data) {
+              alert("Урок помечен выполненным");
+            },
+              error: function(e, x, r) { // on error..
+                    alert(e);
+              }
+          });
+      });
+    </script>
 {% endblock %}

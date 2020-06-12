@@ -26,9 +26,10 @@ SECRET_KEY = ')dhy+sl(o87g*_i#q6_y^2tlf!uz21h*%w1c7jyx+!i+sv*6it'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#DEBUG = True Боевой
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["185.185.69.2", "127.0.0.1"]
+#ssh -f -N -R 9999:localhost:8000 185.185.69.2
 
 # Application definition
 
@@ -65,7 +66,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://video.garantylearning.com']
 
 ROOT_URLCONF = 'guarantee.urls'
 
@@ -94,6 +95,7 @@ WSGI_APPLICATION = 'guarantee.wsgi.application'
 #dev = kursokrf_learn
 #test = kursokrf_learn_t
 #master = kursokrf_learn_m
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -104,7 +106,19 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
+'''
+Боевой сервер
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'distant_box',
+        'USER': 'distant_box',
+        'PASSWORD': '787876',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

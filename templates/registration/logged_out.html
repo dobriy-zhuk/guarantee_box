@@ -1,9 +1,22 @@
 {% extends "base/base_courses.html" %}
-{% block title %}Logged out{% endblock %}
+{% block title %}Вход в личный кабинет Гарантия Знаний{% endblock %}
 {% block content %}
-  <h1>Logged out</h1>
-  <div class="module">
-<p>You have been successfully logged out.
-You can <a href="{% url "login" %}">log-in again</a>.</p>
-  </div>
+
+    <div class="generating-area" style="margin-top: 150px">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-tittle text-center">
+                    <h2>Выход</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 text-center">
+                <p>Вы вышли из личного кабинета. <a href="{% url "login" %}">Войти снова</a>.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

@@ -409,6 +409,15 @@ def get_payment(request):
     )
 
 
+def get_webrtc(request):
+    student = Student.objects.get(user=request.user)
+    #student = get_object_or_404(Student, user=request.user)
+    return render(
+        request=request,
+        template_name='video/video.html',
+        context={'student': student},
+    )
+
 @login_required(login_url='/accounts/login/')
 def get_lesson(request):
     # TODO: Вернуть в качестве страницы localhost:3000 c токеном и session_id из базы!
@@ -824,7 +833,7 @@ def set_student_module_done(request, api_version: int):
     required POST arguments:   
         student_id (int): student id
         module_id (int): module id
-
+    !СДЕЛАТЬ МОДУЛЬ ВЫПОЛНЕННЫМ ДЛЯ СТУДЕНТА!
     Args:
         api_version (int): [description]
     """

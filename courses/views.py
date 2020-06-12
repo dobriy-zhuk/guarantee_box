@@ -24,7 +24,7 @@ from courses.forms import ModuleFormSet
 from courses.models import Content, Course, LessonRoom, Module, Subject
 from students.forms import CourseEnrollForm
 from students.views import get_object_or_none
-
+from django.http import HttpResponse
 
 def post_coding(request):
     return render(request, 'index.html', {})
@@ -319,6 +319,7 @@ class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, View):
         )
 
 
+
 @csrf_exempt
 @require_GET
 def set_lesson_completed_api(request, api_version: int):
@@ -353,9 +354,9 @@ def set_lesson_homework_api(request, api_version: int):
     bad_request_error_code = 400
 
     if api_version == 0:
-        
-        json_data = json.loads(request.body.decode())
-        lesson_id = json_data.get('lesson_id')
+
+        #json_data = json.loads(request.body.decode())
+        lesson_id = request.POST['lesson_id']
 
         lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
 
@@ -365,7 +366,7 @@ def set_lesson_homework_api(request, api_version: int):
                 data={'error': 'no lesson room with {0} id'.format(lesson_id)},
             )
 
-        lesson_room.homework = json_data.get('homework')
+        lesson_room.homework = request.POST['homework']
         lesson_room.save()
 
         return JsonResponse({'message': 'success'})
