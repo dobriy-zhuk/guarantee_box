@@ -14,10 +14,11 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import UpdateView
+from guardian.shortcuts import get_objects_for_user
 
 from courses.models import LessonRoom
-from students.models import Schedule, Student, Teacher
 from students.forms import TeacherEditForm
+from students.models import Schedule, Student, Teacher
 
 
 def index(request):
@@ -283,6 +284,22 @@ def teacher(request):
         teacher=request.user.teacher,
         schedule__start_timestamp__gte=timezone.now(),
     )
+    students = request.user.teacher.students.all()
+
+    for student in students:
+
+        done_modules = get_objects_for_user(
+            student.user, 'courses.module_done',
+        )
+
+        student_courses = student.courses_joined.all()
+
+        for course in student_courses:
+            percent = (100 * (course.modules.intersection(
+                done_modules)).count()) / course.modules.all().count()
+            course.done_percent = '{0}%'.format(percent)
+
+        student.student_courses = [*student_courses]
 
     return render(
         request=request,
@@ -290,6 +307,7 @@ def teacher(request):
         context={
             'teacher': request.user.teacher,
             'upcoming_lessons': upcoming_lessons,
+            'students': students,
         },
     )
 
