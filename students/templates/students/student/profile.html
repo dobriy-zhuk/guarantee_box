@@ -189,10 +189,10 @@
                                                 {{ course.course_done_percent }}
                                                 <div class="progress">
                                                     <div class="progress-bar color-1" role="progressbar"
-                                                        style="width: '{{ course.course_done_percent }}'"
+                                                        style="width: {{ course.course_done_percent }}"
                                                         aria-valuenow="{{ course.course_done_percent }}"
-                                                        aria-valuemin="0"
-                                                        aria-valuemax="{{ course.course_done_percent }}"></div>
+                                                        aria-valuemin="0.0%"
+                                                        aria-valuemax="100.0%"></div>
                                                 </div>
                                             </td>
                                         </tr>
