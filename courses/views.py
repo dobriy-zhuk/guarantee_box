@@ -315,63 +315,46 @@ class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, View):
                 'api_key': '46769324',
                 'session_id': session_id,
                 'token': token,
-            }
+            },
         )
-
-
-
-@csrf_exempt
-@require_GET
-def set_lesson_completed_api(request, api_version: int):
-    bad_request_error_code = 400
-
-    if api_version == 0:
-
-        lesson_id = request.GET.get('lesson_id')
-
-        lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
-
-        if lesson_room is None:
-            return JsonResponse(
-                status=bad_request_error_code,
-                data={'error': 'no lesson room with {0} id'.format(lesson_id)},
-            )
-
-        lesson_room.completed = True
-        lesson_room.save()
-
-        return JsonResponse({'message': 'success'})
-
-    return JsonResponse(
-        status=bad_request_error_code,
-        data={'error': 'wrong api version'}
-    )
 
 
 @csrf_exempt
 @require_POST
-def set_lesson_homework_api(request, api_version: int):
+def set_lesson_info_api(request, api_version: int):
     bad_request_error_code = 400
 
     if api_version == 0:
 
-        #json_data = json.loads(request.body.decode())
-        lesson_id = request.POST['lesson_id']
+        json_data = json.loads(request.body.decode())
+
+        lesson_id = json_data.get('lesson_id')
 
         lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
 
         if lesson_room is None:
             return JsonResponse(
                 status=bad_request_error_code,
-                data={'error': 'no lesson room with {0} id'.format(lesson_id)},
+                data={
+                    'error': 'no lesson room with {0} id'.format(lesson_id),
+                },
             )
 
-        lesson_room.homework = request.POST['homework']
+        homework = json_data.get('homework')
+
+        if homework:
+            lesson_room.homework = homework
+
+        completed = json_data.get('completed')
+
+        if completed:
+            lesson_room.completed = completed
+
         lesson_room.save()
 
         return JsonResponse({'message': 'success'})
 
     return JsonResponse(
         status=bad_request_error_code,
-        data={'error': 'wrong api version'}
+        data={'error': 'wrong api version'},
     )

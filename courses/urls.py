@@ -40,13 +40,8 @@ urlpatterns = [
          views.CourseDetailView.as_view(),
          name='course_detail'),
      path(
-          'api/<int:api_version>/set-lesson-completed/',
-          views.set_lesson_completed_api,
-          name='set_lesson_completed_api',
-     ),
-     path(
-          'api/<int:api_version>/set-lesson-homework/',
-          views.set_lesson_homework_api,
-          name='set_lesson_homework_api',
+          'api/<int:api_version>/set-lesson-info/',
+          views.set_lesson_info_api,
+          name='set_lesson_info_api',
      ),
 ]
