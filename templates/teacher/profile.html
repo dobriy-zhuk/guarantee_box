@@ -118,8 +118,7 @@
                                 Минуты: {{ lesson.schedule.start_timestamp|date:'i' }}</span_time>
                             <p><br><a href="http://localhost:3000/?lesson_id={{ lesson.id }}&student=true"
                                     class="genric-btn info-border" target="_blank">Подключиться</a>
-                                <a href="{% url 'send_email_stats' %}" class="genric-btn danger-border">Домашнее
-                                    задание</a></p>
+                            </p>
                             <br>
                             {% endfor %}
                         </div>

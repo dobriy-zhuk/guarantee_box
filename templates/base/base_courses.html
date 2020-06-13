@@ -88,18 +88,17 @@
                                                     <li><a href="single-blog.html">Математика</a></li>
                                                 </ul>
                                         </li>
-                                        <li><a href="{% url 'index' %}">Наш подход</a>
+                                        <li><a href="{% url 'index' %}">О школе</a>
                                                 <ul class="submenu">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-blog.html">Blog Details</a></li>
+                                                    <li><a href="blog.html">Наш подход</a></li>
+                                                    <li><a href="single-blog.html">Наши результаты</a></li>
+                                                    <li><a href="single-blog.html">Отзывы</a></li>
+                                                    <li><a href="single-blog.html">Преподаватели</a></li>
+                                                    <li><a href="single-blog.html">Стоимость</a></li>
                                                 </ul>
                                         </li>
-                                        <li><a href="{% url 'index' %}">Наши результаты</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-blog.html">Blog Details</a></li>
-                                                </ul>
-                                        </li>
+                                        <li><a href="{% url 'index' %}">Контакты</a></li>
+                                        <li><a href="{% url 'index' %}">Франшиза</a></li>
                                         {% if request.user.is_authenticated %}
                                         <li><a href="{% url 'profile' %}">Личный кабинет</a>
                                                 <ul class="submenu">
@@ -108,7 +107,7 @@
                                                 </ul>
                                         </li>
                                         {% else %}
-                                        <li><a href="{% url 'login' %}">Личный кабинет</a></li>
+                                        <li><a href="{% url 'login' %}">Войти</a></li>
                                         {% endif %}
                                     </ul>
                                 </nav>

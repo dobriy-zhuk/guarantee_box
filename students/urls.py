@@ -9,7 +9,8 @@ urlpatterns = [
          name='edit_student_profile',
      ),
     path('payment/', views.get_payment, name='payment'),
-    path('lesson/', views.get_lesson, name='student_lesson'),
+    path('payment/', views.get_payment, name='payment'),
+    path('webrtc/', views.get_webrtc, name='get_webrtc'),
     path(
          'send-stats/',
          views.send_stats_to_email,

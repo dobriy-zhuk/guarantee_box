@@ -52,18 +52,6 @@
 </head>
 
 <body>
-    <!-- Preloader Start -->
-    <div id="preloader-active">
-        <div class="preloader d-flex align-items-center justify-content-center">
-            <div class="preloader-inner position-relative">
-                <div class="preloader-circle"></div>
-                <div class="preloader-img pere-text">
-                    <img src="{% static 'images/logo.png' %}" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-<!-- Preloader Start -->
     <header>
        <div class="header-area header-transparrent">
             <div class="main-header header-sticky">
@@ -202,8 +190,6 @@
     </script>
 
 
-    {% block javascript %}
-    {% endblock %}
     <script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
     <script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
@@ -236,6 +222,9 @@
     <!-- Jquery Plugins, main Jquery -->
     <script src="{% static 'js/plugins.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+
+    {% block javascript %}
+    {% endblock %}
 
 </body>
 
