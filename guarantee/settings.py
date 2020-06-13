@@ -28,7 +28,7 @@ SECRET_KEY = ')dhy+sl(o87g*_i#q6_y^2tlf!uz21h*%w1c7jyx+!i+sv*6it'
 DEBUG = True
 #DEBUG = True Боевой
 
-ALLOWED_HOSTS = ["185.185.69.2", "127.0.0.1"]
+ALLOWED_HOSTS = ["185.185.69.2", "127.0.0.1", 'localhost:8000']
 #ssh -f -N -R 9999:localhost:8000 185.185.69.2
 
 # Application definition
