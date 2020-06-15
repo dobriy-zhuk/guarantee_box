@@ -13,12 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-from django.contrib.auth import views as auth_views
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
-from . import views
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.urls import include, path
+from django.utils.translation import gettext_lazy as _
+
+from guarantee import views
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -78,7 +81,14 @@ urlpatterns = [
          views.get_lead_list_json,
          name='api_get_lead_list'
     ),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
+
+
+# urlpatterns += i18n_patterns('',
+#     # (_('dual-lang/'), include('duallang.urls')),
+#     path('', include('guarantee.urls')),
+# )
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

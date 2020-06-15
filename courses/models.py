@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.loader import render_to_string
 from opentok import OpenTok
+from django.utils.translation import gettext_lazy as _
 
 from courses.fields import OrderField
 from students.models import Schedule, Student, Teacher
@@ -19,8 +20,8 @@ class Subject(models.Model):
     Arguments:
         models.Model: superclass where describe the fields
     """
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
+    title = models.CharField(_('title'), max_length=200)
+    slug = models.SlugField(_('slug'), max_length=200, unique=True)
 
     class Meta:
         """Metadata class.
@@ -56,7 +57,7 @@ class Course(models.Model):
         related_name='courses',
         on_delete=models.CASCADE,
     )
-    title = models.CharField(max_length=200)
+    title = models.CharField(_('title'), max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
@@ -135,7 +136,7 @@ class Module(models.Model):
         related_name='modules',
         on_delete=models.CASCADE,
     )
-    title = models.CharField(max_length=250)
+    title = models.CharField(_('title'), max_length=250)
     description = models.TextField(blank=True)
     order = OrderField(blank=True, for_fields=['course'])
 

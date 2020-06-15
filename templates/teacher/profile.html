@@ -1,6 +1,7 @@
 {% extends 'base/base_teacher.html' %}
 {% load guardian_tags %}
 {% load static %}
+{% load i18n %}
 {% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}
 
 {% block tags %}
@@ -26,7 +27,7 @@
         <div class="row d-flex justify-content-center">
             <div class="col-lg-8">
                 <div class="section-tittle text-center">
-                    <h2>Кабинет Преподавателя</h2>
+                    <h2>{% trans "Кабинет Преподавателя" %}</h2>
                 </div>
             </div>
         </div>

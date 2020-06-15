@@ -178,6 +178,13 @@ Look [here](https://ourcodeworld.com/articles/read/555/how-to-format-datetime-ob
 <!-- 2020-06-12 06:00 -->
 ```
 
+## How to get interantional
+
+Look [here](https://stackoverflow.com/questions/10280881/django-site-with-2-languages) how to do it in backgroud properly
+
+This is critical:
+For making a translating [right](https://stackoverflow.com/questions/4370035/django-makemessages-errors-unknown-encoding-utf8)
+
 `Best regards, Ian`
 
 *If you have some good info about project please share with us below.*
