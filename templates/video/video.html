@@ -13,25 +13,25 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 col-md-12 text-center">
-                <video id="localVideo" playsinline autoplay muted></video>
-                <video id="remoteVideo" playsinline autoplay></video>
+             <div id="video">
+        <div>
+            <video id="localVideo" playsinline autoplay muted></video>
+            <label for="localCandidateId">Local candidate id: </label>
+            <p id="localCandidateId">Not connected.</p>
+        </div>
+        <div>
+            <video id="remoteVideo" playsinline autoplay muted></video>
+            <label for="localCandidateId">Remote candidate id: </label>
+            <p id="remoteCandidateId">Not connected.</p>
+        </div>
+    </div>
 
-                <div class="box">
-                    <button id="startButton">Start</button>
-                    <button id="callButton">Call</button>
-                    <button id="hangupButton">Hang Up</button>
-                </div>
-
-                <div class="box">
-                    <span>SDP Semantics:</span>
-                    <select id="sdpSemantics">
-                        <option selected value="">Default</option>
-                        <option value="unified-plan">Unified Plan</option>
-                        <option value="plan-b">Plan B</option>
-                    </select>
-                </div>
-            </div>
+    <div>
+        <button id="startButton">Start</button>
+        <button id="callButton">Call</button>
+        <button id="restartButton">Restart ICE</button>
+        <button id="hangupButton">Hang Up</button>
+    </div>
         </div>
     </div>
 </div>

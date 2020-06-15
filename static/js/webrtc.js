@@ -2,12 +2,15 @@
 
 const startButton = document.getElementById('startButton');
 const callButton = document.getElementById('callButton');
+const restartButton = document.getElementById('restartButton');
 const hangupButton = document.getElementById('hangupButton');
 callButton.disabled = true;
 hangupButton.disabled = true;
-startButton.addEventListener('click', start);
-callButton.addEventListener('click', call);
-hangupButton.addEventListener('click', hangup);
+restartButton.disabled = true;
+startButton.onclick = start;
+callButton.onclick = call;
+hangupButton.onclick = hangup;
+restartButton.onclick = restart;
 
 let startTime;
 const localVideo = document.getElementById('localVideo');
@@ -21,7 +24,7 @@ remoteVideo.addEventListener('loadedmetadata', function() {
   console.log(`Remote video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
 });
 
-remoteVideo.addEventListener('resize', () => {
+remoteVideo.onresize = () => {
   console.log(`Remote video size changed to ${remoteVideo.videoWidth}x${remoteVideo.videoHeight}`);
   // We'll use the first onsize callback as an indication that video has started
   // playing out.
@@ -29,8 +32,13 @@ remoteVideo.addEventListener('resize', () => {
     const elapsedTime = window.performance.now() - startTime;
     console.log('Setup time: ' + elapsedTime.toFixed(3) + 'ms');
     startTime = null;
+    // Have run these functions again in order to get the getStats() reports
+    // with type candidatePair and populate the candidate id
+    // elements.
+    checkStats(pc1);
+    checkStats(pc2);
   }
-});
+};
 
 let localStream;
 let pc1;
@@ -48,27 +56,34 @@ function getOtherPc(pc) {
   return (pc === pc1) ? pc2 : pc1;
 }
 
-async function start() {
+function gotStream(stream) {
+  console.log('Received local stream');
+  localVideo.srcObject = stream;
+  localStream = stream;
+  callButton.disabled = false;
+}
+
+function start() {
   console.log('Requesting local stream');
   startButton.disabled = true;
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
-    console.log('Received local stream');
-    localVideo.srcObject = stream;
-    localStream = stream;
-    callButton.disabled = false;
-  } catch (e) {
-    alert(`getUserMedia() error: ${e.name}`);
-  }
+  navigator.mediaDevices
+      .getUserMedia({
+        audio: true,
+        video: true
+      })
+      .then(gotStream)
+      .catch(e => alert(`getUserMedia() error: ${e.name}`));
 }
 
-function getSelectedSdpSemantics() {
-  const sdpSemanticsSelect = document.querySelector('#sdpSemantics');
-  const option = sdpSemanticsSelect.options[sdpSemanticsSelect.selectedIndex];
-  return option.value === '' ? {} : {sdpSemantics: option.value};
+// Simulate an ice restart.
+function restart() {
+  restartButton.disabled = true;
+  offerOptions.iceRestart = true;
+  console.log('pc1 createOffer restart');
+  pc1.createOffer(offerOptions).then(onCreateOfferSuccess, onCreateSessionDescriptionError);
 }
 
-async function call() {
+function call() {
   callButton.disabled = true;
   hangupButton.disabled = false;
   console.log('Starting call');
@@ -81,62 +96,45 @@ async function call() {
   if (audioTracks.length > 0) {
     console.log(`Using audio device: ${audioTracks[0].label}`);
   }
-  const configuration = getSelectedSdpSemantics();
-  console.log('RTCPeerConnection configuration:', configuration);
-  pc1 = new RTCPeerConnection(configuration);
+  const servers = null;
+  pc1 = window.pc1 = new RTCPeerConnection(servers);
   console.log('Created local peer connection object pc1');
-  pc1.addEventListener('icecandidate', e => onIceCandidate(pc1, e));
-  pc2 = new RTCPeerConnection(configuration);
+  pc1.onicecandidate = e => onIceCandidate(pc1, e);
+  pc2 = window.pc2 = new RTCPeerConnection(servers);
   console.log('Created remote peer connection object pc2');
-  pc2.addEventListener('icecandidate', e => onIceCandidate(pc2, e));
-  pc1.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc1, e));
-  pc2.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc2, e));
-  pc2.addEventListener('track', gotRemoteStream);
+  pc2.onicecandidate = e => onIceCandidate(pc2, e);
+  pc1.oniceconnectionstatechange = e => {
+    onIceStateChange(pc1, e);
+    if (pc1 && pc1.iceConnectionState === 'connected') {
+      restartButton.disabled = false;
+    }
+  };
+  pc2.oniceconnectionstatechange = e => onIceStateChange(pc2, e);
+  pc2.ontrack = gotRemoteStream;
 
-  localStream.getTracks().forEach(track => pc1.addTrack(track, localStream));
+  localStream.getTracks().forEach(track => pc1.addTrack(track, localStream)
+  );
   console.log('Added local stream to pc1');
 
-  try {
-    console.log('pc1 createOffer start');
-    const offer = await pc1.createOffer(offerOptions);
-    await onCreateOfferSuccess(offer);
-  } catch (e) {
-    onCreateSessionDescriptionError(e);
-  }
+  console.log('pc1 createOffer start');
+  pc1.createOffer(offerOptions).then(onCreateOfferSuccess, onCreateSessionDescriptionError);
 }
 
 function onCreateSessionDescriptionError(error) {
   console.log(`Failed to create session description: ${error.toString()}`);
 }
 
-async function onCreateOfferSuccess(desc) {
+function onCreateOfferSuccess(desc) {
   console.log(`Offer from pc1\n${desc.sdp}`);
   console.log('pc1 setLocalDescription start');
-  try {
-    await pc1.setLocalDescription(desc);
-    onSetLocalSuccess(pc1);
-  } catch (e) {
-    onSetSessionDescriptionError();
-  }
-
+  pc1.setLocalDescription(desc).then(() => onSetLocalSuccess(pc1), onSetSessionDescriptionError);
   console.log('pc2 setRemoteDescription start');
-  try {
-    await pc2.setRemoteDescription(desc);
-    onSetRemoteSuccess(pc2);
-  } catch (e) {
-    onSetSessionDescriptionError();
-  }
-
+  pc2.setRemoteDescription(desc).then(() => onSetRemoteSuccess(pc2), onSetSessionDescriptionError);
   console.log('pc2 createAnswer start');
   // Since the 'remote' side has no media stream we need
   // to pass in the right constraints in order for it to
   // accept the incoming offer of audio and video.
-  try {
-    const answer = await pc2.createAnswer();
-    await onCreateAnswerSuccess(answer);
-  } catch (e) {
-    onCreateSessionDescriptionError(e);
-  }
+  pc2.createAnswer().then(onCreateAnswerSuccess, onCreateSessionDescriptionError);
 }
 
 function onSetLocalSuccess(pc) {
@@ -158,31 +156,18 @@ function gotRemoteStream(e) {
   }
 }
 
-async function onCreateAnswerSuccess(desc) {
+function onCreateAnswerSuccess(desc) {
   console.log(`Answer from pc2:\n${desc.sdp}`);
   console.log('pc2 setLocalDescription start');
-  try {
-    await pc2.setLocalDescription(desc);
-    onSetLocalSuccess(pc2);
-  } catch (e) {
-    onSetSessionDescriptionError(e);
-  }
+  pc2.setLocalDescription(desc).then(() => onSetLocalSuccess(pc2), onSetSessionDescriptionError);
   console.log('pc1 setRemoteDescription start');
-  try {
-    await pc1.setRemoteDescription(desc);
-    onSetRemoteSuccess(pc1);
-  } catch (e) {
-    onSetSessionDescriptionError(e);
-  }
+  pc1.setRemoteDescription(desc).then(() => onSetRemoteSuccess(pc1), onSetSessionDescriptionError);
 }
 
-async function onIceCandidate(pc, event) {
-  try {
-    await (getOtherPc(pc).addIceCandidate(event.candidate));
-    onAddIceCandidateSuccess(pc);
-  } catch (e) {
-    onAddIceCandidateError(pc, e);
-  }
+function onIceCandidate(pc, event) {
+  getOtherPc(pc)
+      .addIceCandidate(event.candidate)
+      .then(() => onAddIceCandidateSuccess(pc), err => onAddIceCandidateError(pc, err));
   console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
 }
 
@@ -198,7 +183,47 @@ function onIceStateChange(pc, event) {
   if (pc) {
     console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
     console.log('ICE state change event: ', event);
+    // TODO: get rid of this in favor of http://w3c.github.io/webrtc-pc/#widl-RTCIceTransport-onselectedcandidatepairchange
+    if (pc.iceConnectionState === 'connected' ||
+      pc.iceConnectionState === 'completed') {
+      checkStats(pc);
+    }
   }
+}
+
+function checkStats(pc) {
+  pc.getStats(null).then(results => {
+    // figure out the peer's ip
+    let activeCandidatePair = null;
+    let remoteCandidate = null;
+
+    // Search for the candidate pair, spec-way first.
+    results.forEach(report => {
+      if (report.type === 'transport') {
+        activeCandidatePair = results.get(report.selectedCandidatePairId);
+      }
+    });
+    // Fallback for Firefox.
+    if (!activeCandidatePair) {
+      results.forEach(report => {
+        if (report.type === 'candidate-pair' && report.state === 'succeeded' && report.selected) {
+          activeCandidatePair = report;
+        }
+      });
+    }
+    if (activeCandidatePair && activeCandidatePair.remoteCandidateId) {
+      results.forEach(report => {
+        if (report.type === 'remote-candidate' && report.id === activeCandidatePair.remoteCandidateId) {
+          remoteCandidate = report;
+        }
+      });
+    }
+    console.log(remoteCandidate);
+    if (remoteCandidate && remoteCandidate.id) {
+      // TODO: update a div showing the remote ip/port?
+      document.getElementById(pc === pc1 ? 'localCandidateId' : 'remoteCandidateId').textContent = remoteCandidate.id;
+    }
+  });
 }
 
 function hangup() {
@@ -208,5 +233,6 @@ function hangup() {
   pc1 = null;
   pc2 = null;
   hangupButton.disabled = true;
+  restartButton.disabled = true;
   callButton.disabled = false;
 }

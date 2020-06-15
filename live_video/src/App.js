@@ -66,7 +66,7 @@ const studentInfo = students =>
                       <div>
                           <p>Ученик: {obj.name} / количество бонусов: {obj.reward_card_amount}</p>
                         <button onClick={() => {
-                                let url = "http://127.0.0.1:8000/students/api/0/set-reward-card/" + obj.id + '/6/0/';
+                                let url = "http://185.185.69.2:8000/students/api/0/set-reward-card/" + obj.id + '/6/0/';
                                 axios.get(url)
                                       .then((response) => {
                                           console.log(response.data);
@@ -96,7 +96,7 @@ function Cards(props) {
                       <div>
                           <p>Ученик: {obj.name} / количество бонусов: {obj.reward_card_amount}</p>
                           <button onClick={() => {
-                              let url = "http://127.0.0.1:8000/students/api/0/set-reward-card/" + obj.id + '/6/0/';
+                              let url = "http://185.185.69.2:8000/students/api/0/set-reward-card/" + obj.id + '/6/0/';
                               axios.get(url)
                                   .then((response) => {
                                       console.log(response.data);
@@ -146,7 +146,7 @@ class App extends Component {
   componentDidMount() {
 
       let query = queryString.parse(window.location.search);
-      let request_url = 'http://127.0.0.1:8000/students/api/0/get-lesson-info/' + query.lesson_id + '/';
+      let request_url = 'http://185.185.69.2:8000/students/api/0/get-lesson-info/' + query.lesson_id + '/';
 
       axios.get(request_url)
           .then((response) => {
