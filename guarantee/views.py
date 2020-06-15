@@ -16,7 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import UpdateView
 from guardian.shortcuts import get_objects_for_user
 
-from courses.models import LessonRoom
+from courses.models import LessonRoom, Subject, Course
 from students.forms import TeacherEditForm
 from students.models import Schedule, Student, Teacher
 
@@ -30,7 +30,9 @@ def index(request):
     Returns:
         render(): render index.html page
     """
-    return render(request, 'index.html', {})
+    subjects = Subject.objects.all()
+    courses = Course.objects.all()
+    return render(request, 'index.html', {'subjects': subjects, 'courses': courses})
 
 
 @login_required

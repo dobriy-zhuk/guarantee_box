@@ -1,6 +1,7 @@
 {% extends 'base/base_teacher.html' %}
 {% load guardian_tags %}
 {% load static %}
+{% load i18n %}
 {% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}
 
 {% block tags %}
@@ -19,14 +20,15 @@
 {% endblock %}
 
 {% block content %}
-<!-- have-project End -->
-<!-- Generating Start -->
-<div class="generating-area" style="margin-top: 150px">
+<div class="bradcam_area breadcam_bg overlay2">
+    <h3>Личный кабинет Преподавателя</h3>
+</div>
+<div class="about_area">
     <div class="container">
         <div class="row d-flex justify-content-center">
             <div class="col-lg-8">
                 <div class="section-tittle text-center">
-                    <h2>Кабинет Преподавателя</h2>
+                    <h2>{% trans "Кабинет Преподавателя" %}</h2>
                 </div>
             </div>
         </div>
@@ -173,57 +175,6 @@
                                     </tbody>
                                 </table>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="visit-area fix visite-padding">
-            <h4>Другие проекты Гарантии Знаний</h4>
-            <div class="container-fluid p-0">
-                <div class="row ">
-                    <div class="col-lg-3 col-md-4">
-                        <div class="single-visited mb-30">
-                            <div class="visited-img">
-                                <img src="{% static 'images/visit/visit_1.jpg' %}" alt="">
-                            </div>
-                            <div class="visited-cap">
-                                <h3><a href="#">citmv.com</a></h3>
-                                <p>Email Marketing</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4">
-                        <div class="single-visited mb-30">
-                            <div class="visited-img">
-                                <img src="assets/img/visit/visit_2.jpg" alt="">
-                            </div>
-                            <div class="visited-cap">
-                                <h3><a href="#">mvsp.net</a></h3>
-                                <p>Email Marketing</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4">
-                        <div class="single-visited mb-30">
-                            <div class="visited-img">
-                                <img src="assets/img/visit/visit_3.jpg" alt="">
-                            </div>
-                            <div class="visited-cap">
-                                <h3><a href="#">dmcal.co</a></h3>
-                                <p>Email Marketing</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4">
-                        <div class="single-visited mb-30">
-                            <div class="visited-img">
-                                <img src="assets/img/visit/visit_4.jpg" alt="">
-                            </div>
-                            <div class="visited-cap">
-                                <h3><a href="#">dmco.net</a></h3>
-                                <p>Email Marketing</p>
                             </div>
                         </div>
                     </div>

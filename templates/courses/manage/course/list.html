@@ -1,15 +1,11 @@
 {% extends "base/base_teacher.html" %}
 {% block title %}Все курсы Гарантия Знаний{% endblock %}
 {% block content %}
-    <div class="generating-area" style="margin-top: 150px">
+<div class="bradcam_area breadcam_bg overlay2">
+    <h3>Редактор курсов</h3>
+</div>
+<div class="about_area">
             <div class="container">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="section-tittle text-center">
-                            <h2>Редактор курсов</h2>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                 {% if object_list %}
                     {% for course in object_list %}

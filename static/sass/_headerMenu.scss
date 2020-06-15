@@ -40,7 +40,7 @@
                     display: block;
                     font-size: 16px;
                     @include transition(.3s);
-                    text-transform: capitalize;
+                    text-transform: none;
                    
                 }
                 &:hover{

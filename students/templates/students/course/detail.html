@@ -6,15 +6,11 @@
 {% load index %}
 
 {% block content %}
-<section class="blog_area single-post-area section-padding" style="margin-top: 150px">
+<div class="bradcam_area breadcam_bg overlay2">
+    <h3>{{ object.title }}</h3>
+</div>
+<div class="about_area">
    <div class="container">
-      <div class="row d-flex justify-content-center">
-         <div class="col-lg-8">
-            <div class="section-tittle text-center">
-               <h2>{{ object.title }}</h2>
-            </div>
-         </div>
-      </div>
       <div class="row">
          <div class="col-lg-4">
             <div class="blog_right_sidebar">
@@ -61,5 +57,5 @@
          </div>
       </div>
    </div>
-</section>
+</div>
 {% endblock %}

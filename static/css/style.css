@@ -976,13 +976,12 @@ h3 {
 .header-area .main-header-area .main-menu ul li a {
   color: #fff;
   font-size: 16px;
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 400;
   display: inline-block;
   padding: 34px 0;
   font-family: "Poppins", sans-serif;
   position: relative;
-  text-transform: capitalize;
 }
 
 @media (min-width: 992px) and (max-width: 1200px) {
@@ -1288,8 +1287,8 @@ h3 {
 /* line 33, C:/Users/SPN Graphics/Desktop/CL September/Edu mark/207 Education/HTML/scss/_slider.scss */
 .slider_area .single_slider .slider_info h3 {
   color: #ffffff;
-  font-size: 60px;
-  text-transform: capitalize;
+  font-size: 50px;
+  text-transform: none;
   font-weight: 400;
   line-height: 70px;
   margin-bottom: 50px;
@@ -1356,7 +1355,7 @@ h3 {
 
 /* line 14, C:/Users/SPN Graphics/Desktop/CL September/Edu mark/207 Education/HTML/scss/_about.scss */
 .about_area .single_about_info h3 {
-  font-size: 46px;
+  font-size: 37px;
   line-height: 56px;
   font-weight: 400;
 }
@@ -1680,7 +1679,7 @@ h3 {
   font-size: 22px;
   font-weight: 400;
   color: #fff;
-  text-transform: capitalize;
+  text-transform: none;
   margin-bottom: 40px;
 }
 
@@ -1914,7 +1913,7 @@ h3 {
   color: #fff;
   font-weight: 400;
   margin-bottom: 0;
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 @media (max-width: 767px) {
