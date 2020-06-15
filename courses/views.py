@@ -270,23 +270,35 @@ class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, View):
     """
 
     login_url = '/accounts/login/'
-    template_name = 'courses/course/lesson.html'
+    template_name = 'courses/course/lessons.html'
 
     def test_func(self):
         return self.request.user.groups.filter(name='Teachers').exists()
 
     def get(self, request):
-        lesson_rooms = LessonRoom.objects.filter(
-            teacher=request.user.teacher,
+        lessons = LessonRoom.objects.filter(teacher=request.user.teacher)
+
+        upcoming_lessons = lessons.filter(
             schedule__start_timestamp__gte=timezone.now(),
         )
+        past_lessons = lessons.filter(
+            schedule__start_timestamp__lte=timezone.now(),
+        )
+
         return render(
             request=request,
             template_name=self.template_name,
-            context={'lesson_rooms': lesson_rooms},
+            context={
+                'upcoming_lessons': upcoming_lessons,
+                'past_lessons': past_lessons,
+            },
         )
 
     def post(self, request):
+        """
+        FIXME: пока не совсем понятно зачем нужно, потому
+        что логика была немного изменена
+        """
         students_ids = request.POST.get('students_ids')
         students_ids = students_ids.split(',')
         students_ids = list(map(int, students_ids))
@@ -319,16 +331,25 @@ class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, View):
         )
 
 
-@csrf_exempt
 @require_POST
 def set_lesson_info_api(request, api_version: int):
+    """API for working with lesson info
+    
+    Note: if you want to user application/json, you need to solve this error:
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+    json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+    how to use json in code:
+    json_data = json.loads(request.body)
+    lesson_id = json_data.get('lesson_id')
+    homework = json_data.get('homework')
+    completed = json_data.get('completed')
+
+    """
     bad_request_error_code = 400
 
     if api_version == 0:
-
-        json_data = json.loads(request.body.decode())
-
-        lesson_id = json_data.get('lesson_id')
+        lesson_id = request.POST.get('lesson_id')
 
         lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
 
@@ -340,12 +361,12 @@ def set_lesson_info_api(request, api_version: int):
                 },
             )
 
-        homework = json_data.get('homework')
+        homework = request.POST.get('homework')
 
         if homework:
             lesson_room.homework = homework
 
-        completed = json_data.get('completed')
+        completed = request.POST.get('completed')
 
         if completed:
             lesson_room.completed = completed

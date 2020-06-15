@@ -44,30 +44,30 @@
                 </tr>
               </thead>
               <tbody>
-               {% for lesson_room in lesson_rooms %}
+               {% for lesson in upcoming_lessons %}
                 <tr>
-                  <th scope="row">{{ lesson_room.schedule.start_timestamp }}</th>
-                  <td>{{ lesson_room.lesson_name }}</td>
+                  <th scope="row">{{ lesson.schedule.start_timestamp }}</th>
+                  <td>{{ lesson.lesson_name }}</td>
                     <td></td>
-                    <td style="text-align: left">{% for student in lesson_room.students.all %}
+                    <td style="text-align: left">{% for student in lesson.students.all %}
                         {{ forloop.counter }}. {{ student}}<br>
                     {% endfor %}</td>
                     <td style="text-align: right">
-                        <form method="POST" id="homework_form_{{ lesson_room.id }}">
+                        <form method="POST" id="homework_form_{{ lesson.id }}">
                             {% csrf_token %}
-                            <input name="lesson_id" value="{{ lesson_room.id }}" hidden>
-                            <textarea name="homework" class="form-control" rows="2">{{ lesson_room.homework }}</textarea>
+                            <input name="lesson_id" value="{{ lesson.id }}" hidden>
+                            <textarea name="homework" class="form-control" rows="2">{{ lesson.homework }}</textarea>
                             <input type="submit" value="Сохранить"/>
                         </form>
                     </td>
-                    <td><a class="genric-btn danger-border radius" href="http://video.garantylearning.com/?lesson_id={{ lesson_room.id }}&student=false" target="_blank">Подключиться</a></td>
-                    <td><a class="genric-btn primary-border radius" href="http://video.garantylearning.com/?lesson_id={{ lesson_room.id }}&student=false" target="_blank" data-toggle="modal" data-target="#completeLesson{{ lesson_room.id }}">Проведен</a></td>
+                    <td><a class="genric-btn danger-border radius" href="http://video.garantylearning.com/?lesson_id={{ lesson.id }}&student=false" target="_blank">Подключиться</a></td>
+                    <td><a class="genric-btn primary-border radius" href="http://video.garantylearning.com/?lesson_id={{ lesson.id }}&student=false" target="_blank" data-toggle="modal" data-target="#completeLesson{{ lesson.id }}">Проведен</a></td>
                  <!-- модальное окно завершения урока -->
-                    <div class="modal fade" id="completeLesson{{ lesson_room.id }}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel{{ lesson_room.id }}" aria-hidden="true">
+                    <div class="modal fade" id="completeLesson{{ lesson.id }}" tabindex="-1" role="dialog" aria-labelledby="ModalLabel{{ lesson.id }}" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h5 class="modal-title" id="ModalLabel{{ lesson_room.id }}">Завершение урока</h5>
+                            <h5 class="modal-title" id="ModalLabel{{ lesson.id }}">Завершение урока</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -76,7 +76,7 @@
                             {% csrf_token %}
                           <div class="modal-body">
                                 <h4>Присутствующие</h4>
-                                {% for student in lesson_room.students.all %}
+                                {% for student in lesson.students.all %}
                                     <div class="form-check" style="text-align: left">
                                         <input class="form-check-input" type="checkbox" value="" id="defaultCheck{{ forloop.counter }}">
                                           <label class="form-check-label" for="defaultCheck{{ forloop.counter }}">
@@ -112,15 +112,15 @@
               </thead>
               <tbody>
                 <tbody>
-               {% for lesson_room in lesson_rooms %}
-                   {% if lesson_room.completed %}
+               {% for lesson in past_lessons %}
+                   {% if lesson.completed %}
                 <tr>
-                  <th scope="row">{{ lesson_room.schedule.start_timestamp }}</th>
-                  <td>{{ lesson_room.lesson_name }}</td>
-                    <td style="text-align: left">{% for student in lesson_room.students.all %}
+                  <th scope="row">{{ lesson.schedule.start_timestamp }}</th>
+                  <td>{{ lesson.lesson_name }}</td>
+                    <td style="text-align: left">{% for student in lesson.students.all %}
                         {{ forloop.counter }}. {{ student}}<br>
                     {% endfor %}</td>
-                    <td><a style="color: red; text-decoration: underline;" href="http://video.garantylearning.com/?lesson_id={{ lesson_room.id }}&student=false" target="_blank">Подключиться</a></td>
+                    <td><a style="color: red; text-decoration: underline;" href="http://video.garantylearning.com/?lesson_id={{ lesson.id }}&student=false" target="_blank">Подключиться</a></td>
                 </tr>
                    {% endif %}
                {% endfor %}
@@ -143,7 +143,7 @@
 
           $.ajax({
             type: "POST",
-            url: 'http://127.0.0.1:8000/courses/api/0/set-lesson-homework/',
+            url: "http://127.0.0.1:8000/courses/api/0/set-lesson-info/",
             data: $(this).serialize(),
             success: function (data) {
                 alert("Домашнее задание сохранено");
@@ -158,7 +158,8 @@
 
     $('#complete_lesson_form').submit(function() {
      $.ajax({
-            url: 'http://127.0.0.1:8000/courses/api/0/set-lesson-completed/',
+            type: "POST",
+            url: "http://127.0.0.1:8000/courses/api/0/set-lesson-info/",
             data: $(this).serialize(),
             success: function (data) {
               alert("Урок помечен выполненным");
