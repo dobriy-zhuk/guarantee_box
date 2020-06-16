@@ -42,10 +42,22 @@ class Subject(models.Model):
 class Course(models.Model):
     """Class describes courses_course table in db.
 
+    cost:
+    max value is 99999.99
 
-    Arguments:
-        models.Model: superclass where describe the fields
+    repetition can store '1 time a week', '1 time a months', etc.
+
     """
+
+    class CourseDifficultyLevel(models.TextChoices):
+        BEGINNER = 'BG', _('Beginner')
+        MIDDLE = 'MD', _('Middle')
+        ADVANCED = 'AD', _('Advanced')
+
+    class CourseParticipantLevel(models.TextChoices):
+        STUDENT = 'ST', _('Student')
+        TEACHER = 'TC', _('Teacher')
+        MANAGER = 'MN', _('Manager')
 
     owner = models.ForeignKey(
         Teacher,
@@ -67,7 +79,22 @@ class Course(models.Model):
         blank=True,
     )
     course_image = models.ImageField(blank=True, default='')
-
+    cost = models.DecimalField(default=0.00, max_digits=7, decimal_places=2)
+    video_url = models.URLField(blank=True, default='')
+    image = models.ImageField(blank=True, default='', upload_to='images')
+    comment = models.TextField(blank=True, default='')
+    repetition = models.CharField(max_length=200, blank=True, default='')
+    min_participant_age = models.PositiveIntegerField(default=0)
+    difficulty_level = models.CharField(
+        max_length=2,
+        choices=CourseDifficultyLevel.choices,
+        default=CourseDifficultyLevel.BEGINNER,
+    )
+    participant_level = models.CharField(
+        max_length=2,
+        choices=CourseParticipantLevel.choices,
+        default=CourseParticipantLevel.STUDENT,
+    )
 
     class Meta:
         ordering = ['-created']

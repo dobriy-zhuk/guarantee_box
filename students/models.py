@@ -60,7 +60,9 @@ class Student(models.Model):
         StudentStatus, default=1, on_delete=models.CASCADE
     )
     currency = models.CharField(max_length=3, default='RUB')
-    student_image = models.ImageField(blank=True, default='')
+    image = models.ImageField(
+        blank=True, default='', upload_to='images',
+    )
     signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
