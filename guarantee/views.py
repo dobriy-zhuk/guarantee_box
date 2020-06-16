@@ -39,6 +39,98 @@ def index(request):
     )
 
 
+def our_approach(request):
+    """Render index.html.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render index.html page
+    """
+    subjects = Subject.objects.all()
+    courses = Course.objects.all()
+    return render(
+        request=request,
+        template_name='approach.html',
+        context={'subjects': subjects, 'courses': courses},
+    )
+
+
+def our_teachers(request):
+    """Render index.html.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render index.html page
+    """
+    subjects = Subject.objects.all()
+    courses = Course.objects.all()
+    return render(
+        request=request,
+        template_name='teachers.html',
+        context={'subjects': subjects, 'courses': courses},
+    )
+
+
+def our_testimonials(request):
+    """Render index.html.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render index.html page
+    """
+    subjects = Subject.objects.all()
+    courses = Course.objects.all()
+    return render(
+        request=request,
+        template_name='testimonials.html',
+        context={'subjects': subjects, 'courses': courses},
+    )
+
+
+def our_results(request):
+    """Render index.html.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render index.html page
+    """
+    subjects = Subject.objects.all()
+    courses = Course.objects.all()
+    return render(
+        request=request,
+        template_name='results.html',
+        context={'subjects': subjects, 'courses': courses},
+    )
+
+
+def camp(request):
+    """Render index.html.
+
+    Arguments:
+        request: client request
+
+    Returns:
+        render(): render index.html page
+    """
+    subjects = Subject.objects.all()
+    courses = Course.objects.all()
+    return render(
+        request=request,
+        template_name='camp.html',
+        context={'subjects': subjects, 'courses': courses},
+    )
+
+
+
+
 @login_required
 def profile(request):
     """Redirect to profile page to which group user belongs.

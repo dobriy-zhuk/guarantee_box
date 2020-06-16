@@ -25,7 +25,12 @@ from guarantee import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('approach/', views.our_approach, name='our_approach'),
+    path('results/', views.our_results, name='our_results'),
+    path('testimonials/', views.our_testimonials, name='our_testimonials'),
+    path('teachers/', views.our_teachers, name='our_teachers'),
     path('profile/', views.profile, name='profile'),
+    path('camp/', views.camp, name='camp'),
     path('teacher/', views.teacher, name='teacher'),
     path(
         'teacher/edit-profile',

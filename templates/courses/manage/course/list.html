@@ -16,7 +16,6 @@
                             </div>
                             <div class="generating-cap">
                                 <h4>{{ course.title }}</h4>
-                                <p>{{ course.overview }}<br>
                                         <a class="genric-btn info-border small" href="{% url "course_edit" course.id %}">Изменить</a> |
                                         <a class="genric-btn info-border small" href="{% url "course_delete" course.id %}"> Удалить</a> |
                                         <a class="genric-btn info-border small" href="{% url "course_module_update" course.id %}"> Редактировать уроки</a>

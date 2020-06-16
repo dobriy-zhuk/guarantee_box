@@ -69,25 +69,32 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav class="text-right">
                                     <ul id="navigation">
-                                        <li><a href="{% url 'index' %}">О Школе <i class="ti-angle-down"></i></a>
+                                        <li><a href="{% url 'index' %}"
+                                                {% if request.path == '/approach/' or request.path == '/results/' or request.path == '/testimonials/' or request.path == '/teachers/' %}
+                                                    class="active"
+                                                {% endif %}>О Школе <i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="blog.html">Наш подход</a></li>
-                                                <li><a href="single-blog.html">Наши результаты</a></li>
-                                                <li><a href="single-blog.html">Отзывы</a></li>
-                                                <li><a href="single-blog.html">Преподаватели</a></li>
-                                                <li><a href="single-blog.html">Стоимость</a></li>
+                                                <li><a href="{% url 'our_approach' %}">Наш подход</a></li>
+                                                <li><a href="{% url 'our_results' %}">Наши результаты</a></li>
+                                                <li><a href="{% url 'our_testimonials' %}">Отзывы</a></li>
+                                                <li><a href="{% url 'our_teachers' %}">Преподаватели</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="#" class="active">Занятия <i class="ti-angle-down"></i></a>
+                                        <li><a href="{% url 'index' %}#popular_courses"
+                                            {% if request.path|slice:"0:9" == '/courses/' %}
+                                                        class="active"
+                                            {% endif %}>Занятия<i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="course_details.html">Программирование</a></li>
+                                                <li><a href="{% url 'index' %}#coding-tab">Программирование</a></li>
                                                 <li><a href="elements.html">Математика</a></li>
                                                 <li><a href="elements.html">Робототехника</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="Courses.html">Лагерь</a></li>
-                                        <li><a href="Courses.html">Франшиза</a></li>
-                                        <li><a href="about.html">{{ group.name }}</a></li>
+                                        <li><a href="{% url 'camp' %}"
+                                                {% if request.path == '/camp/' %}
+                                                        class="active"
+                                                {% endif %}>Лагерь</a></li>
+                                        <li><a href="https://franchise.garantylearning.com" target="_blank">Франшиза</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -140,30 +147,28 @@
                                 </a>
                             </div>
                             <p>
-                                Firmament morning sixth subdue darkness creeping gathered divide our let god moving.
-                                Moving in fourth air night bring upon it beast let you dominion likeness open place day
-                                great.
+                                Мы ценим индивидуальность каждого ученика, поэтому для каждого ребенка составляем программу обучения, которая обеспечивает максимальное освоение материала.
                             </p>
                             <div class="socail_links">
                                 <ul>
                                     <li>
-                                        <a href="#">
+                                        <a href="https://www.facebook.com/guaranteelearning.rus/?ref=bookmarks" target="_blank">
                                             <i class="ti-facebook"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="ti-twitter-alt"></i>
+                                        <a href="https://www.instagram.com/garantylearning/" target="_blank">
+                                            <i class="ti-instagram"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="fa fa-instagram"></i>
+                                        <a href="https://vk.com/znaniya_courses" target="_blank">
+                                            <strong>VK</strong>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#">
-                                            <i class="fa fa-youtube-play"></i>
+                                        <a href="https://www.youtube.com/channel/UCzqsBwn0zodrzKshWdvr-Rw" target="_blank">
+                                            <i class="ti-youtube"></i>
                                         </a>
                                     </li>
                                 </ul>
@@ -181,6 +186,7 @@
                                 <li><a href="#">Наши результаты</a></li>
                                 <li><a href="#">Отзывы</a></li>
                                 <li><a href="#">Преподаватели</a></li>
+                                <li><a href="#">Вакансии</a></li>
                                 <li><a href="#">Документы</a></li>
                             </ul>
 
@@ -192,11 +198,11 @@
                                 Наши проекты
                             </h3>
                             <ul>
-                                <li><a href="#">Наш подход</a></li>
-                                <li><a href="#">Tutorials</a></li>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#"> About</a></li>
-                                <li><a href="#"> Contact</a></li>
+                                <li><a href="#">Орагнизациям</a></li>
+                                <li><a href="#">Корпоративные курсы</a></li>
+                                <li><a href="#">Лагеря</a></li>
+                                <li><a href="#">Детские праздники</a></li>
+                                <li><a href="#">Школам</a></li>
                             </ul>
                         </div>
                     </div>
@@ -208,7 +214,7 @@
                             <ul>
                                 <li><a href="#">Оферта</a></li>
                                 <li><a href="#">Политика конфиденциальности</a></li>
-                                <li><a href="#">Личный кабинет</a></li>
+                                <li><a href="{% url 'profile' %}">Личный кабинет</a></li>
                                 <li><a href="#">Система обучения</a></li>
                             </ul>
                         </div>
