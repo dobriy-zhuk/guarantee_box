@@ -78,10 +78,11 @@ class Course(models.Model):
         related_name='courses_joined',
         blank=True,
     )
-    course_image = models.ImageField(blank=True, default='')
+    image = models.ImageField(
+        blank=True, default='', upload_to='images',
+    )
     cost = models.DecimalField(default=0.00, max_digits=7, decimal_places=2)
     video_url = models.URLField(blank=True, default='')
-    image = models.ImageField(blank=True, default='', upload_to='images')
     comment = models.TextField(blank=True, default='')
     repetition = models.CharField(max_length=200, blank=True, default='')
     min_participant_age = models.PositiveIntegerField(default=0)

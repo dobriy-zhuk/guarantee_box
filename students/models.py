@@ -1,6 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
+from datetime import timedelta
 
 class StudentStatus(models.Model):
     """Describe status for Student.
@@ -75,6 +77,12 @@ class Student(models.Model):
 
 
 class Teacher(models.Model):
+    
+    class TeacherCurrency(models.TextChoices):
+        RUBLE = 'RUB', _('Ruble')
+        DOLLAR = 'USD', _('Dollar')
+        EURO = 'EUR', _('Euro')
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     phone = models.TextField(max_length=500, blank=True, default='79151761287')
@@ -87,6 +95,17 @@ class Teacher(models.Model):
         'Student',
         related_name='teachers',
         blank=True,
+    )
+    currency = models.CharField(
+        max_length=3,
+        choices=TeacherCurrency.choices,
+        default=TeacherCurrency.RUBLE,
+    )
+    salary_rate = models.DecimalField(
+        default=0.00, max_digits=7, decimal_places=2,
+    )
+    salary_rate_time_interval = models.DurationField(
+        blank=True, default=timedelta(minutes=60),
     )
 
     def __str__(self):

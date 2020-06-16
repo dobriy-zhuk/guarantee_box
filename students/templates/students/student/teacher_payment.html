@@ -1,0 +1,196 @@
+{% extends 'base/base_profile.html' %}
+{% block title %}ГАРАНТИЯ ЗНАНИЙ - Оплата занятий{% endblock title %}
+{% load static %}
+
+{% block tags %}
+    <meta name="description" content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ" />
+	<meta name="keywords" content="гарантия знаний, программирование, курсы, робототехника, занятия, химия, английский, физика, математика, русский, французский, предпринимательство, финансы, моделирование, обществознание, егэ, огэ, экзамены, лагерь, детский" />
+	<meta name="author" content="dobriy_zhuk" />
+	<meta property="og:title" content="ГАРАНТИЯ ЗНАНИЙ - Робототехника, Программирование, Химия, а также курсы ЕГЭ и ОГЭ для детей"/>
+	<meta property="og:description" content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ для детей"/>
+	<meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content= "https://garantylearning.com/index.html" />
+{% endblock %}
+
+{% block content %}
+    <div class="bradcam_area breadcam_bg overlay2">
+            <h3>Оплата занятий</h3>
+        </div>
+        <div class="choose-best choose-padding">
+            <div class="container">
+                <!-- Section-tittle -->
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="section-tittle text-center">
+                            <h2>Форма оплаты</h2>
+                            <p>Мы предоставляем возможность оплачивать при помощи большого количества платежных систем.
+                                Вам необходимо выбрать количество занятий и способ оплаты, который вам нравится больше всего</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal window with payment form-->
+                <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="paymentModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="paypal-button"></div>
+                                </div>
+                                    <script src="https://www.paypal.com/sdk/js?client-id=AdZAQW-91iZnA-TaenO4EauglYdG-tSHY7rfgk46o9_2E3W6u0Z1BAq6aHSR-Cd73B1HBS-1-F1GUOhk&currency=EUR"></script>
+                                    <script>
+                                        $sale = 1.0;
+
+                                        paypal.Buttons({
+                                            createOrder: function(data, actions) {
+                                                // This function sets up the details of the transaction, including the amount and line item details.
+                                                return actions.order.create({
+                                                    purchase_units: [{
+                                                        amount: {
+                                                            value: 100
+                                                        }
+                                                    }]
+                                                });
+                                            },
+                                            onApprove: function(data, actions) {
+                                                // This function captures the funds from the transaction.
+                                                return actions.order.capture().then(function(details) {
+                                                    // This function shows a transaction success message to your buyer.
+                                                    alert('Transaction completed by ' + details.payer.name.given_name);
+                                                });
+                                            }
+                                        }).render('#paypal-button');
+                                        //This function displays Smart Payment Buttons on your web page.
+                                    </script>
+                                <div class="col-md-6">
+                                    <button class="genric-btn success-border radius btn-block">Сбербанк</button>
+                                    <button class="genric-btn success-border radius btn-block" onclick="payment()">BePaid</button>
+                                    <script type="text/javascript">
+                                        this.payment = function() {
+                                            var params ={
+                                                checkout_url: "https://checkout.bepaid.by",
+                                                checkout: {
+                                                    iframe: true,
+                                                    test: true,
+                                                    transaction_type: "payment",
+                                                    public_key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA17jlBxV4K01BelCL/refq6po8IbbDokwzAdjaI299SVOgCeeGDE/qoR6T9fygwN4WofiUtOUceyH9M0ad3sm9z7ySPiadqoA0u3FlQztvsEJ/8G2NRL7E5u9ckqH1gdtycFXEhlYQFT/Q+qY2bKAhIIHDlWzl0toCzvvwgdzg+kr4OW/sxfFkYcFBIytmBUffzeT20F4YuPwAg080TtQ1cOX7+LjRkRYhGa5NcEja63ILFMgL8hJgY4Y6RBvev40nRZmJIs7BsdsZEyrfa8lnNRZq0mZltZQNlMbFTjJ7he0BLq377WABFhw49hOWOjTp3uzxwKbcKhHwm2t95XVwQIDAQAB",
+                                                    order: {
+                                                        amount: 100,
+                                                        currency: "EUR",
+                                                        description: "Payment description",
+                                                        tracking_id: "my_transaction_id"
+                                                    },
+                                                    settings: {
+                                                        // success_url: "http://127.0.0.1:8000/students/api/0/student-payment/?amount=1&student_id={{ request.user.student.id }}&action=deposit&currency=EUR",
+                                                        // notification_url: "http://127.0.0.1:8000/students/api/0/student-payment/?amount=1&student_id={{ request.user.student.id }}&action=deposit&currency=EUR"
+                                                    }
+                                                },
+                                                closeWidget: function(status) {
+                                                  // возможные значения status
+                                                  // successful - операция успешна
+                                                  // failed - операция не успешна
+                                                  // pending - ожидаем результат/подтверждение операции
+                                                  // redirected - пользователь отправлен на внешнюю платежную систему
+                                                  // error - ошибка (в параметрах/сети и тд)
+                                                  // null - виджет закрыли без запуска оплаты
+                                                  console.debug('close widget callback')
+                                                }
+                                            };
+
+                                            new BeGateway(params).createWidget();
+                                        };
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="genric-btn info-border radius" data-dismiss="modal">Закрыть</button>
+                        <button type="button" class="genric-btn info-border radius">Оплатить</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-choose text-center mb-30">
+                            <div class="do-icon">
+                                <span  class="flaticon-project"></span>
+                            </div>
+                            <div class="do-caption">
+                                <h4>22400 руб<br><strike>25600руб</strike></h4>
+                                <ul>
+                                    <li>32 занятия</li>
+                                    <li>700 руб/урок</li>
+                                    <button type="button" class="genric-btn info-border radius" data-toggle="modal" data-target="#paymentModal">Перейти к оплате</button>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-choose text-center mb-30">
+                            <div class="do-icon">
+                                <span  class="flaticon-growth"></span>
+                            </div>
+                            <div class="do-caption">
+                                <h4>12000 руб<br><strike>12800руб</strike></h4>
+                                <ul>
+                                    <li>16 занятий</li>
+                                    <li>750 руб/урок</li>
+                                    <a href="#" class="genric-btn info-border radius">Перейти к оплате</a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="single-choose text-center mb-30">
+                            <div class="do-icon">
+                                <span  class="flaticon-growth"></span>
+                            </div>
+                            <div class="do-caption">
+                                <h4>3200 руб<br><strike>3500руб</strike></h4>
+                                <ul>
+                                    <li>4 занятия</li>
+                                    <li>800 руб/урок</li>
+                                    <a href="#" class="genric-btn info-border radius">Перейти к оплате</a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Choose Best do End-->
+             <!-- have-project Start-->
+         <div class="have-project mb-30">
+            <div class="container">
+                <div class="haveAproject"  data-background="assets/img/team/have.jpg">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-xl-7 col-lg-9 col-md-12">
+                            <div class="wantToWork-caption">
+                                <h2>Хотите учиться бесплатно?</h2>
+                                <p>Пригласите троих друзей по промокоду: "GUARANTEE21" и занимайтесь весь месяц без оплаты.</p>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-3 col-md-12">
+                           <div class="wantToWork-btn f-right">
+                                <a href="#" class="btn btn-ans">Поделиться</a>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    <script type="text/javascript" src="https://js.bepaid.by/widget/be_gateway.js"></script>
+
+{% endblock %}

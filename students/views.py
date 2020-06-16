@@ -1,5 +1,6 @@
 """Module where described the logic for user response."""
 import decimal
+from datetime import datetime, timedelta
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -18,8 +19,8 @@ from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views import View
-from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET, require_POST
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
 from guardian.shortcuts import assign_perm, get_objects_for_user
@@ -399,23 +400,23 @@ def get_profile(request):
 
 
 @login_required(login_url='/accounts/login/')
-def get_payment(request):
-    student = Student.objects.get(user=request.user)
-    #student = get_object_or_404(Student, user=request.user)
+def get_teacher_payment(request):
+    """Func handler for /students/payment/ - teacher payment.
+
+    """
+
     return render(
         request=request,
-        template_name='students/student/payment.html',
-        context={'student': student},
+        template_name='students/student/teacher_payment.html',
+        context={'teacher': request.user.teacher},
     )
 
 
 def get_webrtc(request):
-    student = Student.objects.get(user=request.user)
-    #student = get_object_or_404(Student, user=request.user)
     return render(
         request=request,
         template_name='video/video.html',
-        context={'student': student},
+        context={'student': request.user.student},
     )
 
 @login_required(login_url='/accounts/login/')
@@ -791,7 +792,7 @@ class StudentPaymentAPI(View):
             if student is None:
                 return JsonResponse(
                 status=self.bad_request_error_code,
-                    data={
+                data={
                         'error': 'no student with {0} id'.format(student_id)
                     },
                 )
@@ -892,3 +893,51 @@ def set_student_module_done(request, api_version: int):
             'error': 'wrong api version',
         },
     )
+
+
+@require_POST
+@csrf_exempt
+def set_salary_rate(request, api_version: int):
+    """DOCS!
+
+    teacher_id (int): teacher id
+    salary_rate (str): salary_rate
+    salary_time_interval (str): "05:20:05" - example means 5 hours 20 minutes
+    and 5 seconds
+
+    """
+    bad_request_error_code = 400
+    
+    if api_version == 0:
+        teacher_id = request.POST.get('teacher_id')
+
+        print(request.POST)
+
+        teacher = get_object_or_none(Teacher, object_id=teacher_id)
+
+        if teacher is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={'error': 'no teacher with {0} id'.format(teacher_id)}
+            )
+        
+        teacher.salary_rate = request.POST.get('salary_rate')
+        time_interval = datetime.strptime(
+            request.POST.get('salary_time_interval'),
+            '%H:%M:%S',
+        )
+        print(time_interval)
+        delta = timedelta(
+            hours=time_interval.hour,
+            minutes=time_interval.minute,
+            seconds=time_interval.second,
+        )
+        teacher.salary_rate_time_interval = delta
+        teacher.save()
+        
+        return JsonResponse({'message': 'success'})
+        
+    return JsonResponse(
+        status=bad_request_error_code,
+        data={'error': 'wrong api version'}
+    ) 
