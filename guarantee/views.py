@@ -32,7 +32,11 @@ def index(request):
     """
     subjects = Subject.objects.all()
     courses = Course.objects.all()
-    return render(request, 'index.html', {'subjects': subjects, 'courses': courses})
+    return render(
+        request=request,
+        template_name='index.html',
+        context={'subjects': subjects, 'courses': courses},
+    )
 
 
 @login_required
