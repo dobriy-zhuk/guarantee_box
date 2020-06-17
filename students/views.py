@@ -911,8 +911,6 @@ def set_salary_rate(request, api_version: int):
     if api_version == 0:
         teacher_id = request.POST.get('teacher_id')
 
-        print(request.POST)
-
         teacher = get_object_or_none(Teacher, object_id=teacher_id)
 
         if teacher is None:
@@ -926,7 +924,7 @@ def set_salary_rate(request, api_version: int):
             request.POST.get('salary_time_interval'),
             '%H:%M:%S',
         )
-        print(time_interval)
+
         delta = timedelta(
             hours=time_interval.hour,
             minutes=time_interval.minute,
