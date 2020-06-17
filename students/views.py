@@ -921,8 +921,8 @@ def set_salary_rate(request, api_version: int):
         
         teacher.salary_rate = request.POST.get('salary_rate')
         time_interval = datetime.strptime(
-            request.POST.get('salary_time_interval'),
-            '%H:%M:%S',
+            date_string=request.POST.get('salary_time_interval'),
+            format='%H:%M:%S',
         )
 
         delta = timedelta(
