@@ -11,7 +11,7 @@ python manage.py migrate
 
 it will create new migration files
 local check and push, I need all migration files!  
-Then I will do:
+Then I will do:`
 
 ```sh
 git pull

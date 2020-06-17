@@ -31,16 +31,13 @@ class TeacherStatus(models.Model):
 class Student(models.Model):
     """Describe students_student table in database.
 
-    amount: account balance, how much money does the student have
     currency: RUB, USD or EUR
 
-    amount:
+    amount: account balance, how much money does the student have
     Max number is 99999.99
 
     Student phone is writed in comment
 
-    Arguments:
-        models.Model: superclass which describes fields for database
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)

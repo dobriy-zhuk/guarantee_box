@@ -67,28 +67,27 @@ urlpatterns = [
         name='password_reset_complete'
     ),
     path(
-         'calendar/',
-         views.CalendarView.as_view(),
-         name='student_calendar'
+        'calendar/',
+        views.CalendarView.as_view(),
+        name='student_calendar'
     ),
     path(
-         'api/<int:api_version>/get-schedule/',
-         views.get_json_busy_datetime,
-         name='api_get_schedule'
+        'api/<int:api_version>/get-schedule/',
+        views.get_json_busy_datetime,
+        name='api_get_schedule'
     ),
     path(
-         'api/<int:api_version>/get-lead-list/',
-         views.get_lead_list_json,
-         name='api_get_lead_list'
+        'api/<int:api_version>/get-lead-list/',
+        views.get_lead_list_json,
+        name='api_get_lead_list'
+    ),
+    path(
+        'api/<int:api_version>/payment/',
+        views.PaymentAPI.as_view(),
+        name='payment',
     ),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
-
-
-# urlpatterns += i18n_patterns('',
-#     # (_('dual-lang/'), include('duallang.urls')),
-#     path('', include('guarantee.urls')),
-# )
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

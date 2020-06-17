@@ -1,5 +1,6 @@
 """Module for client requests handling."""
 import datetime
+import decimal
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -13,12 +14,15 @@ from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET, require_POST
 from django.views.generic.edit import UpdateView
 from guardian.shortcuts import get_objects_for_user
 
-from courses.models import LessonRoom, Subject, Course
+from courses.models import Course, LessonRoom, Subject
+from managers.models import CurrencyExchange, MoneyTransaction
 from students.forms import TeacherEditForm
 from students.models import Schedule, Student, Teacher
+from students.views import get_object_or_none
 
 
 def index(request):
@@ -358,3 +362,95 @@ class TeacherProfileEditView(View):
             teacher = form.save()
             teacher.save()
         return redirect(to='teacher')
+
+
+def get_currency_exchange(
+    student_currency,
+    currency,
+):
+    currency_exchange_today = CurrencyExchange.objects.get(id=1)
+
+    if student_currency == currency:
+        return decimal.Decimal(1.00)
+
+    if student_currency == 'RUB' and currency == 'USD':
+        return currency_exchange_today.dollar
+        
+    elif student_currency == 'RUB' and currency == 'EUR':
+        return currency_exchange_today.euro
+
+    elif student_currency == 'USD' and currency == 'RUB':
+        return (decimal.Decimal(1) / currency_exchange_today.dollar)
+
+    elif student_currency == 'EUR' and currency == 'RUB':
+        return (decimal.Decimal(1) / currency_exchange_today.euro)
+
+    elif student_currency == 'EUR' and currency == 'USD':
+        return (currency_exchange_today.dollar / currency_exchange_today.euro)
+    
+    elif student_currency == 'USD' and currency == 'EUR':
+        return (currency_exchange_today.euro / currency_exchange_today.dollar)
+
+
+@method_decorator(require_POST, name='dispatch')
+@method_decorator(csrf_exempt, name='dispatch')
+class PaymentAPI(View):
+    """
+    Class-based view for working with student
+    and teacher money transactions.
+
+    student_id (int): student id
+    action (str): action what you want to do, it can be 'withdraw' or 'deposit'
+    'withdraw' means 'снять (деньги)' and 'deposti' means 'внести (деньги)'.
+    currency (str): RUB, USD or EUR
+    amount (int): money amount
+
+    """
+
+    bad_request_error_code = 400
+
+    def get(self, request, api_version):
+        if api_version == 0:
+            student_id = request.GET.get('student_id')
+            action = request.GET.get('action')
+            currency = request.GET.get('currency')
+            amount = request.GET.get('amount')
+            amount = decimal.Decimal(amount)
+
+            student = get_object_or_none(Student, object_id=student_id)
+            
+            if student is None:
+                return JsonResponse(
+                status=self.bad_request_error_code,
+                data={
+                        'error': 'no student with {0} id'.format(student_id)
+                    },
+                )
+            
+            currency_exchange = get_currency_exchange(
+                student_currency=student.currency,
+                currency=currency,
+            )
+
+            if action == 'deposit':
+                student.amount += (amount*currency_exchange)
+            elif action == 'withdraw':
+                student.amount -= (amount*currency_exchange)
+            else:
+                return JsonResponse(
+                    status=self.bad_request_error_code,
+                    data={
+                        'error': 'wrong action',
+                    }
+                )
+
+            student.save()
+
+            return JsonResponse({'message': 'success'})
+
+        return JsonResponse(
+            status=self.bad_request_error_code,
+            data={
+                'error': 'wrong api version',
+            },
+        )
