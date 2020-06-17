@@ -13,8 +13,8 @@
                      <div class="course_text">
                             <h3>{{ object.title }}</h3>
                             <div class="prise">
-                                <span class="inactive">$89.00</span>
-                                <span class="active">$49</span>
+                                <span class="inactive">{{ course.old_cost }}</span>
+                                <span class="active">{{ course.cost }}руб.</span>
                             </div>
                             <div class="rating">
                                 <i class="flaticon-mark-as-favorite-star"></i>
@@ -27,13 +27,13 @@
                             <div class="hours">
                                 <div class="video">
                                      <div class="single_video">
-                                            <i class="fa fa-clock-o"></i> <span>{{ course.modules.count }} модуля</span>
+                                            <i class="fa fa-clock-o"></i> <span>{{ course.modules.count }} уроков</span>
                                      </div>
                                      <div class="single_video">
-                                            <i class="fa fa-play-circle-o"></i> <span>9 Hours</span>
+                                            <i class="fa fa-play-circle-o"></i> <span>Сложность: {{ course.difficulty_level }}</span>
                                      </div>
                                      <div class="single_video">
-                                            <i class="fa fa-play-circle-o"></i> <span>Разработчик: {{ course.owner.get_full_name }}</span>
+                                            <i class="fa fa-play-circle-o"></i> <span>Возраст: {{ course.min_participant_age }}-17лет</span>
                                      </div>
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                 <div class="col-xl-7 col-lg-7">
                     <div class="single_courses">
                         <h3>Описание курса "{{ subject.title }}"</h3>
-                        <p>{{ object.overview|linebreaks }} сменить на description для курса! </p>
+                        <p>{{ object.overview|linebreaks }}</p>
                     <h3 class="second_title">Особенности курса</h3>
                     </div>
                     <div class="outline_courses_info">
@@ -137,25 +137,23 @@
                 <div class="col-xl-5 col-lg-5">
                     <div class="courses_sidebar">
                         <div class="video_thumb">
-                            <img src="img/latest_blog/video.png" alt="">
-                            <a class="popup-video" href="https://www.youtube.com/watch?v=AjgD3CvWzS0">
+                            <img src="/media/{{ course.image }}" alt="">
+                            <a class="popup-video" href="{{ course.video_url }}">
                                 <i class="fa fa-play"></i>
                             </a>
                         </div>
                         <div class="author_info">
                             <div class="auhor_header">
                                 <div class="thumb">
-                                        <img src="img/latest_blog/author.png" alt="">
+                                        <img src="/media/" alt="">
                                 </div>
                                 <div class="name">
-                                    <h3>Macau Wilium</h3>
-                                    <p>UI/UX Designer</p>
+                                    <h3>{{ course.testimonial_author }}</h3>
+                                    <p>Автор отзыва</p>
                                 </div>
                             </div>
                             <p class="text_info">
-                                Our set he for firmament morning sixth subdue darkness creeping gathered divide our let
-                                god moving. Moving in fourth air night bring upon you’re it beast let you dominion
-                                likeness open place day
+                                {{ course.testimonial }}
                             </p>
                             <ul>
                                 <li><a href="#"> <i class="fa fa-envelope"></i> </a></li>

@@ -1,0 +1,170 @@
+{% extends 'base/base_courses.html' %}
+{% load static %}
+{% block title %}Гарантия Знаний - индивидуальная образовательная программа для каждого ученика{% endblock title %}
+
+{% block tags %}
+    <meta name="description" content="Гарантия Знаний - индивидуальная образовательная программа для каждого ученика" />
+	<meta name="keywords" content="гарантия знаний, программирование, курсы, робототехника, занятия, химия, английский, физика, математика, русский, французский, предпринимательство, финансы, моделирование, обществознание, егэ, огэ, экзамены, лагерь, детский" />
+	<meta name="author" content="dobriy_zhuk" />
+	<meta property="og:title" content="ГАРАНТИЯ ЗНАНИЙ - Робототехника, Программирование, Химия, а также курсы ЕГЭ и ОГЭ для детей"/>
+	<meta property="og:description" content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ для детей"/>
+	<meta property="og:image" content="http://garantylearning.com/images/slide_1.jpg"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content= "https://garantylearning.com/index.html" />
+{% endblock %}
+
+{% block content %}
+<div class="bradcam_area breadcam_bg overlay2">
+    <h3>Наши результаты</h3>
+</div>
+
+
+       <!--================Blog Area =================-->
+   <section class="blog_area single-post-area section-padding">
+      <div class="container">
+         <div class="row">
+            <div class="offset-1 col-lg-10 posts-list">
+               <div class="single-post">
+                  <div class="blog_details">
+                      <h2 style="font-size: 40px; font-family: 'Marker Felt'">Тысячи успешных учеников по всему Миру!
+                     </h2>
+                     <h3>Мы гордимся тем, что помогли огромному количеству школьников добиться успеха!
+                     </h3>
+                     <p class="excert">
+                        Согласно независимым исследованиям, учащиеся, участвующие в наших программах индивидуального обучения, демонстрируют значительный академический рост по математике и показателям чтения по сравнению с другими студентами. Частные репетиторы и другие репетиторские компании просто не могут этого сказать. И мы единственная репетиторская компания, которая систематически измеряет наши академические достижения в наших центрах.
+                     </p>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!--================ Blog Area end =================-->
+    <!-- subscribe_newsletter_Start -->
+    <div class="subscribe_newsletter overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center center-block center">
+                    <div id="chart_div" style="width: 800px; height: 500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- subscribe_newsletter_end -->
+
+ <section class="contact-section">
+            <div class="container">
+                <div class="row">
+					<div class="col-md-7">
+						<p>Вы хотите знать, что репетиторство будет иметь значение в школе, и Сильван справляется с этим тоже. Все наши программы индивидуального обучения соответствуют стандартам подготовки к колледжу и карьере.
+                            Это гарантирует, что навыки, которые ваш ребенок изучает в Гарантии Знаний, будут отражены в классе.</p>
+						<p>Но это только начало. Результаты выходят далеко за пределы школы!
+                            <br>Вместе мы будем отмечать правильные ответы, лучшие оценки и впечатляющие результаты тестов. Наши методы дают множество из всех трех.</p>
+					    <p>Но не менее важно, что успехом будет большая улыбка, которую вы увидите на лице своего сына, когда он уверенно читает вслух.
+                            Он будет наблюдать за тем, как загорается лампочка, когда ваша дочь понимает проблему алгебры.
+                            Вы увидите, как ваш ребенок вырастет в уверенного в себе молодого человека, которому нравится учиться.
+Тогда вы поймете, что приняли верное решение для будущего вашего ребенка.</p>
+                        <p><a href="">Мы гарантируем это!</a></p>
+                    </div>
+					<div class="col-md-5">
+						<img src="{% static 'images/programming_3.jpg' %}" alt="" class="img-fluid">
+					</div>
+				</div>
+            </div>
+        </section>
+
+<hr>
+    <!-- our_courses_start -->
+    <div class="our_courses">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-md-6 col-lg-6">
+                    <div class="single_course text-center">
+                        <a href="{% url 'our_approach' %}">
+                            <div class="icon">
+                                <i class="flaticon-art-and-design"></i>
+                            </div>
+                            <h3>Индивидуальная программа</h3>
+                            <p>
+                                Для каждого ребенка разработана индивидуальная программа обучения
+                            </p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-lg-6">
+                    <div class="single_course text-center">
+                        <a href="{% url 'our_teachers' %}">
+                        <div class="icon blue">
+                            <i class="flaticon-business-and-finance"></i>
+                        </div>
+                        <h3>Наш секрет?<br>Наши педагоги</h3>
+                        <p>
+                            Наши преподаватели эксперты в инженерных направлениях и подготовке к экзаменам.
+                        </p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-lg-6">
+                    <div class="single_course text-center">
+                        <a href="{% url 'our_results' %}">
+                        <div class="icon">
+                            <i class="flaticon-premium"></i>
+                        </div>
+                        <h3>Высокая эффективность. <br>Гарантия результата!</h3>
+                        <p>
+                            Мы отслеживаем прогресс ребенка, подбираем группу и следим за усвоением материала
+                        </p>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-lg-6">
+                    <div class="single_course text-center">
+                        <a href="{% url 'our_testimonials' %}">
+                        <div class="icon gradient">
+                            <i class="flaticon-crown"></i>
+                        </div>
+                        <h3>Успешные выпускники<br>-наша гордость!</h3>
+                        <p>
+                            Родители говорят, что благодаря нам их дети обрели уверенность в себе и своих знаниях
+                        </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- our_courses_end -->
+
+
+{% endblock %}
+
+{% block javascript %}
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+         var data = google.visualization.arrayToDataTable([
+    ['Quarks', 'Leptons', 'Gauge Bosons', 'Scalar Bosons'],
+    [2/3, -1, 0, 0],
+    [2/3, -1, 0, null],
+    [2/3, -1, 0, null],
+    [-1/3, 0, 1, null],
+    [-1/3, 0, -1, null],
+    [-1/3, 0, null, null],
+    [-1/3, 0, null, null]
+  ]);
+
+  var options = {
+    title: 'Charges of subatomic particles',
+    legend: { position: 'top', maxLines: 2 },
+    colors: ['#5C3292', '#1A8763', '#871B47', '#999999'],
+    interpolateNulls: false,
+  };
+
+        var chart = new google.visualization.Histogram(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+{% endblock %}

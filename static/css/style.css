@@ -87,8 +87,12 @@ button {
 }
 
 /* line 38, C:/Users/SPN Graphics/Desktop/CL September/Edu mark/207 Education/HTML/scss/_reset.scss */
-h1, h2, h3, h4, h5 {
+h1, h2, h4, h5 {
   font-family: "Poppins", sans-serif;
+  color: #2E004B;
+}
+h3 {
+  font-family: 'Marker Felt';
   color: #2E004B;
 }
 
@@ -1285,7 +1289,7 @@ h3 {
 }
 
 /* line 33, C:/Users/SPN Graphics/Desktop/CL September/Edu mark/207 Education/HTML/scss/_slider.scss */
-.slider_area .single_slider .slider_info h3 {
+.slider_area .single_slider .slider_info h1 {
   color: #ffffff;
   font-size: 50px;
   text-transform: none;
@@ -5921,7 +5925,9 @@ h6 {
 /* line 1077, C:/Users/SPN Graphics/Desktop/CL September/Edu mark/207 Education/HTML/scss/_blog.scss */
 .single-post-area .blog_details p {
   margin-bottom: 20px;
-  font-size: 15px;
+  font-size: 20px;
+  color: grey;
+  font-family: 'Lato', sans-serif;
 }
 
 /* line 1087, C:/Users/SPN Graphics/Desktop/CL September/Edu mark/207 Education/HTML/scss/_blog.scss */
