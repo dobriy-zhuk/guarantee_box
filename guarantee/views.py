@@ -365,30 +365,30 @@ class TeacherProfileEditView(View):
 
 
 def get_currency_exchange(
-    student_currency,
+    user_currency,
     currency,
 ):
     currency_exchange_today = CurrencyExchange.objects.get(id=1)
 
-    if student_currency == currency:
+    if user_currency == currency:
         return decimal.Decimal(1.00)
 
-    if student_currency == 'RUB' and currency == 'USD':
+    if user_currency == 'RUB' and currency == 'USD':
         return currency_exchange_today.dollar
         
-    elif student_currency == 'RUB' and currency == 'EUR':
+    elif user_currency == 'RUB' and currency == 'EUR':
         return currency_exchange_today.euro
 
-    elif student_currency == 'USD' and currency == 'RUB':
+    elif user_currency == 'USD' and currency == 'RUB':
         return (decimal.Decimal(1) / currency_exchange_today.dollar)
 
-    elif student_currency == 'EUR' and currency == 'RUB':
+    elif user_currency == 'EUR' and currency == 'RUB':
         return (decimal.Decimal(1) / currency_exchange_today.euro)
 
-    elif student_currency == 'EUR' and currency == 'USD':
+    elif user_currency == 'EUR' and currency == 'USD':
         return (currency_exchange_today.dollar / currency_exchange_today.euro)
     
-    elif student_currency == 'USD' and currency == 'EUR':
+    elif user_currency == 'USD' and currency == 'EUR':
         return (currency_exchange_today.euro / currency_exchange_today.dollar)
 
 
@@ -399,52 +399,91 @@ class PaymentAPI(View):
     Class-based view for working with student
     and teacher money transactions.
 
+    You can get user_id in template from {{ user.student.id }}
+    or {{ user.teacher.id }} because user and student/teacher
+    referensed to each other like one2one
+
     student_id (int): student id
-    action (str): action what you want to do, it can be 'withdraw' or 'deposit'
-    'withdraw' means 'снять (деньги)' and 'deposti' means 'внести (деньги)'.
+    teacher_id (int): teacher id
+    action (str): action what you want to do, it can
+        be 'withdraw' or 'deposit', 'withdraw' means 'снять (деньги)'
+        and 'deposti' means 'внести (деньги)'
     currency (str): RUB, USD or EUR
     amount (int): money amount
 
     """
 
     bad_request_error_code = 400
+    user_obj = None
+    transaction_comment = None
 
-    def get(self, request, api_version):
+    def post(self, request, api_version):
         if api_version == 0:
-            student_id = request.GET.get('student_id')
-            action = request.GET.get('action')
-            currency = request.GET.get('currency')
-            amount = request.GET.get('amount')
-            amount = decimal.Decimal(amount)
 
-            student = get_object_or_none(Student, object_id=student_id)
+            student_id = request.POST.get('student_id')
+            print(request.POST.get('student_id'))
+
+            if student_id:
+                student = get_object_or_none(Student, object_id=student_id)
+                if student is None:
+                    return JsonResponse(
+                        status=self.bad_request_error_code,
+                        data={
+                            'error': 'no student with {0} id'.format(
+                                student_id,
+                            ),
+                        },
+                    )
+                self.user_obj = student
             
-            if student is None:
-                return JsonResponse(
-                status=self.bad_request_error_code,
-                data={
-                        'error': 'no student with {0} id'.format(student_id)
-                    },
-                )
+            teacher_id = request.POST.get('teacher_id')
+
+            if teacher_id:
+                teacher = get_object_or_none(Teacher, object_id=teacher_id)
+                if teacher is None:
+                    return JsonResponse(
+                        status=self.bad_request_error_code,
+                        data={
+                            'error': 'no teacher with {0} id'.format(
+                                teacher_id,
+                            ),
+                        },
+                    )
+                self.user_obj = teacher
+
+            currency = request.POST.get('currency')
             
             currency_exchange = get_currency_exchange(
-                student_currency=student.currency,
+                user_currency=self.user_obj.currency,
                 currency=currency,
             )
+            action = request.POST.get('action')
+            amount = decimal.Decimal(request.POST.get('amount'))
 
             if action == 'deposit':
-                student.amount += (amount*currency_exchange)
+                self.user_obj.amount += (amount*currency_exchange)
+                self.transaction_comment = 'Зачисление денег'
             elif action == 'withdraw':
-                student.amount -= (amount*currency_exchange)
+                self.user_obj.amount -= (amount*currency_exchange)
+                self.transaction_comment = 'Ссписание денег'
             else:
                 return JsonResponse(
                     status=self.bad_request_error_code,
                     data={
                         'error': 'wrong action',
-                    }
+                    },
                 )
 
-            student.save()
+            money_transaction = MoneyTransaction.objects.create(
+                user=self.user_obj.user,
+                amount=amount,
+                currency=currency,
+                action=action,
+                comment=self.transaction_comment,
+            )
+
+            self.user_obj.save()
+            money_transaction.save()
 
             return JsonResponse({'message': 'success'})
 

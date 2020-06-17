@@ -4,16 +4,14 @@ from django.utils.translation import gettext_lazy as _
 
 from datetime import timedelta
 
+
 class StudentStatus(models.Model):
     """Describe status for Student.
 
-    Note: Student can be 'lead' or 'full stundet'
+    Note: Student can be 'lead' or 'full student'
     'lead' is student before enroll
     'full student' is student after enroll
 
-    Arguments:
-        models.Model: superclass which describes fields
-        for database
     """
     name = models.CharField(max_length=200, default='')
 

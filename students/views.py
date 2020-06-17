@@ -741,8 +741,7 @@ def set_student_module_done(request, api_version: int):
         student_id (int): student id
         module_id (int): module id
     !СДЕЛАТЬ МОДУЛЬ ВЫПОЛНЕННЫМ ДЛЯ СТУДЕНТА!
-    Args:
-        api_version (int): [description]
+    
     """
     bad_request_error_code = 400
 

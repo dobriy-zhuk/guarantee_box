@@ -57,4 +57,4 @@ class MoneyTransaction(models.Model):
         default=MoneyTransactionCurrency.RUBLE,
     )
     action = models.CharField(max_length=8)
-    comment = models.CharField(max_length=200)
+    comment = models.CharField(max_length=200, default='')
