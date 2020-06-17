@@ -68,8 +68,8 @@
                                        <li><a href="{% url 'manage_course_list' %}">Курсы</a></li>
                                         {% if request.user.is_authenticated %}
                                         <li><a href="{% url 'teacher_lessons' %}">Уроки</a></li>
-                                        <li><a href="{% url 'payment' %}">Расписание</a></li>
-                                        <li><a href="{% url 'payment' %}">Зарплата</a></li>
+                                        <li><a href="#">Расписание</a></li>
+                                        <li><a href="{% url 'teacher_payment' %}">Зарплата</a></li>
                                         <li><a href="{% url 'profile' %}">Профиль</a></li>
                                         {% endif %}
                                     </ul>

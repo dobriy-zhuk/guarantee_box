@@ -347,6 +347,7 @@ def set_lesson_info_api(request, api_version: int):
 
     """
     bad_request_error_code = 400
+
     if api_version == 0:
         lesson_id = request.POST.get('lesson_id')
 
