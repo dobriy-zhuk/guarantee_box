@@ -1,0 +1,9 @@
+{% autoescape off %}
+Привет, {{ manager.name }}, <br>
+
+Запрос на выплату зарплаты от учителя:
+{{ teacher }} <br>
+id учителя в базе данных {{ teacher.id }} <br>
+в размере: {{ amount }} {{ teacher.currency }} <br>
+
+{% endautoescape %}

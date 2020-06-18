@@ -75,9 +75,6 @@ def get_available_lessons(request):
 def send_stats_to_email(request):
     """Send student's stats to email.
 
-    TODO: Отправка информации о прохождении курсов(course_done_percent),
-    выполнении дз и полной статистики на емайл
-
     Как это пока работает:
     Пользователь делает запрос на отправку сообщения по email
     и пока отправляются только законченные курсы
@@ -125,7 +122,7 @@ def send_stats_to_email(request):
             done_modules)).count()) / course.modules.all().count()
         course.course_done_percent = '{0}%'.format(percent)
 
-    email_subject = 'Please Activate Your Account'
+    email_subject = 'Student statistics'
     email_message = render_to_string(
         template_name='students/student/student_stats_to_email.html',
         context={
@@ -399,16 +396,55 @@ def get_profile(request):
     )
 
 
+# @method_decorator(csrf_exempt, name='dispatch')
+class TeahcerPayment(LoginRequiredMixin, View):
+
+    login_url = '/accounts/login/'
+    template = 'students/student/teacher_payment.html'
+    email_template = 'students/student/teacher_salary_request_to_email.html'
+
+    def get(self, request):
+        """Render template for /students/teacher/payment.
+
+        """
+        return render(
+            request=request,
+            template_name=self.template,
+            context={'teacher': request.user.teacher},
+        )
+
+    def post(self, request):
+        """Teacher salary request to supervising manager email.
+
+        amount (int): how much money teacher wants to get
+        """
+        amount = decimal.Decimal(request.POST.get('amount'))
+
+        email_subject = 'Запрос на зарплату'
+        email_message = render_to_string(
+            template_name=self.email_template,
+            context={
+                'manager': request.user.teacher.manager,
+                'teacher': request.user.teacher,
+                'amount': amount,
+            },
+        )
+
+        request.user.teacher.manager.user.email_user(
+            email_subject, email_message,
+        )
+        return redirect(to='request_email_sent')
+
+
 @login_required(login_url='/accounts/login/')
-def get_teacher_payment(request):
+def get_student_payment(request):
     """Func handler for /students/payment/ - teacher payment.
 
     """
-
     return render(
         request=request,
-        template_name='students/student/teacher_payment.html',
-        context={'teacher': request.user.teacher},
+        template_name='students/student/payment.html',
+        context={'student': request.user.student},
     )
 
 
@@ -623,7 +659,6 @@ def set_student_reward_card(
         },
     )
 
-# TODO: def del_student_reward_card
 
 @require_GET
 def get_lesson_room_info(request, api_version: int, lesson_id: int):
@@ -843,4 +878,17 @@ def set_salary_rate(request, api_version: int):
     return JsonResponse(
         status=bad_request_error_code,
         data={'error': 'wrong api version'}
-    ) 
+    )
+
+
+def salary_request_email_sent_view(request):
+    """Render template when teacher sent request manager email.
+
+    """
+    template_name = 'students/student/teacher_salary_request_sent.html'
+    current_site = get_current_site(request)
+
+    return render(
+        request=request,
+        template_name=template_name,
+    )

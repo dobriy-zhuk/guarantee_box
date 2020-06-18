@@ -1,4 +1,4 @@
-{% extends 'base/base_profile.html' %}
+{% extends 'base/base_teacher.html' %}
 {% block title %}ГАРАНТИЯ ЗНАНИЙ - Оплата занятий{% endblock title %}
 {% load static %}
 
@@ -24,8 +24,7 @@
                     <div class="col-lg-7">
                         <div class="section-tittle text-center">
                             <h2>Форма оплаты</h2>
-                            <p>Мы предоставляем возможность оплачивать при помощи большого количества платежных систем.
-                                Вам необходимо выбрать количество занятий и способ оплаты, который вам нравится больше всего</p>
+                            <p>Текст для учителя, что он может получить деньги разными способами</p>
                         </div>
                     </div>
                 </div>
@@ -89,8 +88,9 @@
                                                         tracking_id: "my_transaction_id"
                                                     },
                                                     settings: {
-                                                        // success_url: "http://127.0.0.1:8000/students/api/0/student-payment/?amount=1&student_id={{ request.user.student.id }}&action=deposit&currency=EUR",
-                                                        // notification_url: "http://127.0.0.1:8000/students/api/0/student-payment/?amount=1&student_id={{ request.user.student.id }}&action=deposit&currency=EUR"
+                                                        // need a post-request:
+                                                        success_url: "http://127.0.0.1:8000/api/0/payment/?amount=1&teacher_id={{ request.user.teacher.id }}&action=deposit&currency=EUR",
+                                                        notification_url: "http://127.0.0.1:8000/api/0/payment/?amount=1&teacher_id={{ request.user.teacher.id }}&action=deposit&currency=EUR"
                                                     }
                                                 },
                                                 closeWidget: function(status) {
@@ -120,75 +120,23 @@
                   </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-12 col-md-6">
                         <div class="single-choose text-center mb-30">
                             <div class="do-icon">
                                 <span  class="flaticon-project"></span>
                             </div>
                             <div class="do-caption">
-                                <h4>22400 руб<br><strike>25600руб</strike></h4>
-                                <ul>
-                                    <li>32 занятия</li>
-                                    <li>700 руб/урок</li>
-                                    <button type="button" class="genric-btn info-border radius" data-toggle="modal" data-target="#paymentModal">Перейти к оплате</button>
-                                </ul>
+                                <h4>Ваш счет:</h4><br>
+                                <h4>{{ teacher.amount }}</h4>
+                                <form method="POST" >
+                                    <input type="number" placeholder="1.00" step="0.01" name="amount">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Запросить зарплату"/>
+                                </form>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-choose text-center mb-30">
-                            <div class="do-icon">
-                                <span  class="flaticon-growth"></span>
-                            </div>
-                            <div class="do-caption">
-                                <h4>12000 руб<br><strike>12800руб</strike></h4>
-                                <ul>
-                                    <li>16 занятий</li>
-                                    <li>750 руб/урок</li>
-                                    <a href="#" class="genric-btn info-border radius">Перейти к оплате</a>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-choose text-center mb-30">
-                            <div class="do-icon">
-                                <span  class="flaticon-growth"></span>
-                            </div>
-                            <div class="do-caption">
-                                <h4>3200 руб<br><strike>3500руб</strike></h4>
-                                <ul>
-                                    <li>4 занятия</li>
-                                    <li>800 руб/урок</li>
-                                    <a href="#" class="genric-btn info-border radius">Перейти к оплате</a>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- Choose Best do End-->
-             <!-- have-project Start-->
-         <div class="have-project mb-30">
-            <div class="container">
-                <div class="haveAproject"  data-background="assets/img/team/have.jpg">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-xl-7 col-lg-9 col-md-12">
-                            <div class="wantToWork-caption">
-                                <h2>Хотите учиться бесплатно?</h2>
-                                <p>Пригласите троих друзей по промокоду: "GUARANTEE21" и занимайтесь весь месяц без оплаты.</p>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-lg-3 col-md-12">
-                           <div class="wantToWork-btn f-right">
-                                <a href="#" class="btn btn-ans">Поделиться</a>
-                           </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     <script type="text/javascript" src="https://js.bepaid.by/widget/be_gateway.js"></script>

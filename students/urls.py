@@ -8,8 +8,16 @@ urlpatterns = [
           'edit-profile/', views.StudentProfileEditView.as_view(),
           name='edit_student_profile',
      ),
-     path('teacher/payment/', views.get_teacher_payment, name='teacher_payment'),
-#      path('payment/', views.get_payment, name='payment'),
+     path(
+          'teacher/payment/',
+          views.TeahcerPayment.as_view(),
+          name='teacher_payment',
+     ),
+     path(
+          'student/payment/',
+          views.get_student_payment,
+          name='student_payment',
+     ),
      path('webrtc/', views.get_webrtc, name='get_webrtc'),
      path(
           'send-stats/',
@@ -17,9 +25,9 @@ urlpatterns = [
           name='send_email_stats',
      ),
      path(
-          'sent-stats/',
-          views.stats_email_sent_view,
-          name='stats_email_sent',
+          'request-email-sent/',
+          views.salary_request_email_sent_view,
+          name='request_email_sent',
      ),
      path('register/',
           views.StudentRegistrationView.as_view(),

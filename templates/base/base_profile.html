@@ -65,9 +65,9 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                       {% if request.user.is_authenticated %}
+                                        {% if request.user.is_authenticated %}
                                         <li><a href="{% url 'student_course_list' %}">Курсы</a></li>
-                                        <li><a href="{% url 'payment' %}">Оплата</a></li>
+                                        <li><a href="{% url 'student_payment' %}">Оплата</a></li>
                                         {% endif %}
                                     </ul>
                                 </nav>
