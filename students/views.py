@@ -412,6 +412,19 @@ def get_teacher_payment(request):
     )
 
 
+@login_required(login_url='/accounts/login/')
+def get_student_payment(request):
+    """Func handler for /students/payment/ - teacher payment.
+
+    """
+
+    return render(
+        request=request,
+        template_name='students/student/payment.html',
+        context={'student': request.user.student},
+    )
+
+
 def get_webrtc(request):
     return render(
         request=request,

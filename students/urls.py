@@ -9,7 +9,7 @@ urlpatterns = [
           name='edit_student_profile',
      ),
      path('teacher/payment/', views.get_teacher_payment, name='teacher_payment'),
-#      path('payment/', views.get_payment, name='payment'),
+     path('payment/', views.get_student_payment, name='payment'),
      path('webrtc/', views.get_webrtc, name='get_webrtc'),
      path(
           'send-stats/',
