@@ -8,6 +8,7 @@ class Manager(models.Model):
     name = models.CharField(max_length=200)
     phone = models.TextField(max_length=500, blank=True, default='712312')
     city = models.CharField(max_length=60, default='')
+    email = models.EmailField(default='')
 
     def __str__(self):
         return self.name

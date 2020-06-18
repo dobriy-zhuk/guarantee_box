@@ -1,8 +1,10 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from datetime import timedelta
+from managers.models import Manager
 
 
 class StudentStatus(models.Model):
@@ -102,6 +104,11 @@ class Teacher(models.Model):
     )
     salary_rate_time_interval = models.DurationField(
         blank=True, default=timedelta(minutes=60),
+    )
+    manager = models.ForeignKey(
+        Manager,
+        related_name='supervised_teachers',
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):
