@@ -80,10 +80,10 @@ def our_teachers(request):
 
 
 def our_testimonials(request):
-    """Render index.html.
+    """Render testimonials.html.
 
     Arguments:
-        request: client request
+        request: testimonial request
 
     Returns:
         render(): render index.html page

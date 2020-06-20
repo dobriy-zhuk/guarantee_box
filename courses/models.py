@@ -302,3 +302,4 @@ class LessonRoom(models.Model):
             self.id : Instance id
         """
         return '{0}'.format(self.id)
+
