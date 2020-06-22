@@ -417,6 +417,7 @@ class TeahcerPayment(LoginRequiredMixin, View):
         """Teacher salary request to supervising manager email.
 
         amount (int): how much money teacher wants to get
+        FIXME: наверно нужно удалить перобразование decimal
         """
         amount = decimal.Decimal(request.POST.get('amount'))
 

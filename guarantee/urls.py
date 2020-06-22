@@ -92,6 +92,11 @@ urlpatterns = [
         name='payment',
     ),
     path('i18n/', include('django.conf.urls.i18n')),
+    path(
+        'api/<int:api_version>/send-request-to-email/',
+        views.send_request_new_student,
+        name='send_request_new_student'
+    ),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,10 @@
+{% autoescape off %}
+Привет, {{ manager.name }}, <br>
+
+Запрос на нового пользователя: <br>
+Данные: <br>
+{% for data_row in data %}
+    {{ data }} <br>
+{% endfor %}
+
+{% endautoescape %}
