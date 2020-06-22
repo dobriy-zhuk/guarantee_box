@@ -1,12 +1,14 @@
 """File with classes which describe tables in database."""
+from datetime import timedelta
+
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.loader import render_to_string
-from opentok import OpenTok
 from django.utils.translation import gettext_lazy as _
+from opentok import OpenTok
 
 from courses.fields import OrderField
 from students.models import Schedule, Student, Teacher
@@ -279,8 +281,10 @@ class LessonRoom(models.Model):
 
     students: students what are invited to lesson
 
-    Arguments:
-        models.Model: superclass which describes fields for database
+    duration: how much time goes lesson
+
+    Note: when lesson just goes and teacher.amount += teacher (check for time)
+
     """
 
     lesson_name = models.CharField(max_length=200)
@@ -296,6 +300,9 @@ class LessonRoom(models.Model):
     )
     homework = models.TextField(blank=True, default='')
     completed = models.BooleanField(default=False)
+    duration = models.DurationField(
+        blank=True, default=timedelta(minutes=60),
+    )
 
     def __str__(self):
         """Override the str() behavior, for instance of class.
@@ -304,4 +311,3 @@ class LessonRoom(models.Model):
             self.id : Instance id
         """
         return '{0}'.format(self.id)
-

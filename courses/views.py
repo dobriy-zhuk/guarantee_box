@@ -22,8 +22,10 @@ from opentok import OpenTok
 
 from courses.forms import ModuleFormSet
 from courses.models import Content, Course, LessonRoom, Module, Subject
+from managers.models import MoneyTransaction
 from middleware import get_data_from_request
 from students.forms import CourseEnrollForm
+from students.models import Student
 from students.views import get_object_or_none
 
 
@@ -338,6 +340,9 @@ def set_lesson_info_api(request, api_version: int):
 
     Work with json and non-json request is simplier now
 
+    present_students: students who came to lesson
+
+
     """
     bad_request_error_code = 400
 
@@ -366,6 +371,13 @@ def set_lesson_info_api(request, api_version: int):
 
         if completed:
             lesson_room.completed = completed
+
+        duration = data.get('duration')
+
+        # present_students = data.get('present_students')
+
+        # for student_id in present_students:
+        #     student = get_object_or_none(Student, object_id=student_id)
 
         lesson_room.save()
 
