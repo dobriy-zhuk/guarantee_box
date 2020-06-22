@@ -76,13 +76,15 @@
                         <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                             <div class="log_chat_area d-flex align-items-center">
                                 {% if request.user.is_authenticated %}
-                                <a href="{% url 'profile' %}" class="login">
-                                    <span>Профиль</span>
-                                </a>
-                                <a href="{% url 'logout' %}" class="login">
-                                    <i class="flaticon-user"></i>
-                                    <span>Выйти</span>
-                                </a>
+                                <li class="nav-item dropdown">
+                                        <a style="color: white" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Личный кабинет
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                          <a class="dropdown-item" href="{% url 'profile' %}">Профиль</a>
+                                          <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+                                  </div>
+                                </li>
                                 {% else %}
                                 <a href="{% url 'login' %}" class="login">
                                     <span>Войти</span>
