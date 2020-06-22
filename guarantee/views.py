@@ -55,7 +55,7 @@ def send_request_new_student(request, api_version):
         if data.get("city") is None:
             return JsonResponse({'error': 'city is required'})
 
-        manager = Manager.objects.filter(city__contains=data.get('city'))[0]
+        manager = Manager.objects.filter(city__icontains=data.get('city'))[0]
 
         email_subject = 'Запрос нового пользователя'
         email_message = render_to_string(
