@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
 from django.forms.models import modelform_factory
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -22,9 +22,10 @@ from opentok import OpenTok
 
 from courses.forms import ModuleFormSet
 from courses.models import Content, Course, LessonRoom, Module, Subject
+from middleware import get_data_from_request
 from students.forms import CourseEnrollForm
 from students.views import get_object_or_none
-from django.http import HttpResponse
+
 
 def post_coding(request):
     return render(request, 'index.html', {})
@@ -334,22 +335,17 @@ class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, View):
 @require_POST
 def set_lesson_info_api(request, api_version: int):
     """API for working with lesson info
-    
-    Note: if you want to user application/json, you need to solve this error:
-    raise JSONDecodeError("Expecting value", s, err.value) from None
-    json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 
-    how to use json in code:
-    json_data = json.loads(request.body)
-    lesson_id = json_data.get('lesson_id')
-    homework = json_data.get('homework')
-    completed = json_data.get('completed')
+    Work with json and non-json request is simplier now
 
     """
     bad_request_error_code = 400
 
     if api_version == 0:
-        lesson_id = request.POST.get('lesson_id')
+
+        data = get_data_from_request(request)
+
+        lesson_id = data.get('lesson_id')
 
         lesson_room = get_object_or_none(LessonRoom, object_id=lesson_id)
 
@@ -361,12 +357,12 @@ def set_lesson_info_api(request, api_version: int):
                 },
             )
 
-        homework = request.POST.get('homework')
+        homework = data.get('homework')
 
         if homework:
             lesson_room.homework = homework
 
-        completed = request.POST.get('completed')
+        completed = data.get('completed')
 
         if completed:
             lesson_room.completed = completed

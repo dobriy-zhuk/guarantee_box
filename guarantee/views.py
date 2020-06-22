@@ -20,7 +20,7 @@ from django.views.generic.edit import UpdateView
 from guardian.shortcuts import get_objects_for_user
 
 from courses.models import Course, LessonRoom, Subject
-from guarantee.middleware import get_data_from_request
+from middleware import get_data_from_request
 from managers.models import CurrencyExchange, MoneyTransaction, Manager
 from students.forms import TeacherEditForm
 from students.models import Schedule, Student, Teacher
