@@ -1,10 +1,10 @@
 {% autoescape off %}
-Привет, {{ manager.name }}, <br>
+Привет, {{ manager.name }},
 
-Запрос на нового пользователя: <br>
-Данные: <br>
-{% for data_row in data %}
-    {{ data }} <br>
+Запрос на нового пользователя:
+Данные:
+{% for key, value in data.items %}
+{{ key }}: {{ value }}
 {% endfor %}
 
 {% endautoescape %}
