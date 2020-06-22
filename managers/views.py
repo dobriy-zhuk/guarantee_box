@@ -30,3 +30,10 @@ class TeacherListView(LoginRequiredMixin, ListView):
     template_name = 'managers/main/teachers.html'
     queryset = Teacher.objects.filter(status__name='Teacher')
     context_object_name = 'teacher_list'
+
+
+class Leads(LoginRequiredMixin, ListView):
+    model = Teacher
+    template_name = 'managers/main/leads.html'
+    context_object_name = 'leads'
+

@@ -4,6 +4,7 @@
 {% endblock %}
 {% load guardian_tags %}
 {% load index %}
+{%  load static %}
 
 {% block content %}
 <div class="bradcam_area breadcam_bg overlay2">
@@ -48,8 +49,15 @@
                   <h2>{{ module.title }}
                   </h2>
                   <p>
-                     {{ item.render }}
+                      <input type='hidden' name='content_type' value='{{ item|model_name }}'>
+                  <form>
+                  {% csrf_token %}
+                  <input type='hidden' name='student_id' value='{{ request.user.student.id }}'>
+                  <input type='hidden' name='module_id' value='{{ module.id }}'>
+                  {{ item.render }}
+                  </form>
                   </p>
+
                   {% endwith %}
                </div>
                {% endfor %}
@@ -58,4 +66,47 @@
       </div>
    </div>
 </div>
+{% endblock %}
+
+
+{% block javascript %}
+
+    <script src="{% static 'js/content.js' %}"></script>
+    <script>
+
+   function check() {
+       return 'ok';
+        /*        myVar = JSON.stringify({compiler: "gcc-head", "code":$('textarea#my_code').val(),"options": "warning,gnu++1y", "compiler-option-raw": "-Dx=hogefuga\n-O3" });
+                jQuery.ajax({
+                    url:     "https://wandbox.org/api/compile.json", //Адрес подгружаемой страницы
+                    type:     "POST", //Тип запроса
+                    dataType: "json", //Тип данных
+                    data: myVar,
+                    compiler:"gcc-head",
+                    success: function(response) { //Если все нормально
+                        $('#compilation-result').html(response.program_message);
+                        var answer = document.getElementById("answer").getAttribute("data-value");
+                        return response.program_message;
+                    },
+                    error: function(response) { //Если ошибка
+                        return 'error';
+                    }
+                });*/
+
+            }
+
+            $('#compile_check').submit(function() {
+     $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:8000/courses/api/0/set-lesson-info/",
+            data: $(this).serialize(),
+            success: function (data) {
+              alert("Урок помечен выполненным");
+            },
+              error: function(e, x, r) { // on error..
+                    alert(e);
+              }
+          });
+      });
+    </script>
 {% endblock %}
