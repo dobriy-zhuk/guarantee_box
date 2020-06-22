@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.db import DatabaseError
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -19,7 +20,8 @@ from django.views.generic.edit import UpdateView
 from guardian.shortcuts import get_objects_for_user
 
 from courses.models import Course, LessonRoom, Subject
-from managers.models import CurrencyExchange, MoneyTransaction
+from guarantee.middleware import get_data_from_request
+from managers.models import CurrencyExchange, MoneyTransaction, Manager
 from students.forms import TeacherEditForm
 from students.models import Schedule, Student, Teacher
 from students.views import get_object_or_none
@@ -27,9 +29,6 @@ from students.views import get_object_or_none
 
 def index(request):
     """Render index.html.
-
-    Arguments:
-        request: client request
 
     Returns:
         render(): render index.html page
@@ -40,6 +39,40 @@ def index(request):
         request=request,
         template_name='index.html',
         context={'subjects': subjects, 'courses': courses},
+    )
+
+
+@csrf_exempt
+@require_POST
+def send_request_new_student(request, api_version):
+    email_template = 'email_request_to_manager.html'
+    error_status_code = 400
+    
+    if api_version == 0:
+
+        data = get_data_from_request(request)
+
+        if data.get("city") is None:
+            return JsonResponse({'error': 'city is required'})
+
+        manager = Manager.objects.filter(city__contains=data.get('city'))[0]
+
+        email_subject = 'Запрос нового пользователя'
+        email_message = render_to_string(
+            template_name=email_template,
+            context={
+                'manager': manager,
+                'data': data
+            },
+        )
+
+        manager.user.email_user(
+            email_subject, email_message,
+        )
+        return JsonResponse({'message': 'request sent'})
+    return JsonResponse(
+        status=error_status_code,
+        data={'error': 'wrong api version'},
     )
 
 
