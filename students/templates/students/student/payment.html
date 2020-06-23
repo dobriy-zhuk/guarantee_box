@@ -14,64 +14,102 @@
 {% endblock %}
 
 {% block content %}
+<script>
+    let summa = 320000;
+    function set_sum(summa) {
+        window.summa = summa;
+    }
+</script>
     <div class="bradcam_area breadcam_bg overlay2">
             <h3>Оплата занятий</h3>
         </div>
-        <div class="choose-best choose-padding">
-            <div class="container">
-                <!-- Section-tittle -->
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-7">
-                        <div class="section-tittle text-center">
-                            <h2>Форма оплаты</h2>
-                            <p>Мы предоставляем возможность оплачивать при помощи большого количества платежных систем.
-                                Вам необходимо выбрать количество занятий и способ оплаты, который вам нравится больше всего</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal window with payment form-->
-                <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="paymentModalLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div id="paypal-button"></div>
-                                </div>
-                                    <script src="https://www.paypal.com/sdk/js?client-id=AdZAQW-91iZnA-TaenO4EauglYdG-tSHY7rfgk46o9_2E3W6u0Z1BAq6aHSR-Cd73B1HBS-1-F1GUOhk&currency=EUR"></script>
-                                    <script>
-                                        $sale = 1.0;
 
-                                        paypal.Buttons({
-                                            createOrder: function(data, actions) {
-                                                // This function sets up the details of the transaction, including the amount and line item details.
-                                                return actions.order.create({
-                                                    purchase_units: [{
-                                                        amount: {
-                                                            value: 100
-                                                        }
-                                                    }]
-                                                });
-                                            },
-                                            onApprove: function(data, actions) {
-                                                // This function captures the funds from the transaction.
-                                                return actions.order.capture().then(function(details) {
-                                                    // This function shows a transaction success message to your buyer.
-                                                    alert('Transaction completed by ' + details.payer.name.given_name);
-                                                });
-                                            }
-                                        }).render('#paypal-button');
-                                        //This function displays Smart Payment Buttons on your web page.
-                                    </script>
+          <!--================Blog Area =================-->
+   <section class="blog_area single-post-area section-padding">
+      <div class="container">
+         <div class="row">
+            <div class="offset-1 col-lg-10 posts-list">
+               <div class="single-post">
+                  <div class="blog_details">
+                      <h2 style="font-size: 40px; font-family: 'Marker Felt'">Форма оплаты
+                     </h2>
+                      <hr>
+                      <h4>Мы предоставляем возможность оплачивать при помощи большого количества платежных систем.
+                                Вам необходимо выбрать количество занятий и способ оплаты, который вам нравится больше всего</h4>
+
+                      <div class="row mt-30">
+                          <div class="col-lg-4">
+                              <div class="card" style="width: 18rem;">
+                                  <img class="card-img-top" src="..." alt="Card image cap">
+                                  <div class="card-body">
+                                    <h5 class="card-title">22400 руб<br><strike>25600руб</strike></h5>
+                                    <p class="card-text">32 занятия <br>700 руб/урок</p>
+                                    <a href="#test-form" onclick="set_sum(2240000)" class="popup-with-form btn btn-primary">Перейти к оплате</a>
+                                  </div>
+                                </div>
+                          </div>
+                          <div class="col-lg-4">
+                              <div class="card" style="width: 18rem;">
+                                  <img class="card-img-top" src="..." alt="Card image cap">
+                                  <div class="card-body">
+                                    <h5 class="card-title">12000 руб<br><strike>12800руб</strike></h5>
+                                    <p class="card-text">16 занятий <br>750 руб/урок</p>
+                                    <a href="#test-form" onclick="set_sum(1200000)" class="popup-with-form btn btn-primary">Перейти к оплате</a>
+                                  </div>
+                                </div>
+                          </div>
+                          <div class="col-lg-4">
+                              <div class="card" style="width: 18rem;">
+                                  <img class="card-img-top" src="..." alt="Card image cap">
+                                  <div class="card-body">
+                                    <h5 class="card-title">3200 руб<br><strike>3500руб</strike></h5>
+                                    <p class="card-text">4 занятия <br>800 руб/урок</p>
+                                    <a href="#test-form" onclick="set_sum(2240000)" class="popup-with-form btn btn-primary">Перейти к оплате</a>
+                                  </div>
+                                </div>
+                          </div>
+                      </div>
+                      <div class="row mt-30">
+                          <div class="col-lg-8 offset-2">
+                              <iframe width="560" height="315" src="https://www.youtube.com/embed/q2yqeseO7aE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                          </div>
+                      </div>
+                  </div>
+               </div>
+
+            </div>
+         </div>
+      </div>
+   </section>
+
+     <form id="test-form" class="white-popup-block mfp-hide">
+         <div class="popup_box">
+             <div class="popup_inner">
+                 <div class="logo text-center">
+                     <a href="#">
+                         <img src="#" alt="" class="img-fluid">
+                     </a>
+                 </div>
+                 <h3>Оплата занятий</h3>
+                    <div class="container">
+                            <div class="row">
+                                <div class="col-md-6 text-left">
+                                    <p>Реквизиты для прямого перевода:
+                                    <br>1. Name: Artem Kvasov
+                                    <br>IBAN: GB54 TRWI 2314 7080 9316 64 (from UK only!)
+                                    <br>Account number: 80931664
+                                    <br>UK sort code: 23-14-70
+
+                                    <br>Bank address:
+                                    <br>TransferWise
+                                    <br>56 Shoreditch High Street
+                                    <br>London, E1 6JJ
+                                    <br>United Kingdom
+                                    </p>
+                                </div>
                                 <div class="col-md-6">
-                                    <button class="genric-btn success-border radius btn-block">Сбербанк</button>
+                                    <a href="https://paypal.me/guaranteelearning" target="_blank" class="genric-btn success-border radius btn-block">Paypal</a>
+                                    <button class="genric-btn success-border radius btn-block" type="submit">Сбербанк</button>
                                     <button class="genric-btn success-border radius btn-block" onclick="payment()">BePaid</button>
                                     <script type="text/javascript">
                                         this.payment = function() {
@@ -83,14 +121,14 @@
                                                     transaction_type: "payment",
                                                     public_key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA17jlBxV4K01BelCL/refq6po8IbbDokwzAdjaI299SVOgCeeGDE/qoR6T9fygwN4WofiUtOUceyH9M0ad3sm9z7ySPiadqoA0u3FlQztvsEJ/8G2NRL7E5u9ckqH1gdtycFXEhlYQFT/Q+qY2bKAhIIHDlWzl0toCzvvwgdzg+kr4OW/sxfFkYcFBIytmBUffzeT20F4YuPwAg080TtQ1cOX7+LjRkRYhGa5NcEja63ILFMgL8hJgY4Y6RBvev40nRZmJIs7BsdsZEyrfa8lnNRZq0mZltZQNlMbFTjJ7he0BLq377WABFhw49hOWOjTp3uzxwKbcKhHwm2t95XVwQIDAQAB",
                                                     order: {
-                                                        amount: 100,
+                                                        amount: window.summa,
                                                         currency: "EUR",
-                                                        description: "Payment description",
+                                                        description: "Payment from {{ request.user.student.id }}",
                                                         tracking_id: "my_transaction_id"
                                                     },
                                                     settings: {
-                                                        success_url: "http://127.0.0.1:8000/students/api/0/student-payment/?amount=1&student_id={{ request.user.student.id }}&action=deposit&currency=EUR",
-                                                        notification_url: "http://127.0.0.1:8000/students/api/0/student-payment/?amount=1&student_id={{ request.user.student.id }}&action=deposit&currency=EUR"
+                                                        success_url: "http://127.0.0.1:8000/students/api/0/student-payment/?amount=" + window.summa + "&student_id={{ request.user.student.id }}&action=deposit&currency=EUR",
+                                                        notification_url: "http://127.0.0.1:8000/students/api/0/student-payment/?amount=" + window.summa + "&student_id={{ request.user.student.id }}&action=deposit&currency=EUR"
                                                     }
                                                 },
                                                 closeWidget: function(status) {
@@ -111,86 +149,10 @@
                                 </div>
                             </div>
                         </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="genric-btn info-border radius" data-dismiss="modal">Закрыть</button>
-                        <button type="button" class="genric-btn info-border radius">Оплатить</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-choose text-center mb-30">
-                            <div class="do-icon">
-                                <span  class="flaticon-project"></span>
-                            </div>
-                            <div class="do-caption">
-                                <h4>22400 руб<br><strike>25600руб</strike></h4>
-                                <ul>
-                                    <li>32 занятия</li>
-                                    <li>700 руб/урок</li>
-                                    <button type="button" class="genric-btn info-border radius" data-toggle="modal" data-target="#paymentModal">Перейти к оплате</button>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-choose text-center mb-30">
-                            <div class="do-icon">
-                                <span  class="flaticon-growth"></span>
-                            </div>
-                            <div class="do-caption">
-                                <h4>12000 руб<br><strike>12800руб</strike></h4>
-                                <ul>
-                                    <li>16 занятий</li>
-                                    <li>750 руб/урок</li>
-                                    <a href="#" class="genric-btn info-border radius">Перейти к оплате</a>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-choose text-center mb-30">
-                            <div class="do-icon">
-                                <span  class="flaticon-growth"></span>
-                            </div>
-                            <div class="do-caption">
-                                <h4>3200 руб<br><strike>3500руб</strike></h4>
-                                <ul>
-                                    <li>4 занятия</li>
-                                    <li>800 руб/урок</li>
-                                    <a href="#" class="genric-btn info-border radius">Перейти к оплате</a>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                     </div>
+                 </div>
+             </form>
 
-                </div>
-            </div>
-        </div>
-        <!-- Choose Best do End-->
-             <!-- have-project Start-->
-         <div class="have-project mb-30">
-            <div class="container">
-                <div class="haveAproject"  data-background="assets/img/team/have.jpg">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-xl-7 col-lg-9 col-md-12">
-                            <div class="wantToWork-caption">
-                                <h2>Хотите учиться бесплатно?</h2>
-                                <p>Пригласите троих друзей по промокоду: "GUARANTEE21" и занимайтесь весь месяц без оплаты.</p>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-lg-3 col-md-12">
-                           <div class="wantToWork-btn f-right">
-                                <a href="#" class="btn btn-ans">Поделиться</a>
-                           </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
     <script type="text/javascript" src="https://js.bepaid.by/widget/be_gateway.js"></script>
 
 {% endblock %}

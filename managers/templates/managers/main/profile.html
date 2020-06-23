@@ -1,5 +1,5 @@
-{% extends 'base/base_courses.html' %}
-{% block title %}ГАРАНТИЯ ЗНАНИЙ - кружки Робототехники, Программирования и Химии детям{% endblock title %}
+{% extends 'base/base_admin.html' %}
+{% block title %}ГАРАНТИЯ ЗНАНИЙ - страница Администратор{% endblock title %}
 
 {% block tags %}
     <meta name="description" content="ГАРАНТИЯ ЗНАНИЙ - Курсы дополнительного образования для детей и школьников по робототехнике, программированию, химии и подготовительные курсы егэ и огэ" />
@@ -13,68 +13,172 @@
 {% endblock %}
 
 {% block content %}
-<div class="fh5co-contact" id="contacts">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3">
-					<h3>Гарантия Знаний</h3>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading">Уроки</h4>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading">Ученики</h4>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading">Группы</h4>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading">Лиды</h4>
-                        </a>
-                        <a href="{% url 'teachers' %}" class="list-group-item">
-                            <h4 class="list-group-item-heading">Преподаватели</h4>
-                        </a>
-                        <a href="{% url 'applicants' %}" class="list-group-item active">
-                            <h4 class="list-group-item-heading ">Соискатели</h4>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading">Финансы</h4>
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <h4 class="list-group-item-heading">Франчайзи</h4>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="row">
-                        <button class="btn btn-success">Добавить</button>
-                    </div>
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th scope="col">Created</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Communictaion</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      {% for applicant in applicant_list %}
-                        <tr>
-                          <th scope="row">{{ forloop.counter }}</th>
-                          <td>{{ applicant.name }}</td>
-                          <td>{{ applicant.city }}</td>
-                        </tr>
-                        {% endfor %}
-                      </tbody>
-                    </table>
-                    <div>
-                        {{ manager.name }}
-                    </div>
-                </div>
-			</div>
-		</div>
-	</div>
 
+
+      <div class="bradcam_area breadcam_bg overlay2">
+            <h3>Профиль администратора</h3>
+        </div>
+
+<div class="about_area">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-tittle text-center">
+                    <h2>Кабинет Администратора</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 col-md-5">
+                <div class="single-element-widget">
+                    <div class="single-generating d-flex mb-30">
+                        <div class="generating-icon">
+                            <span class="flaticon-social-media-marketing"></span>
+                        </div>
+                        <div class="generating-cap">
+                            <h4>Мой профиль</h4>
+                            <form action="#">
+                                <div class="mt-10">
+                                    <input type="text" name="first_name" placeholder="{{ teacher.name }}"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"
+                                        required class="single-input">
+                                </div>
+                                <div class="mt-10">
+                                    <input type="email" name="email" placeholder="{{ teacher.email }}"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email address'"
+                                        required class="single-input">
+                                </div>
+                                <div class="input-group-icon mt-10">
+                                    <div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+                                    <div class="form-select" id="default-select">
+                                        <select>
+                                            <option value=" 1">Country</option>
+                                            <option value="1">Bangladesh</option>
+                                            <option value="1">India</option>
+                                            <option value="1">England</option>
+                                            <option value="1">Srilanka</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mt-10">
+                                    <input type="text" name="address" placeholder="{{ teacher.city }}"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Address'" required
+                                        class="single-input">
+                                </div>
+                                <div class="mt-10">
+                                    <input type="text" name="banks" placeholder="Банковские реквизиты"
+                                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Реквизиты банка'"
+                                        required class="single-input">
+                                </div>
+                                <br><a href="{% url 'teacher_edit_profile' %}"
+                                    class="genric-btn info-border">Редактировать</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7">
+                <div class="single-element-widget">
+                    <div class="single-generating d-flex mb-30">
+                        <div class="generating-cap">
+                            <h4>Ближайшие уроки</h4>
+                            <style>
+                                /* CSS style for Boxes */
+                                span_time {
+                                    display: inline-flex;
+                                    width: 70px;
+                                    height: 70px;
+                                    background-color: white;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+
+                                span_big {
+                                    display: inline-flex;
+                                    width: 120px;
+                                    height: 120px;
+                                    background-color: white;
+                                    justify-content: center;
+                                    align-items: center;
+                                }
+                            </style>
+                            {% for lesson in upcoming_lessons %}
+                            <h5>{{ lesson.lesson_name }}</h5>
+                            <!-- Выводит текстовый формат!!! -->
+                            <!-- Время в 24-часовом формате -->
+                            <span_time class="border border-primary rounded" id="month">
+                                Месяц: {{ lesson.schedule.start_timestamp|date:'m'}}</span_time>
+                            <span_time class="border border-primary rounded" id="days">
+                                День: {{ lesson.schedule.start_timestamp|date:'d'}}</span_time>
+                            <span_time class="border border-primary rounded" id="hours">
+                                Часы: {{ lesson.schedule.start_timestamp|date:'H'}}</span_time>
+                            <span_time class="border border-primary rounded" id="minutes">
+                                Минуты: {{ lesson.schedule.start_timestamp|date:'i' }}</span_time>
+                            <p><br><a href="http://localhost:3000/?lesson_id={{ lesson.id }}&student=true"
+                                    class="genric-btn info-border" target="_blank">Подключиться</a>
+                            </p>
+                            <br>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="single-generating d-flex mb-30">
+                        <div class="generating-cap">
+                            <h4>Статистика</h4>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <caption><a href="{% url 'send_email_stats' %}"
+                                            class="genric-btn danger-border">Отправить статистику на почту</a>
+                                    </caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">№</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Courses joined</th>
+                                            <th scope="col">Progress</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for student in students %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>{{ student.name }}</td>
+                                            <td>
+                                                {% for course in student.student_courses %}
+                                                <ul>
+                                                    {% if course.owner == teacher %}
+                                                        <li style="list-style-type: disc;">{{ course.title }}</li>
+                                                    {% endif %}
+                                                </ul>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                {% for course in student.student_courses %}
+                                                    {% if course.owner == teacher %}
+                                                        {{ course.done_percent }}
+                                                        <div class="progress">
+                                                            <div class="progress-bar color-1" role="progressbar"
+                                                            style="width: {{ course.done_percent }}"
+                                                            aria-valuenow="{{ course.done_percent }}"
+                                                            aria-valuemin="0.0%"
+                                                            aria-valuemax="100.0%">
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

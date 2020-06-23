@@ -30,7 +30,8 @@ from managers.models import CurrencyExchange
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
 from students.models import Student, StudentRewardCard, Teacher
 from students.tokens import account_activation_token
-
+import json
+from django.http import StreamingHttpResponse
 
 def check_user_group(user):
     group = user.groups.filter(user=user)[0]
@@ -779,6 +780,7 @@ def set_student_module_done(request, api_version: int):
     !СДЕЛАТЬ МОДУЛЬ ВЫПОЛНЕННЫМ ДЛЯ СТУДЕНТА!
     
     """
+
     bad_request_error_code = 400
 
     if api_version == 0:
