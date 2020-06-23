@@ -41,4 +41,6 @@ class ModuleAdmin(admin.ModelAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ['id', 'student', 'cost', 'lessons_amount', 'currency']
+    list_display = [
+        'id', 'student', 'cost', 'lessons_amount', 'currency', 'completed',
+    ]

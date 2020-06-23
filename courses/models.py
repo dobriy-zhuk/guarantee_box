@@ -328,7 +328,11 @@ class Subscription(models.Model):
         DOLLAR = 'USD', _('Dollar')
         EURO = 'EUR', _('Euro')
 
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(
+        Student,
+        related_name='subscriptions',
+        on_delete=models.CASCADE,
+    )
     lessons_amount = models.PositiveIntegerField(default=0)
     cost = models.DecimalField(default=0.00, max_digits=7, decimal_places=2)
     currency = models.CharField(
@@ -336,3 +340,4 @@ class Subscription(models.Model):
         choices=TeacherCurrency.choices,
         default=TeacherCurrency.RUBLE,
     )
+    completed = models.BooleanField(default=False)

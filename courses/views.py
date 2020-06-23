@@ -24,7 +24,8 @@ from django.views.generic.list import ListView
 from opentok import OpenTok
 
 from courses.forms import ModuleFormSet
-from courses.models import Content, Course, LessonRoom, Module, Subject
+from courses.models import (Content, Course, LessonRoom, Module, Subject,
+                            Subscription)
 from courses.signals import lesson_done_signal
 from managers.models import MoneyTransaction
 from middleware import get_data_from_request
@@ -407,7 +408,6 @@ def set_lesson_info_api(request, api_version: int):
 
             lesson_done_signal.send_robust(
                 sender=LessonRoom,
-                duration=duration,
                 present_students_id=data.get('present_students_id'),
                 coefficient=coefficient,
                 teacher=teacher,
@@ -440,10 +440,21 @@ def lesson_done_signal_receiver(sender, **kwargs):
         amount=amount,
         currency=teacher.currency,
         action='deposit',
-        comment='deposit per {0} id lesson_room'.format(lesson_id)
+        comment='deposit per {0} id lesson_room'.format(lesson_id),
     )
+    # списание денег у студентов, которые были на уроке
+    for student_id in kwargs.get('present_students_id'):
+        student = get_object_or_none(Student, object_id=student_id)
+        if student:
+            incomplete = student.subscriptions.filter(completed=False).first()
+            lesson_cost = incomplete.cost / incomplete.lessons_amount
+            student.amount -= lesson_cost
+            student.save()
 
-    # present_students = data.get('present_students')
-    # списание денег у студентов
-    # for student_id in present_students:
-    #     student = get_object_or_none(Student, object_id=student_id)
+            MoneyTransaction.objects.create(
+                user=student.user,
+                amount=lesson_cost,
+                currency=incomplete.currency,
+                action='withdraw',
+                comment='withdraw per {0} id lesson_room'.format(lesson_id),
+            )
