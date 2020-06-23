@@ -82,7 +82,9 @@ class Course(models.Model):
     )
     icon = models.ImageField(blank=True, default='')
     cost = models.DecimalField(default=0.00, max_digits=7, decimal_places=2)
-    old_cost = models.DecimalField(default=0.00, max_digits=7, decimal_places=2)
+    old_cost = models.DecimalField(
+        default=0.00, max_digits=7, decimal_places=2,
+    )
     video_url = models.URLField(blank=True, default='')
     image = models.ImageField(blank=True, default='', upload_to='images')
     comment = models.TextField(blank=True, default='')
@@ -311,3 +313,26 @@ class LessonRoom(models.Model):
             self.id : Instance id
         """
         return '{0}'.format(self.id)
+
+
+class Subscription(models.Model):
+    """
+    student: which student has bought amount of lessons
+    lessons_amount: how much lessons in Subscription what student bought
+    cost: cost of Subscription
+
+    """
+
+    class TeacherCurrency(models.TextChoices):
+        RUBLE = 'RUB', _('Ruble')
+        DOLLAR = 'USD', _('Dollar')
+        EURO = 'EUR', _('Euro')
+
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    lessons_amount = models.PositiveIntegerField(default=0)
+    cost = models.DecimalField(default=0.00, max_digits=7, decimal_places=2)
+    currency = models.CharField(
+        max_length=3,
+        choices=TeacherCurrency.choices,
+        default=TeacherCurrency.RUBLE,
+    )
