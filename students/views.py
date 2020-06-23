@@ -1,5 +1,6 @@
 """Module where described the logic for user response."""
 import decimal
+import json
 from datetime import datetime, timedelta
 
 from django.contrib.auth import authenticate, login
@@ -10,7 +11,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.forms.models import model_to_dict
-from django.http import JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -27,11 +28,11 @@ from guardian.shortcuts import assign_perm, get_objects_for_user
 
 from courses.models import Course, LessonRoom, Module
 from managers.models import CurrencyExchange
+from middleware import get_data_from_request
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
 from students.models import Student, StudentRewardCard, Teacher
 from students.tokens import account_activation_token
-import json
-from django.http import StreamingHttpResponse
+
 
 def check_user_group(user):
     group = user.groups.filter(user=user)[0]
@@ -777,14 +778,16 @@ def set_student_module_done(request, api_version: int):
     required POST arguments:   
         student_id (int): student id
         module_id (int): module id
-    !СДЕЛАТЬ МОДУЛЬ ВЫПОЛНЕННЫМ ДЛЯ СТУДЕНТА!
     
     """
 
     bad_request_error_code = 400
 
     if api_version == 0:
-        student_id = request.POST.get('student_id')
+
+        data = get_data_from_request(request)
+
+        student_id = data.get('student_id')
         
         student = get_object_or_none(Student, object_id=student_id)
 
@@ -796,7 +799,7 @@ def set_student_module_done(request, api_version: int):
                 },
             )
 
-        module_id = request.POST.get('module_id')
+        module_id = data.get('module_id')
 
         module = get_object_or_none(Module, object_id=module_id)
 
