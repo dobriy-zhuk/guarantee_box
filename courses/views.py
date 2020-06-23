@@ -377,43 +377,44 @@ def set_lesson_info_api(request, api_version: int):
         if completed:
             lesson_room.completed = completed
 
-        duration = datetime.strptime(data.get('duration'), '%H:%M:%S',)
-        duration = timedelta(
-            hours=duration.hour,
-            minutes=duration.minute,
-            seconds=duration.second,
-        )
-        lesson_room.duration = duration
-        
-        lesson_room.save()
+        if completed == True:
+            duration = datetime.strptime(data.get('duration'), '%H:%M:%S',)
+            duration = timedelta(
+                hours=duration.hour,
+                minutes=duration.minute,
+                seconds=duration.second,
+            )
+            lesson_room.duration = duration
+            
+            teacher_id = data.get('teacher_id')
 
-        teacher_id = data.get('teacher_id')
-
-        teacher = get_object_or_none(
-            Teacher, object_id=teacher_id,
-        )
-
-        if teacher is None:
-            return JsonResponse(
-                status=bad_request_error_code,
-                data={
-                    'error': 'lesson successfully changed but, \
-                        no teacher {0} id'.format(teacher_id),
-                },
+            teacher = get_object_or_none(
+                Teacher, object_id=teacher_id,
             )
 
-        coefficient = round(
-            lesson_room.duration / teacher.salary_rate_time_interval, 2,
-        )
+            if teacher is None:
+                return JsonResponse(
+                    status=bad_request_error_code,
+                    data={
+                        'error': 'lesson successfully changed but, \
+                            no teacher {0} id'.format(teacher_id),
+                    },
+                )
 
-        lesson_done_signal.send_robust(
-            sender=LessonRoom,
-            duration=duration,
-            present_students_id=data.get('present_students_id'),
-            coefficient=coefficient,
-            teacher=teacher,
-            lesson_id=lesson_id,
-        )
+            coefficient = round(
+                lesson_room.duration / teacher.salary_rate_time_interval, 2,
+            )
+
+            lesson_done_signal.send_robust(
+                sender=LessonRoom,
+                duration=duration,
+                present_students_id=data.get('present_students_id'),
+                coefficient=coefficient,
+                teacher=teacher,
+                lesson_id=lesson_id,
+            )
+        
+        lesson_room.save()
 
         return JsonResponse({'message': 'success'})
 
