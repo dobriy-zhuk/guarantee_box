@@ -1,4 +1,6 @@
+import decimal
 import json
+from datetime import datetime, timedelta
 
 from django.apps import apps
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -7,6 +9,7 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         UserPassesTestMixin)
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count
+from django.dispatch import receiver
 from django.forms.models import modelform_factory
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -22,10 +25,11 @@ from opentok import OpenTok
 
 from courses.forms import ModuleFormSet
 from courses.models import Content, Course, LessonRoom, Module, Subject
+from courses.signals import lesson_done_signal
 from managers.models import MoneyTransaction
 from middleware import get_data_from_request
 from students.forms import CourseEnrollForm
-from students.models import Student
+from students.models import Student, Teacher
 from students.views import get_object_or_none
 
 
@@ -334,6 +338,7 @@ class TeacherLessons(LoginRequiredMixin, UserPassesTestMixin, View):
         )
 
 
+@csrf_exempt
 @require_POST
 def set_lesson_info_api(request, api_version: int):
     """API for working with lesson info
@@ -341,7 +346,7 @@ def set_lesson_info_api(request, api_version: int):
     Work with json and non-json request is simplier now
 
     present_students: students who came to lesson
-
+    coefficient: teacher salary multiplier
 
     """
     bad_request_error_code = 400
@@ -372,14 +377,43 @@ def set_lesson_info_api(request, api_version: int):
         if completed:
             lesson_room.completed = completed
 
-        duration = data.get('duration')
-
-        # present_students = data.get('present_students')
-
-        # for student_id in present_students:
-        #     student = get_object_or_none(Student, object_id=student_id)
-
+        duration = datetime.strptime(data.get('duration'), '%H:%M:%S',)
+        duration = timedelta(
+            hours=duration.hour,
+            minutes=duration.minute,
+            seconds=duration.second,
+        )
+        lesson_room.duration = duration
+        
         lesson_room.save()
+
+        teacher_id = data.get('teacher_id')
+
+        teacher = get_object_or_none(
+            Teacher, object_id=teacher_id,
+        )
+
+        if teacher is None:
+            return JsonResponse(
+                status=bad_request_error_code,
+                data={
+                    'error': 'lesson successfully changed but, \
+                        no teacher {0} id'.format(teacher_id),
+                },
+            )
+
+        coefficient = round(
+            lesson_room.duration / teacher.salary_rate_time_interval, 2,
+        )
+
+        lesson_done_signal.send_robust(
+            sender=LessonRoom,
+            duration=duration,
+            present_students_id=data.get('present_students_id'),
+            coefficient=coefficient,
+            teacher=teacher,
+            lesson_id=lesson_id,
+        )
 
         return JsonResponse({'message': 'success'})
 
@@ -387,3 +421,28 @@ def set_lesson_info_api(request, api_version: int):
         status=bad_request_error_code,
         data={'error': 'wrong api version'},
     )
+
+
+@receiver(lesson_done_signal)
+def lesson_done_signal_receiver(sender, **kwargs):
+    # начисление денег учителю
+    teacher = kwargs.get('teacher')
+    teacher_salary_coefficient = kwargs.get('coefficient')
+    amount = teacher.salary_rate * decimal.Decimal(teacher_salary_coefficient)
+    teacher.amount += amount
+    teacher.save()
+
+    lesson_id = kwargs.get('lesson_id')
+
+    MoneyTransaction.objects.create(
+        user=teacher.user,
+        amount=amount,
+        currency=teacher.currency,
+        action='deposit',
+        comment='deposit per {0} id lesson_room'.format(lesson_id)
+    )
+
+    # present_students = data.get('present_students')
+    # списание денег у студентов
+    # for student_id in present_students:
+    #     student = get_object_or_none(Student, object_id=student_id)
