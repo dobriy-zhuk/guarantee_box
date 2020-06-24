@@ -9,12 +9,10 @@ from django.views.generic import ListView
 @login_required(login_url='/accounts/login/')
 def manager(request):
 
-    manager = Manager.objects.get(user=request.user)
-
     return render(
         request=request,
         template_name='managers/main/profile.html',
-        context={'manager': manager},
+        context={'manager': request.user.manager},
     )
 
 
@@ -36,4 +34,3 @@ class Leads(LoginRequiredMixin, ListView):
     model = Teacher
     template_name = 'managers/main/leads.html'
     context_object_name = 'leads'
-
