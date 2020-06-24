@@ -4,7 +4,11 @@ from managers.models import CurrencyExchange, Manager, MoneyTransaction
 from students.models import Teacher
 
 admin.site.register(CurrencyExchange)
-admin.site.register(MoneyTransaction)
+
+
+@admin.register(MoneyTransaction)
+class MoneyTransactionAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'amount', 'currency', 'action', 'comment']
 
 
 class TeacherInline(admin.StackedInline):

@@ -413,7 +413,7 @@ def set_lesson_info_api(request, api_version: int):
                 teacher=teacher,
                 lesson_id=lesson_id,
             )
-        
+
         lesson_room.save()
 
         return JsonResponse({'message': 'success'})
@@ -426,28 +426,41 @@ def set_lesson_info_api(request, api_version: int):
 
 @receiver(lesson_done_signal)
 def lesson_done_signal_receiver(sender, **kwargs):
+    """Signal receiver.
+
+    Makes MoneyTransactions for students who was on lesson, and for
+    teacher who teached. Withdraw or deposit money to their accounts.
+
+    Args:
+        sender (LessonRoom): model class
+        kwargs : all key-word arguments which the function receive
+
+    """
     # начисление денег учителю
     teacher = kwargs.get('teacher')
-    teacher_salary_coefficient = kwargs.get('coefficient')
-    amount = teacher.salary_rate * decimal.Decimal(teacher_salary_coefficient)
+    amount = teacher.salary_rate * decimal.Decimal(kwargs.get('coefficient'))
     teacher.amount += amount
     teacher.save()
-
-    lesson_id = kwargs.get('lesson_id')
 
     MoneyTransaction.objects.create(
         user=teacher.user,
         amount=amount,
         currency=teacher.currency,
         action='deposit',
-        comment='deposit per {0} id lesson_room'.format(lesson_id),
+        comment='deposit per {0} id lesson_room'.format(
+            kwargs.get('lesson_id'),
+        ),
     )
     # списание денег у студентов, которые были на уроке
     for student_id in kwargs.get('present_students_id'):
         student = get_object_or_none(Student, object_id=student_id)
         if student:
             incomplete = student.subscriptions.filter(completed=False).first()
-            lesson_cost = incomplete.cost / incomplete.lessons_amount
+
+            incomplete.past_lesson_amount += 1
+            incomplete.save()
+
+            lesson_cost = (incomplete.cost / incomplete.lessons_amount)
             student.amount -= lesson_cost
             student.save()
 
@@ -456,5 +469,7 @@ def lesson_done_signal_receiver(sender, **kwargs):
                 amount=lesson_cost,
                 currency=incomplete.currency,
                 action='withdraw',
-                comment='withdraw per {0} id lesson_room'.format(lesson_id),
+                comment='withdraw per {0} id lesson_room'.format(
+                    kwargs.get('lesson_id'),
+                ),
             )

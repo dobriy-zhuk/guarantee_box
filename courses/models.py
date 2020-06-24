@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models.signals import post_save
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
 from opentok import OpenTok
@@ -320,10 +321,11 @@ class Subscription(models.Model):
     student: which student has bought amount of lessons
     lessons_amount: how much lessons in Subscription what student bought
     cost: cost of Subscription
+    past_lesson_amount: the lessons amount there student was
 
     """
 
-    class TeacherCurrency(models.TextChoices):
+    class SubscriptionCurrency(models.TextChoices):
         RUBLE = 'RUB', _('Ruble')
         DOLLAR = 'USD', _('Dollar')
         EURO = 'EUR', _('Euro')
@@ -334,10 +336,34 @@ class Subscription(models.Model):
         on_delete=models.CASCADE,
     )
     lessons_amount = models.PositiveIntegerField(default=0)
+    past_lesson_amount = models.PositiveIntegerField(default=0)
     cost = models.DecimalField(default=0.00, max_digits=7, decimal_places=2)
     currency = models.CharField(
         max_length=3,
-        choices=TeacherCurrency.choices,
-        default=TeacherCurrency.RUBLE,
+        choices=SubscriptionCurrency.choices,
+        default=SubscriptionCurrency.RUBLE,
     )
     completed = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return "{0} student, {1} subscription".format(
+            self.student.id, self.id,
+        )
+
+
+def save_subscription(sender, instance, **kwargs):
+    """Signal func what checks equality past_lesson_amount and lesson_amount.
+
+    if past_lesson_amount == lesson_amount then completed = True
+
+    Args:
+        sender (class): Subscription class
+        instance (obj): Subscription object model
+        kwargs : key-word arguments
+    """
+    if instance.lessons_amount == instance.past_lesson_amount:
+        instance.completed = True
+        instance.save()
+
+post_save.connect(save_subscription, sender=Subscription)
