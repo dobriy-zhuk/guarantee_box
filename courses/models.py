@@ -362,7 +362,8 @@ def save_subscription(sender, instance, **kwargs):
         instance (obj): Subscription object model
         kwargs : key-word arguments
     """
-    if instance.lessons_amount == instance.past_lesson_amount:
+    if (instance.lessons_amount == instance.past_lesson_amount) \
+    and not instance.completed:
         instance.completed = True
         instance.save()
 
