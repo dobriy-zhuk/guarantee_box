@@ -1,8 +1,9 @@
 $('form').submit(function () {
         event.preventDefault();
         let content_type = ($("input[name=content_type]").val());
+        console.log("ITS ME !");
 
-           console.log($(this).serialize());
+        let form_data = $(this).serialize();
 
         //c plus plus compiler
         if(content_type === 'c_plus_plus'){
@@ -24,13 +25,12 @@ $('form').submit(function () {
                             $('#result_id').html("Правильно!");
 
 
-
                             $.ajax({
                             type: "POST",
                             url: "http://127.0.0.1:8000/students/api/0/set-student-module-done/",
-                            contentType: 'application/json; charset=utf-8',
+                            //contentType: 'application/json; charset=utf-8',
                             processData: false,
-                            data: JSON.stringify($(this).serialize()),
+                            data: form_data,
                             success: function (data) {
                                 console.log(data);
                             },

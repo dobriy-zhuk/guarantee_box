@@ -17,6 +17,92 @@
 <meta property="og:url" content="https://garantylearning.com/index.html" />
 {% endblock %}
 
+{% block nav-menu %}
+ <header>
+        <div class="header-area ">
+            <div id="sticky-header" class="main-header-area">
+                <div class="container-fluid p-0">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col-xl-2 col-lg-2">
+                            <div class="logo-img">
+                                <a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" alt="" height="50px"></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-7 col-lg-7">
+                            <div class="main-menu  d-none d-lg-block">
+                                <nav class="text-right">
+                                    <ul id="navigation">
+                                        <li><a href="{% url 'index' %}"
+                                                {% if request.path == '/approach/' or request.path == '/results/' or request.path == '/testimonials/' or request.path == '/teachers/' %}
+                                                    class="active"
+                                                {% endif %}>О Школе <i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                <li><a href="{% url 'our_approach' %}">Наш подход</a></li>
+                                                <li><a href="{% url 'our_results' %}">Наши результаты</a></li>
+                                                <li><a href="{% url 'our_testimonials' %}">Отзывы</a></li>
+                                                <li><a href="{% url 'our_teachers' %}">Преподаватели</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="{% url 'index' %}#popular_courses"
+                                            {% if request.path|slice:"0:9" == '/courses/' %}
+                                                        class="active"
+                                            {% endif %}>Занятия<i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                {% for subject in subjects %}
+                                                    <li><a href="{% url 'index' %}#coding-tab">{{ subject }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                        <li><a href="{% url 'camp' %}"
+                                                {% if request.path == '/camp/' %}
+                                                        class="active"
+                                                {% endif %}>Лагерь</a></li>
+                                        <li><a href="https://franchise.garantylearning.com" target="_blank">Франшиза</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+                            <div class="log_chat_area d-flex align-items-center">
+                                {% if request.user.is_authenticated %}
+                                <a href="{% url 'profile' %}" class="login">
+                                    <span>Профиль</span>
+                                </a>
+                                <a href="{% url 'logout' %}" class="login">
+                                    <i class="flaticon-user"></i>
+                                    <span>Выйти</span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'login' %}" class="login">
+                                    <span>Войти</span>
+                                </a>
+                                <div class="live_chat_btn">
+                                    <a class="boxed_btn_orange" href="{% url 'student_calendar' %}#contacts">
+                                        <i class="fa fa-arrow-right"></i>
+                                        <span>Пробный урок</span>
+                                    </a>
+                                </div>
+                                {% endif %}
+                                <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                          <a class="dropdown-item" href="#">EN</a>
+                                          <a class="dropdown-item" href="#">DE</a>
+                                        </div>
+                                </li>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
 {% block content %}
 <!-- slider_area_start -->
 <div class="slider_area ">
@@ -58,12 +144,10 @@
                 <div class="course_nav">
                     <nav>
                         <ul class="nav" id="myTab" role="tablist">
-                            {% for course in courses %}
                             <li class="nav-item">
                                 <a class="nav-link" id="all-tab" data-toggle="tab" href="#All" role="tab"
-                                    aria-controls="design" aria-selected="false">{{ course.title }}</a>
+                                    aria-controls="design" aria-selected="false">Все предметы</a>
                             </li>
-                            {% endfor %}
                             {% for subject in subjects %}
                             <li class="nav-item">
                                 <a class="nav-link" id="{{ subject.slug }}-tab" data-toggle="tab"

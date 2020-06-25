@@ -154,7 +154,7 @@
     $('#complete_lesson_form').submit(function() {
      $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:8000/courses/api/0/set-lesson-info/",
+            url: "http://127.0.0.1:8000/students/api/0/set-student-module-done/",
             data: $(this).serialize(),
             success: function (data) {
               alert("Урок помечен выполненным");

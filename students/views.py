@@ -775,7 +775,6 @@ def decrease_student_reward_card_amount(
 
 
 @require_POST
-@csrf_exempt
 def set_student_module_done(request, api_version: int):
     """Set student module done.
 
