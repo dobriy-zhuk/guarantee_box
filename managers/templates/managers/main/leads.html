@@ -64,34 +64,29 @@
             </tr>
           </thead>
           <tbody>
+            {% for lead in lead_list %}
             <tr>
-              <th scope="row">
+              <!-- <th scope="row">
                 <div class="primary-checkbox">
                   <input type="checkbox" id="default-checkbox_1">
                   <label for="default-checkbox_1"></label>
                 </div>
-              </th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
+                Там где просто слова написаны пока не знаю, что выводить
+              </th> -->
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>Добавлен</td> 
+              <td>{{ lead.name }} {{ lead.phone }}</td>
+              <td>{{ lead.parent_name }} {{ lead.parent_phone }}</td>
+              <td>Примечание</td>
+              <td>{{ lead.email }} {{ lead.parent_email }}</td>
+              <td>Ответственный</td>
+              <td>{{ lead.status }}</td>
+              <td>Источник</td>
+              <td>Предмет</td>
+              <td>{{ lead.age }}</td>
+
             </tr>
-            <tr>
-              <th scope="row">
-                <div class="primary-checkbox">
-                  <input type="checkbox" id="default-checkbox_2">
-                  <label for="default-checkbox_2"></label>
-                </div>
-              </th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>

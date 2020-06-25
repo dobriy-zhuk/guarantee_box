@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from managers.models import Manager
-from students.models import Teacher
+from students.models import Teacher, Student
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 
@@ -31,6 +31,7 @@ class TeacherListView(LoginRequiredMixin, ListView):
 
 
 class Leads(LoginRequiredMixin, ListView):
-    model = Teacher
+    model = Student
     template_name = 'managers/main/leads.html'
-    context_object_name = 'leads'
+    queryset = Student.objects.filter(status__name='Lead')
+    context_object_name = 'lead_list'
