@@ -52,7 +52,6 @@
               </th>
               <th scope="col">Добавлен</th>
               <th scope="col">ФИО + контакты</th>
-              <th scope="col">Ответственный</th>
               <th scope="col">Примечание</th>
               <th scope="col">Коммуникации</th>
               <th scope="col">Ответственный</th>
@@ -76,10 +75,9 @@
               <th scope="row">{{ forloop.counter }}</th>
               <td>Добавлен</td>
               <td>{{ lead.name }} {{ lead.phone }}</td>
-              <td>{{ lead.parent_name }} {{ lead.parent_phone }}</td>
               <td>Примечание</td>
               <td>{{ lead.email }} {{ lead.parent_email }}</td>
-              <td>Ответственный</td>
+              <td>{{ lead.parent_name }} {{ lead.parent_phone }}</td>
               <td>{{ lead.status }}</td>
               <td>Источник</td>
               <td>Предмет</td>
