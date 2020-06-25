@@ -4,6 +4,7 @@ from managers.models import Manager
 from students.models import Teacher, Student
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
+from django.views import View
 
 
 @login_required(login_url='/accounts/login/')
@@ -35,3 +36,12 @@ class Leads(LoginRequiredMixin, ListView):
     template_name = 'managers/main/leads.html'
     queryset = Student.objects.filter(status__name='Lead')
     context_object_name = 'lead_list'
+
+
+class NewLead(LoginRequiredMixin, View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass

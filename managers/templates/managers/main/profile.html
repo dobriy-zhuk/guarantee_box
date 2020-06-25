@@ -39,12 +39,12 @@
                             <h4>Мой профиль</h4>
                             <form action="#">
                                 <div class="mt-10">
-                                    <input type="text" name="first_name" placeholder="{{ teacher.name }}"
+                                    <input type="text" name="first_name" placeholder="{{ request.user.manager.name }}"
                                         onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"
                                         required class="single-input">
                                 </div>
                                 <div class="mt-10">
-                                    <input type="email" name="email" placeholder="{{ teacher.email }}"
+                                    <input type="email" name="email" placeholder="{{ request.user.manager.email }}"
                                         onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email address'"
                                         required class="single-input">
                                 </div>
@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-10">
-                                    <input type="text" name="address" placeholder="{{ teacher.city }}"
+                                    <input type="text" name="address" placeholder="{{ request.user.manager.city }}"
                                         onfocus="this.placeholder = ''" onblur="this.placeholder = 'Address'" required
                                         class="single-input">
                                 </div>
@@ -70,6 +70,7 @@
                                         onfocus="this.placeholder = ''" onblur="this.placeholder = 'Реквизиты банка'"
                                         required class="single-input">
                                 </div>
+                                <!-- Поменять на manager_edit_profile -->
                                 <br><a href="{% url 'teacher_edit_profile' %}"
                                     class="genric-btn info-border">Редактировать</a>
                             </form>
