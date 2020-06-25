@@ -214,7 +214,7 @@ def activate(request, uidb64, token):
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class StudentProfileEditView(LoginRequiredMixin, UserPassesTestMixin , View):
+class StudentProfileEditView(LoginRequiredMixin, UserPassesTestMixin, View):
     """Class-based view for student profile edit.
     FIXME: Без отпуск csrf-токена отказывается работать ругается
     на то, что токен не правильный
@@ -519,22 +519,24 @@ def get_courses_list(request):
     )
 
 
-class StudentCourseDetailView(DetailView):
+class StudentCourseDetailView(
+    LoginRequiredMixin, UserPassesTestMixin, DetailView
+):
+
+    login_url = '/accounts/login/'
     model = Course
     template_name = 'students/course/detail.html'
 
-    def get_queryset(self):
-        query_set = super(StudentCourseDetailView, self).get_queryset()
-        return query_set.filter(students__in=[self.request.user.student])
+    def test_func(self):
+        return self.request.user.groups.filter(name='Students').exists()
 
     def get_context_data(self, **kwargs):
-        context = super(
-            StudentCourseDetailView, self,
-        ).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['course'] = kwargs.get('object')
+
+        course = self.get_object()
 
         context['user'] = self.request.user
-        # get course object
-        course = self.get_object()
 
         context['user_permission'] = []
         for cur_module in course.modules.all():
@@ -544,16 +546,15 @@ class StudentCourseDetailView(DetailView):
                     cur_module,
                 ),
             )
-
         if 'module_id' in self.kwargs:
-        # get current module
+            # get current module
             context['module'] = course.modules.get(
-                id=self.kwargs['module_id']
+                id=self.kwargs.get('module_id')
             )
         else:
-        # get first module
+            # get first module
             try:
-                context['module'] = course.modules.all()[0]
+                context['module'] = course.modules.first()
             except IndexError:
                 # TODO: добавить тут или в шаблон вывод текста, что
                 #  не были добавлены уроки
@@ -561,6 +562,7 @@ class StudentCourseDetailView(DetailView):
             assign_perm(
                 'view_current_module', context['user'], context['module'],
             )
+
         return context
 
 
