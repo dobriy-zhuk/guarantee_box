@@ -30,7 +30,7 @@ from courses.models import Course, LessonRoom, Module
 from managers.models import CurrencyExchange
 from middleware import get_data_from_request
 from students.forms import CourseEnrollForm, StudentSignupForm, UserSignupForm
-from students.models import Student, StudentRewardCard, Teacher
+from students.models import Student, StudentRewardCard, Teacher, StudentStatus
 from students.tokens import account_activation_token
 
 
@@ -317,6 +317,8 @@ class StudentRegistrationView(View):
                 phone=student_form.cleaned_data.get('phone'),
                 city=student_form.cleaned_data.get('city'),
             )
+            student_status = StudentStatus.objects.get(name='Student')
+            student.status = student_status
             student.save()
             user.is_active = False
             user.save()
