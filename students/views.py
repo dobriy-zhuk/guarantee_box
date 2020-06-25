@@ -366,7 +366,7 @@ def get_profile(request):
     courses_with_done_modules (queryset): courses which have a done modules
     by student
     """
-    student = Student.objects.get(user=request.user)
+    student = request.user.student
     upcoming_lessons = LessonRoom.objects.filter(
         students__in=[student],
         schedule__start_timestamp__gte=timezone.now()
@@ -463,7 +463,7 @@ def get_webrtc(request):
 @login_required(login_url='/accounts/login/')
 def get_lesson(request):
     # TODO: Вернуть в качестве страницы localhost:3000 c токеном и session_id из базы!
-    student = Student.objects.get(user=request.user)
+    student = request.user.student
     upcoming_lesson_room = LessonRoom.objects.filter(
         student__in=[student],
         schedule__start_timestamp__gte=timezone.now(),
