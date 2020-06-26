@@ -72,6 +72,11 @@ class Student(models.Model):
         choices=StudentLevel.choices,
         default=StudentLevel.BEGINNER,
     )
+    responsible_manager = models.ForeignKey(
+        Manager,
+        related_name='responsible_students',
+        on_delete=models.CASCADE,
+    )
     signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
