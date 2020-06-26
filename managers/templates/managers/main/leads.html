@@ -74,10 +74,17 @@
         </th> -->
               <th scope="row">{{ forloop.counter }}</th>
               <td>Добавлен</td>
-              <td>{{ lead.name }} {{ lead.phone }}</td>
+              <td>
+                {{ lead.name }}
+                {{ lead.phone }}
+                {{ lead.email }}
+                {{ lead.parent_name }}
+                {{ lead.parent_phone }}
+                {{ lead.parent_email }}
+              </td>
               <td>Примечание</td>
-              <td>{{ lead.email }} {{ lead.parent_email }}</td>
-              <td>{{ lead.parent_name }} {{ lead.parent_phone }}</td>
+              <td>Коммуникации</td>
+              <td>{{ lead.responsible_manager }}</td>
               <td>{{ lead.status }}</td>
               <td>Источник</td>
               <td>Предмет</td>
