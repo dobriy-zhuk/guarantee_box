@@ -40,6 +40,11 @@ class Student(models.Model):
 
     """
 
+    class StudentLevel(models.TextChoices):
+        BEGINNER = 'BG', _('Beginner')
+        MIDDLE = 'MD', _('Middle')
+        ADVANCED = 'AD', _('Advanced')
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     parent_name = models.CharField(max_length=200, default='')
@@ -61,6 +66,11 @@ class Student(models.Model):
     currency = models.CharField(max_length=3, default='RUB')
     image = models.ImageField(
         blank=True, default='', upload_to='images',
+    )
+    student_level = models.CharField(
+        max_length=2,
+        choices=StudentLevel.choices,
+        default=StudentLevel.BEGINNER,
     )
     signup_confirmation = models.BooleanField(default=False)
 

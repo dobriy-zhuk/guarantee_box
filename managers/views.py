@@ -39,9 +39,13 @@ class Leads(LoginRequiredMixin, ListView):
 
 
 class NewLead(LoginRequiredMixin, View):
+    template_name = 'managers/main/new_lead.html'
 
     def get(self, request):
-        pass
+        return render(
+            request=request,
+            template_name=self.template_name,
+        )
 
     def post(self, request):
         pass
