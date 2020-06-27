@@ -96,6 +96,7 @@ class Student(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     signup_confirmation = models.BooleanField(default=False)
     birthday = models.DateField(null=True)
+    PFDO_certificate = models.CharField(max_length=300, blank=True)
 
     @property
     def age(self):
