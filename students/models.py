@@ -48,7 +48,7 @@ class Student(models.Model):
         ADVANCED = 'AD', _('Advanced')
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200) 
     parent_name = models.CharField(max_length=200, default='')
     age = models.PositiveSmallIntegerField(default=0)
     phone = models.TextField(
@@ -80,6 +80,7 @@ class Student(models.Model):
         on_delete=models.CASCADE,
     )
     communication = models.CharField(max_length=250, default='')
+    subject = models.CharField(max_length=250, default='')
     signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
