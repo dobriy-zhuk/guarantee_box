@@ -93,6 +93,7 @@ class Student(models.Model):
     )
     school = models.CharField(max_length=300, default='')
     school_class = models.CharField(max_length=3, default='')
+    created_date = models.DateTimeField(auto_now_add=True)
     signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
