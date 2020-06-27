@@ -47,6 +47,11 @@ class Student(models.Model):
         MIDDLE = 'MD', _('Middle')
         ADVANCED = 'AD', _('Advanced')
 
+    class StudentSource(models.TextChoices):
+        FACEBOOK = 'FB', _('Facebook')
+        VKONTAKTE = 'VK', _('Vkontakte')
+        INSTAGRAM = 'IN', _('Instagram')
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200) 
     parent_name = models.CharField(max_length=200, default='')
@@ -81,6 +86,11 @@ class Student(models.Model):
     )
     communication = models.CharField(max_length=250, default='')
     subject = models.CharField(max_length=250, default='')
+    source = models.CharField(
+        max_length=2,
+        choices=StudentSource.choices,
+        default=StudentSource.FACEBOOK,
+    )
     signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
