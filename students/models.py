@@ -91,6 +91,8 @@ class Student(models.Model):
         choices=StudentSource.choices,
         default=StudentSource.FACEBOOK,
     )
+    school = models.CharField(max_length=300, default='')
+    school_class = models.CharField(max_length=3, default='')
     signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
