@@ -38,6 +38,8 @@ class Student(models.Model):
 
     Student phone is writed in comment
 
+    communication : calls what manager has did to student
+
     """
 
     class StudentLevel(models.TextChoices):
@@ -77,6 +79,7 @@ class Student(models.Model):
         related_name='responsible_students',
         on_delete=models.CASCADE,
     )
+    communication = models.CharField(max_length=250, default='')
     signup_confirmation = models.BooleanField(default=False)
 
     def __str__(self):
