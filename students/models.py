@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from managers.models import Manager
+from datetime import date
 
 
 class StudentStatus(models.Model):
@@ -55,7 +56,6 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200) 
     parent_name = models.CharField(max_length=200, default='')
-    age = models.PositiveSmallIntegerField(default=0)
     phone = models.TextField(
         max_length=500, blank=True, default='7123123',
     )
@@ -95,6 +95,15 @@ class Student(models.Model):
     school_class = models.CharField(max_length=3, default='')
     created_date = models.DateTimeField(auto_now_add=True)
     signup_confirmation = models.BooleanField(default=False)
+    birthday = models.DateField(null=True)
+
+    @property
+    def age(self):
+        today = date.today()
+        birthday = self.birthday
+        return today.year - birthday.year - (
+            (today.month, today.day) < (birthday.month, birthday.day)
+        )
 
     def __str__(self):
         """Override the str() behavior, for instance of class.
