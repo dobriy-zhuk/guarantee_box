@@ -8,6 +8,13 @@ from managers.models import Manager
 from datetime import date
 
 
+class FunnelStage(models.Model):
+    stage = models.CharField(max_length=200, default='')
+
+    def __str__(self):
+        return self.stage
+
+
 class StudentStatus(models.Model):
     """Describe status for Student.
 
@@ -84,28 +91,36 @@ class Student(models.Model):
         related_name='responsible_students',
         on_delete=models.CASCADE,
     )
-    communication = models.CharField(max_length=250, default='')
-    next_contact = models.CharField(max_length=250, default='')
-    subject = models.CharField(max_length=250, default='')
+    communication = models.CharField(max_length=250, default='', blank=True)
+    next_contact = models.CharField(max_length=250, default='', blank=True)
+    subject = models.CharField(max_length=250, default='', blank=True)
     source = models.CharField(
         max_length=2,
         choices=StudentSource.choices,
         default=StudentSource.FACEBOOK,
     )
-    school = models.CharField(max_length=300, default='')
-    school_class = models.CharField(max_length=3, default='')
+    school = models.CharField(max_length=300, default='', blank=True)
+    school_class = models.CharField(max_length=3, default='', blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     signup_confirmation = models.BooleanField(default=False)
     birthday = models.DateField(null=True)
+    funnel_stage = models.ForeignKey(
+        'FunnelStage',
+        related_name='students',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
     PFDO_certificate = models.CharField(max_length=300, blank=True)
 
-    @property
-    def age(self):
+    def property_age(self):
         today = date.today()
         birthday = self.birthday
         return today.year - birthday.year - (
             (today.month, today.day) < (birthday.month, birthday.day)
         )
+
+    age = property(property_age)
 
     def __str__(self):
         """Override the str() behavior, for instance of class.
