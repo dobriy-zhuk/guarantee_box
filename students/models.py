@@ -85,6 +85,7 @@ class Student(models.Model):
         on_delete=models.CASCADE,
     )
     communication = models.CharField(max_length=250, default='')
+    next_contact = models.CharField(max_length=250, default='')
     subject = models.CharField(max_length=250, default='')
     source = models.CharField(
         max_length=2,
