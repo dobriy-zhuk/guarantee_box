@@ -70,18 +70,10 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav class="text-right">
                                     <ul id="navigation">
-                                        <li><a href="{% url 'index' %}"
-                                                {% if request.path == '/approach/' or request.path == '/results/' or request.path == '/testimonials/' or request.path == '/teachers/' %}
-                                                    class="active"
-                                                {% endif %}>Москва<i class="ti-angle-down"></i></a>
-                                            <ul class="submenu">
-                                                <li><a href="{% url 'our_approach' %}">Ярославль</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="https://franchise.garantylearning.com" target="_blank">Ученики</a></li>
+                                        <li><a href="{% url 'students_manage' %}">Ученики</a></li>
                                         <li><a href="{% url 'leads' %}">Заявки</a></li>
-                                        <li><a href="https://franchise.garantylearning.com" target="_blank">Уроки</a></li>
-                                        <li><a href="https://franchise.garantylearning.com" target="_blank">Преподаватели</a></li>
+                                        <li><a href="https://franchise.garantylearning.com">Уроки</a></li>
+                                        <li><a href="{% url 'teachers' %}">Преподаватели</a></li>
                                         <li><a href="https://franchise.garantylearning.com" target="_blank">Задачи</a></li>
                                         <li><a href="https://franchise.garantylearning.com" target="_blank">Финансы</a></li>
                                         <li><a href="https://franchise.garantylearning.com" target="_blank">B2B</a></li>
@@ -120,6 +112,15 @@
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                           <a class="dropdown-item" href="#">EN</a>
                                           <a class="dropdown-item" href="#">DE</a>
+                                        </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                        <a style="color: white" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Москва
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                          <a class="dropdown-item" href="#">Ярославль</a>
+                                          <a class="dropdown-item" href="#">Москва, Перерва 56/2</a>
                                         </div>
                                 </li>
                             </div>

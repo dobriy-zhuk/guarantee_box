@@ -19,7 +19,7 @@ def manager(request):
 
 class ApplicantListView(LoginRequiredMixin, ListView):
     model = Teacher
-    template_name = 'managers/main/profile.html'
+    template_name = 'managers/main/applicant.html'
     queryset = Teacher.objects.filter(status__name='Applicant')
     context_object_name = 'applicant_list'
 
@@ -36,6 +36,13 @@ class Leads(LoginRequiredMixin, ListView):
     template_name = 'managers/main/leads.html'
     queryset = Student.objects.filter(status__name='Lead')
     context_object_name = 'lead_list'
+
+
+class Students(LoginRequiredMixin, ListView):
+    model = Student
+    template_name = 'managers/main/students.html'
+    queryset = Student.objects.filter(status__name='Student')
+    context_object_name = 'student_list'
 
 
 class NewLead(LoginRequiredMixin, View):

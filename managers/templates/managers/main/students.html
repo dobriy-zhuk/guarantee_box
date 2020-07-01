@@ -1,5 +1,5 @@
 {% extends 'base/base_admin.html' %}
-{% block title %}ГАРАНТИЯ ЗНАНИЙ - учителя{% endblock title %}
+{% block title %}ГАРАНТИЯ ЗНАНИЙ - ученики{% endblock title %}
 
 {% block tags %}
 <meta name="description"
@@ -20,7 +20,7 @@
 
 
 <div class="bradcam_area breadcam_bg overlay2">
-  <h3>Преподаватели</h3>
+  <h3>Ученики</h3>
 </div>
 
 <div class="about_area">
@@ -28,7 +28,7 @@
     <div class="row d-flex justify-content-center">
       <div class="col-lg-8">
         <div class="section-tittle text-center">
-          <h2>Преподаватели</h2>
+          <h2>Ученики</h2>
         </div>
       </div>
     </div>
@@ -50,89 +50,16 @@
                   <label for="default-checkbox"></label>
                 </div>
               </th>
-              <th scope="col">Добавлен</th>
+              <th scope="col">Фото</th>
               <th scope="col">ФИО + контакты</th>
-              <th scope="col">Примечание</th>
-              <th scope="col">Коммуникации</th>
-              <th scope="col">Ответственный</th>
-              <th scope="col">Статус</th>
+              <th scope="col">Общий остаток</th>
+              <th scope="col">Статус обучения (активен, приостановка)</th>
+              <th scope="col">Договор (например 121-д)</th>
+              <th scope="col">Абонемент</th>
               <th scope="col">Источник</th>
               <th scope="col">Предмет</th>
               <th scope="col">Возраст</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for lead in lead_list %}
-            <tr>
-              <!-- <th scope="row">
-          <div class="primary-checkbox">
-            <input type="checkbox" id="default-checkbox_1">
-            <label for="default-checkbox_1"></label>
-          </div>
-          Там где просто слова написаны пока не знаю, что выводить
-        </th> -->
-              <th scope="row">{{ forloop.counter }}</th>
-              <td>Добавлен</td>
-              <td>
-                {{ lead.name }}
-                {{ lead.phone }}
-                {{ lead.email }}
-                {{ lead.parent_name }}
-                {{ lead.parent_phone }}
-                {{ lead.parent_email }}
-              </td>
-              <td>Примечание</td>
-              <td>{{ lead.communication }}</td>
-              <td>{{ lead.responsible_manager }}</td>
-              <td>{{ lead.status }}</td>
-              <td>Источник</td>
-              <td>Предмет</td>
-              <td>{{ lead.age }}</td>
-
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-<div class="container">
-    <div class="row d-flex justify-content-center">
-      <div class="col-lg-8">
-        <div class="section-tittle text-center">
-          <h2>Соискатели</h2>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12 col-md-12">
-        <a href="#" class="genric-btn default">Добавить</a>
-        <a href="#" class="genric-btn default">Редактировать</a>
-        <a href="#" class="genric-btn default">Рассылка</a>
-        <a href="#" class="genric-btn default">Отчеты</a>
-        <a href="#" class="genric-btn default">Импорт</a>
-        <a href="#" class="genric-btn default">Экспорт</a>
-        <a href="#" class="genric-btn default">Фильтр</a>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">
-                <div class="primary-checkbox">
-                  <input type="checkbox" id="default-checkbox">
-                  <label for="default-checkbox"></label>
-                </div>
-              </th>
-              <th scope="col">ФИО + контакты</th>
-              <th scope="col">Дата рождения</th>
-              <th scope="col">Филиалы работы</th>
-              <th scope="col">Предметы</th>
-              <th scope="col">Квалификация</th>
-              <th scope="col">Комментарий</th>
-              <th scope="col">Ставка</th>
-              <th scope="col">Доступ в систему</th>
-              <th scope="col">Статус</th>
-                <th scope="col">Тестирование (выбор курса)</th>
+              <th scope="col">прочие поля из студента с возможностью фильтрации отображения</th>
             </tr>
           </thead>
           <tbody>
